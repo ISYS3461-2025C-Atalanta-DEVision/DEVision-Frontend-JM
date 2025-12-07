@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getApiUrl } from '../service_url/AppUrlConfig';
+import getApiUrl from '../service_url/AppUrlConfig';
 // API Gateway URL - uses environment variable or defaults based on environment
 
 const API_BASE_URL = getApiUrl();

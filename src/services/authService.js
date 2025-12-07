@@ -53,7 +53,7 @@ export const authService = {
 
   // Activate account
   activateAccount: async (token) => {
-    const response = await api.get(`${AUTH_BASE}/activate/${token}`);
+    const response = await api.get(`${ACTIVATE_ACCOUNT_URL}/${token}`);
     return response.data;
   },
 

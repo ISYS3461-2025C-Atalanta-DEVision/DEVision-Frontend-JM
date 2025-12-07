@@ -1,4 +1,4 @@
-export const getApiUrl = () => {
+const getApiUrl = () => {
   if (import.meta.env.VITE_API_URL) {
     return import.meta.env.VITE_API_URL;
   }
@@ -7,3 +7,5 @@ export const getApiUrl = () => {
     ? 'https://jm-gateway.onrender.com'
     : 'http://localhost:8080';
 };
+
+export default getApiUrl;
