@@ -21,7 +21,7 @@ export default function LoginForm() {
     }
   );
 
-  const { toSignUp,error, loading, handleLoginSubmit } = useLoginForm(validateAll);
+  const { toSignUp,error, loading, handleLoginSubmit } = useLoginForm(validateAll, values);
 
   return (
     <div className="w-full max-w-md mx-auto p-6">
