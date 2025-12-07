@@ -21,7 +21,7 @@ export default function LoginForm() {
     }
   );
 
-  const { error, loading, handleLoginSubmit } = useLoginForm(validateAll);
+  const { toSignUp,error, loading, handleLoginSubmit } = useLoginForm(validateAll);
 
   return (
     <div className="w-full max-w-md mx-auto p-6">
@@ -84,6 +84,17 @@ export default function LoginForm() {
         >
           Sign In
         </Button>
+
+        <Button
+          variant="secondary"
+          size="lg"
+          loading={loading}
+          className="w-full mt-4"
+          onClick={toSignUp}
+        >
+          Sign up
+        </Button>
+
       </form>
     </div>
   );

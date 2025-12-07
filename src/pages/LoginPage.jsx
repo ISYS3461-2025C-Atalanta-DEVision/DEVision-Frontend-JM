@@ -56,7 +56,7 @@ export default function LoginPage() {
         </div>
 
         <div className="border-t border-gray-100 pt-6">
-          <LoginForm loginFunction={AuthService.login} />
+          <LoginForm />
         </div>
       </motion.div>
     </div>

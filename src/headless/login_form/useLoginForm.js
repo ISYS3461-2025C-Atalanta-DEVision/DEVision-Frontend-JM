@@ -26,7 +26,12 @@ function useLoginForm(validateAll) {
     }
   };
 
+  const toSignUp = () =>{
+    navigate("/register");
+  }
+
   return {
+    toSignUp,
     handleLoginSubmit,
     error,
     loading,
