@@ -56,34 +56,34 @@ const Register = () => {
     fetchCountries();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError('');
+  //   setSuccess('');
 
-    if (!validateAll()) {
-      return;
-    }
+  //   if (!validateAll()) {
+  //     return;
+  //   }
 
-    setLoading(true);
-    const result = await register({
-      email: values.email,
-      password: values.password,
-      companyName: values.companyName,
-      country: values.country,
-      phoneNumber: values.phoneNumber || undefined,
-      streetAddress: values.streetAddress || undefined,
-      city: values.city || undefined,
-    });
-    setLoading(false);
+  //   setLoading(true);
+  //   const result = await register({
+  //     email: values.email,
+  //     password: values.password,
+  //     companyName: values.companyName,
+  //     country: values.country,
+  //     phoneNumber: values.phoneNumber || undefined,
+  //     streetAddress: values.streetAddress || undefined,
+  //     city: values.city || undefined,
+  //   });
+  //   setLoading(false);
 
-    if (result.success) {
-      setSuccess('Registration successful! Please check your email to activate your account.');
-      setTimeout(() => navigate('/login'), 3000);
-    } else {
-      setError(result.error);
-    }
-  };
+  //   if (result.success) {
+  //     setSuccess('Registration successful! Please check your email to activate your account.');
+  //     setTimeout(() => navigate('/login'), 3000);
+  //   } else {
+  //     setError(result.error);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">

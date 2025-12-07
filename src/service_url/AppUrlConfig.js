@@ -1,6 +1,9 @@
-// API Gateway is the single entry point for all API calls
-// All requests go through Gateway (port 8080), which routes to internal services
-const API_GATEWAY_PORT = 8080
-const API_GATEWAY_URL = "http://localhost:" + API_GATEWAY_PORT
-
-export default API_GATEWAY_URL
+export const getApiUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // Default to localhost in development, Render URL in production
+  return import.meta.env.PROD
+    ? 'https://jm-gateway.onrender.com'
+    : 'http://localhost:8080';
+};

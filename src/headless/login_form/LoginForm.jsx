@@ -1,11 +1,12 @@
 import React from "react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import useLoginForm from "./hook/useLoginForm";
+import Alert from "../../components/Alert";
+import useLoginForm from "./useLoginForm";
 import { useForm, validators } from "../../hooks/useForm";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function LoginForm({ loginAPI }) {
+export default function LoginForm() {
   const { values, errors, handleChange, handleBlur, validateAll } = useForm(
     {
       email: "",
@@ -20,8 +21,7 @@ export default function LoginForm({ loginAPI }) {
     }
   );
 
-  const { user, error, loading, login, handleInputChange, goToRegister, handleLoginSubmit } =
-    useLoginForm(loginAPI, validateAll);
+  const { error, loading, handleLoginSubmit } = useLoginForm(validateAll);
 
   return (
     <div className="w-full max-w-md mx-auto p-6">

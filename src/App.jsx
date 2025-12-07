@@ -4,7 +4,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
 import LoginPage from './pages/LoginPage';
-import Register from './pages/Register';
+import RegisterPage from './pages/RegisterPage';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import ActivateAccount from './pages/ActivateAccount';
@@ -18,7 +18,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/activate/:token" element={<ActivateAccount />} />
