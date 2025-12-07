@@ -1,50 +1,90 @@
-import React from 'react'
-import Input from '../../components/input/Input'
-import Button from '../../components/button/Button'
-import useLoginForm from './hook/useLoginForm'
+import React from "react";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import useLoginForm from "./hook/useLoginForm";
+import { useForm, validators } from "../../hooks/useForm";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function LoginForm({
-  loginFunction
-}) {
+export default function LoginForm({ loginAPI }) {
+  const { values, errors, handleChange, handleBlur, validateAll } = useForm(
+    {
+      email: "",
+      password: "",
+    },
+    {
+      email: [validators.required("Email is required"), validators.email()],
+      password: [
+        validators.required("Password is required"),
+        validators.password(),
+      ],
+    }
+  );
 
-  const {user, error, loading, login, handleInputChange, goToRegister} = useLoginForm(loginFunction)
+  const { user, error, loading, login, handleInputChange, goToRegister, handleLoginSubmit } =
+    useLoginForm(loginAPI, validateAll);
 
   return (
     <div className="w-full max-w-md mx-auto p-6">
-      <form className="space-y-4" onSubmit={login}>
-        {error && (
-          <div className="p-3 bg-red-100 text-red-700 rounded-lg">
-            {error}
-          </div>
-        )}
-        {user && (
-          <div className="p-3 bg-green-100 text-green-700 rounded-lg">
-            Login successful!
-          </div>
-        )}
-        <div>
-          <Input
-            type="email"
-            placeholder="Email"
-            onChange={handleInputChange("email")}
-          />
+      {error && (
+        <Alert
+          type="error"
+          message={error}
+          onClose={() => setError("")}
+          className="mb-4"
+        />
+      )}
+
+      <form onSubmit={handleLoginSubmit}>
+        <Input
+          label="Email"
+          name="email"
+          type="email"
+          value={values.email}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={errors.email}
+          placeholder="Enter your email"
+          required
+        />
+
+        <Input
+          label="Password"
+          name="password"
+          type="password"
+          value={values.password}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={errors.password}
+          placeholder="Enter your password"
+          required
+        />
+
+        <div className="flex items-center justify-between mb-6">
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+            <span className="ml-2 text-sm text-gray-600">Remember me</span>
+          </label>
+          <Link
+            to="/forgot-password"
+            className="text-sm text-blue-600 hover:text-blue-800"
+          >
+            Forgot password?
+          </Link>
         </div>
-        <div>
-          <Input
-            type="password"
-            placeholder="Password"
-            onChange={handleInputChange("password")}
-          />
-        </div>
-        <div className="space-y-2">
-          <Button type="submit" variant="primary">
-            {loading ? "Signing in..." : "Login"}
-          </Button>
-          <Button type="button" variant="secondary" onClick={goToRegister}>
-            Create Account
-          </Button>
-        </div>
+
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          loading={loading}
+          className="w-full"
+        >
+          Sign In
+        </Button>
       </form>
     </div>
-  )
+  );
 }

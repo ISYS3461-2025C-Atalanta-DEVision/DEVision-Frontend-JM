@@ -16,10 +16,12 @@
     "@stripe/react-stripe-js": "^5.4.1",
     "@stripe/stripe-js": "^8.5.3",
     "axios": "^1.13.2",
-    "jwt-decode": "^4.0.0",
     "framer-motion": "^12.23.25",
+    "jwt-decode": "^4.0.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.10.1",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import LoginForm from "../headless/login_form/LoginForm";
-import { login } from "../services/authAPI";
+import AuthService from "../services/authService";
 import BgImage from "../assets/photo/bg-login.jpg";
 import { floatingShapes } from "../frame-motion/FlyingShape";
 
@@ -56,7 +56,7 @@ export default function Login() {
         </div>
 
         <div className="border-t border-gray-100 pt-6">
-          <LoginForm loginFunction={login} />
+          <LoginForm loginFunction={AuthService.login} />
         </div>
       </motion.div>
     </div>
