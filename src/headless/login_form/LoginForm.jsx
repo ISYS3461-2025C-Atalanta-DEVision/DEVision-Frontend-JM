@@ -21,7 +21,10 @@ export default function LoginForm() {
     }
   );
 
-  const { toSignUp,error, loading, handleLoginSubmit } = useLoginForm(validateAll, values);
+  const { toSignUp, error, loading, handleLoginSubmit } = useLoginForm(
+    validateAll,
+    values
+  );
 
   return (
     <div className="w-full max-w-md mx-auto p-6">
@@ -63,13 +66,13 @@ export default function LoginForm() {
           <label className="flex items-center">
             <input
               type="checkbox"
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-primary focus:ring-blue-500 border-gray-300 rounded"
             />
             <span className="ml-2 text-sm text-gray-600">Remember me</span>
           </label>
           <Link
             to="/forgot-password"
-            className="text-sm text-blue-600 hover:text-blue-800"
+            className="text-sm text-primary hover:text-primary2"
           >
             Forgot password?
           </Link>
@@ -94,7 +97,6 @@ export default function LoginForm() {
         >
           Sign up
         </Button>
-
       </form>
     </div>
   );

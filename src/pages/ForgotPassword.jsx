@@ -1,29 +1,29 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useForm, validators } from '../hooks/useForm';
-import authService from '../services/authService';
-import Input from '../components/Input';
-import Button from '../components/Button';
-import Alert from '../components/Alert';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useForm, validators } from "../hooks/useForm";
+import authService from "../services/authService";
+import Input from "../components/Input";
+import Button from "../components/Button";
+import Alert from "../components/Alert";
 
 const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const { values, errors, handleChange, handleBlur, validateAll } = useForm(
     {
-      email: '',
+      email: "",
     },
     {
-      email: [validators.required('Email is required'), validators.email()],
+      email: [validators.required("Email is required"), validators.email()],
     }
   );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     if (!validateAll()) {
       return;
@@ -32,9 +32,12 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       await authService.forgotPassword(values.email);
-      setSuccess('Password reset instructions have been sent to your email.');
+      setSuccess("Password reset instructions have been sent to your email.");
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to send reset email. Please try again.');
+      setError(
+        err.response?.data?.message ||
+          "Failed to send reset email. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -45,30 +48,29 @@ const ForgotPassword = () => {
       <div className="max-w-md w-full">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">DEVision</h1>
+            <h1 className="text-3xl font-bold text-textBlack">DEVision</h1>
             <p className="text-gray-600 mt-2">Job Manager Portal</p>
           </div>
 
-          <h2 className="text-2xl font-semibold text-gray-800 mb-2">Forgot Password</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+            Forgot Password
+          </h2>
           <p className="text-gray-600 mb-6">
-            Enter your email address and we&apos;ll send you instructions to reset your password.
+            Enter your email address and we&apos;ll send you instructions to
+            reset your password.
           </p>
 
           {error && (
             <Alert
               type="error"
               message={error}
-              onClose={() => setError('')}
+              onClose={() => setError("")}
               className="mb-4"
             />
           )}
 
           {success && (
-            <Alert
-              type="success"
-              message={success}
-              className="mb-4"
-            />
+            <Alert type="success" message={success} className="mb-4" />
           )}
 
           <form onSubmit={handleSubmit}>
@@ -96,7 +98,10 @@ const ForgotPassword = () => {
           </form>
 
           <div className="mt-6 text-center">
-            <Link to="/login" className="text-blue-600 hover:text-blue-800 font-medium">
+            <Link
+              to="/login"
+              className="text-primary hover:text-primary2 font-medium"
+            >
               Back to Login
             </Link>
           </div>

@@ -43,13 +43,13 @@ export default function RegisterPage() {
         className="w-fit w-fit bg-white rounded-2xl shadow-xl p-8 space-y-6 z-10"
       >
         <div className="text-center space-y-1">
-          <p className="text-sm uppercase tracking-[0.3em] text-indigo-500">
+          <p className="text-sm uppercase tracking-[0.3em] text-primary">
             DEVision
           </p>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-textBlack">
             Create your account
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-neutral6">
             Fill in the details to get started
           </p>
         </div>

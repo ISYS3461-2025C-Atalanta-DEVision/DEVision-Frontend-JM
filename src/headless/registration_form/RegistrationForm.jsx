@@ -6,7 +6,6 @@ import Select from "../../components/Select";
 import Alert from "../../components/Alert";
 
 export default function RegistrationForm() {
-
   const { values, errors, handleChange, handleBlur, validateAll } = useForm(
     {
       email: "",
@@ -34,31 +33,31 @@ export default function RegistrationForm() {
     }
   );
 
-  const { error, success, countries, loading, loadingCountries, handleRegisterSubmit } =
-    useRegistrationForm(validateAll, values);
+  const {
+    error,
+    success,
+    countries,
+    loading,
+    loadingCountries,
+    handleRegisterSubmit,
+  } = useRegistrationForm(validateAll, values);
 
   return (
     <div className="w-full max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-sm">
-      <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+      <h2 className="text-2xl font-semibold text-textBlack mb-6">
         Create Account
       </h2>
 
-     {error && (
+      {error && (
         <Alert
           type="error"
           message={error}
-          onClose={() => setError('')}
+          onClose={() => setError("")}
           className="mb-4"
         />
       )}
 
-      {success && (
-        <Alert
-          type="success"
-          message={success}
-          className="mb-4"
-        />
-      )}
+      {success && <Alert type="success" message={success} className="mb-4" />}
 
       <form onSubmit={handleRegisterSubmit}>
         <Input
@@ -111,7 +110,7 @@ export default function RegistrationForm() {
           />
         </div>
 
-        <div className="text-xs text-gray-500 mb-4 -mt-2">
+        <div className="text-xs text-neutral6 mb-4 -mt-2">
           Password must be at least 8 characters with 1 uppercase, 1 number, and
           1 special character.
         </div>

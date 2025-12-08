@@ -1,42 +1,45 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useForm, validators } from '../hooks/useForm';
-import authService from '../services/authService';
-import Input from '../components/Input';
-import Select from '../components/Select';
-import Button from '../components/Button';
-import Alert from '../components/Alert';
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { useForm, validators } from "../hooks/useForm";
+import authService from "../services/authService";
+import Input from "../components/Input";
+import Select from "../components/Select";
+import Button from "../components/Button";
+import Alert from "../components/Alert";
 
 const Register = () => {
   const navigate = useNavigate();
   const { register } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [countries, setCountries] = useState([]);
   const [loadingCountries, setLoadingCountries] = useState(true);
 
   const { values, errors, handleChange, handleBlur, validateAll } = useForm(
     {
-      email: '',
-      password: '',
-      confirmPassword: '',
-      companyName: '',
-      country: '',
-      phoneNumber: '',
-      streetAddress: '',
-      city: '',
+      email: "",
+      password: "",
+      confirmPassword: "",
+      companyName: "",
+      country: "",
+      phoneNumber: "",
+      streetAddress: "",
+      city: "",
     },
     {
-      email: [validators.required('Email is required'), validators.email()],
-      password: [validators.required('Password is required'), validators.password()],
-      confirmPassword: [
-        validators.required('Please confirm your password'),
-        validators.confirmPassword('password'),
+      email: [validators.required("Email is required"), validators.email()],
+      password: [
+        validators.required("Password is required"),
+        validators.password(),
       ],
-      companyName: [validators.required('Company name is required')],
-      country: [validators.required('Country is required')],
+      confirmPassword: [
+        validators.required("Please confirm your password"),
+        validators.confirmPassword("password"),
+      ],
+      companyName: [validators.required("Company name is required")],
+      country: [validators.required("Country is required")],
       phoneNumber: [validators.phone()],
     }
   );
@@ -47,8 +50,14 @@ const Register = () => {
         const response = await authService.getCountries();
         setCountries(response.data || []);
       } catch (err) {
-        console.error('Failed to fetch countries:', err);
-        setCountries(['Vietnam', 'Singapore', 'Thailand', 'United States', 'Australia']);
+        console.error("Failed to fetch countries:", err);
+        setCountries([
+          "Vietnam",
+          "Singapore",
+          "Thailand",
+          "United States",
+          "Australia",
+        ]);
       } finally {
         setLoadingCountries(false);
       }
@@ -90,27 +99,25 @@ const Register = () => {
       <div className="max-w-lg w-full">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">DEVision</h1>
+            <h1 className="text-3xl font-bold text-textBlack">DEVision</h1>
             <p className="text-gray-600 mt-2">Job Manager Portal</p>
           </div>
 
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Create Account</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+            Create Account
+          </h2>
 
           {error && (
             <Alert
               type="error"
               message={error}
-              onClose={() => setError('')}
+              onClose={() => setError("")}
               className="mb-4"
             />
           )}
 
           {success && (
-            <Alert
-              type="success"
-              message={success}
-              className="mb-4"
-            />
+            <Alert type="success" message={success} className="mb-4" />
           )}
 
           <form onSubmit={handleSubmit}>
@@ -164,8 +171,9 @@ const Register = () => {
               />
             </div>
 
-            <div className="text-xs text-gray-500 mb-4 -mt-2">
-              Password must be at least 8 characters with 1 uppercase, 1 number, and 1 special character.
+            <div className="text-xs text-neutral6 mb-4 -mt-2">
+              Password must be at least 8 characters with 1 uppercase, 1 number,
+              and 1 special character.
             </div>
 
             <Select
@@ -176,7 +184,11 @@ const Register = () => {
               onBlur={handleBlur}
               error={errors.country}
               options={countries}
-              placeholder={loadingCountries ? 'Loading countries...' : 'Select your country'}
+              placeholder={
+                loadingCountries
+                  ? "Loading countries..."
+                  : "Select your country"
+              }
               disabled={loadingCountries}
               required
             />
@@ -229,8 +241,11 @@ const Register = () => {
 
           <div className="mt-6 text-center">
             <p className="text-gray-600">
-              Already have an account?{' '}
-              <Link to="/login" className="text-blue-600 hover:text-blue-800 font-medium">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="text-primary hover:text-primary2 font-medium"
+              >
                 Sign in here
               </Link>
             </p>

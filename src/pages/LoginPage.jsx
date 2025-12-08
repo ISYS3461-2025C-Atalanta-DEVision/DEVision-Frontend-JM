@@ -17,7 +17,7 @@ export default function LoginPage() {
       }}
     >
       <div className="absolute inset-0 backdrop-blur-sm bg-white/50 z-0" />
-      
+
       {floatingShapes.map(
         ({ id, className, style, animation, duration, delay }) => (
           <motion.span
@@ -44,13 +44,13 @@ export default function LoginPage() {
         className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6 z-10"
       >
         <div className="text-center space-y-1">
-          <p className="text-sm uppercase tracking-[0.3em] text-indigo-500">
+          <p className="text-sm uppercase tracking-[0.3em] text-primary">
             DEVision
           </p>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-textBlack">
             Welcome to DEVision
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-neutral6">
             Sign in to continue to your dashboard
           </p>
         </div>

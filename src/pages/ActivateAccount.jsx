@@ -1,29 +1,34 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import authService from '../services/authService';
-import Button from '../components/Button';
-import Alert from '../components/Alert';
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import authService from "../services/authService";
+import Button from "../components/Button";
+import Alert from "../components/Alert";
 
 const ActivateAccount = () => {
   const { token } = useParams();
-  const [status, setStatus] = useState('loading'); // loading, success, error
-  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState("loading"); // loading, success, error
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const activateAccount = async () => {
       if (!token) {
-        setStatus('error');
-        setMessage('Invalid activation link. No token provided.');
+        setStatus("error");
+        setMessage("Invalid activation link. No token provided.");
         return;
       }
 
       try {
         const response = await authService.activateAccount(token);
-        setStatus('success');
-        setMessage(response.message || 'Your account has been successfully activated!');
+        setStatus("success");
+        setMessage(
+          response.message || "Your account has been successfully activated!"
+        );
       } catch (err) {
-        setStatus('error');
-        setMessage(err.response?.data?.message || 'Failed to activate account. The link may have expired.');
+        setStatus("error");
+        setMessage(
+          err.response?.data?.message ||
+            "Failed to activate account. The link may have expired."
+        );
       }
     };
 
@@ -35,18 +40,18 @@ const ActivateAccount = () => {
       <div className="max-w-md w-full">
         <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">DEVision</h1>
+            <h1 className="text-3xl font-bold text-textBlack">DEVision</h1>
             <p className="text-gray-600 mt-2">Account Activation</p>
           </div>
 
-          {status === 'loading' && (
+          {status === "loading" && (
             <div className="py-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
               <p className="mt-4 text-gray-600">Activating your account...</p>
             </div>
           )}
 
-          {status === 'success' && (
+          {status === "success" && (
             <div className="py-4">
               <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
                 <svg
@@ -72,7 +77,7 @@ const ActivateAccount = () => {
             </div>
           )}
 
-          {status === 'error' && (
+          {status === "error" && (
             <div className="py-4">
               <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4">
                 <svg
