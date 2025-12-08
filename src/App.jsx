@@ -1,19 +1,22 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Pages
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
-import ActivateAccount from './pages/ActivateAccount';
-import OAuthCallback from './pages/OAuthCallback';
-import Dashboard from './pages/Dashboard';
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import ActivateAccount from "./pages/ActivateAccount";
+import OAuthCallback from "./pages/OAuthCallback";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
-    <AuthProvider>
       <Router>
         <Routes>
           {/* Public Routes */}
@@ -41,7 +44,6 @@ function App() {
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </Router>
-    </AuthProvider>
   );
 }
 

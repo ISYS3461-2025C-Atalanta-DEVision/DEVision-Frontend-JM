@@ -1,7 +1,7 @@
 const Input = ({
   label,
   name,
-  type = 'text',
+  type = "text",
   value,
   onChange,
   onBlur,
@@ -9,7 +9,7 @@ const Input = ({
   placeholder,
   required = false,
   disabled = false,
-  className = '',
+  className = "",
   ...props
 }) => {
   return (
@@ -20,7 +20,7 @@ const Input = ({
           className="block text-sm font-medium text-gray-700 mb-1"
         >
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="text-error ml-1">*</span>}
         </label>
       )}
       <input
@@ -33,14 +33,16 @@ const Input = ({
         placeholder={placeholder}
         disabled={disabled}
         className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors
-          ${error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300'}
-          ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}
+          ${
+            error
+              ? "border-error focus:ring-error focus:border-error"
+              : "border-gray-300"
+          }
+          ${disabled ? "bg-gray-100 cursor-not-allowed" : "bg-white"}
         `}
         {...props}
       />
-      {error && (
-        <p className="mt-1 text-sm text-red-600">{error}</p>
-      )}
+      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
     </div>
   );
 };

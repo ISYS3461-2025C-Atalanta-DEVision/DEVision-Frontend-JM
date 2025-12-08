@@ -1,10 +1,17 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 
 function useLoginForm(validateAll, values) {
   const navigate = useNavigate();
-  const { user, login, error, loading, setLoading, setError } = useAuth();
+  const { user, login, error, loading, setLoading, setError, isAuthenticated } =
+    useAuth();
+
+  useEffect(() => {
+    if (!loading && isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [loading, isAuthenticated]);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -26,9 +33,9 @@ function useLoginForm(validateAll, values) {
     }
   };
 
-  const toSignUp = () =>{
+  const toSignUp = () => {
     navigate("/register");
-  }
+  };
 
   return {
     toSignUp,

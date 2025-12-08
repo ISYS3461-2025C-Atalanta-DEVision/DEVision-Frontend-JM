@@ -1,6 +1,4 @@
 import {
-  createContext,
-  useContext,
   useState,
   useEffect,
   useCallback,
@@ -9,17 +7,8 @@ import { jwtDecode } from "jwt-decode";
 import authService from "../services/authService";
 import useAuthStore from "../store/auth.store";
 
-const AuthContext = createContext(null);
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};
-
-export const AuthProvider = ({ children }) => {
   const { user, loading, error, setUser, setLoading, setError } =
     useAuthStore();
 
@@ -142,7 +131,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const value = {
+  return {
     user,
     loading,
     error,
@@ -155,8 +144,6 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
   };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export default AuthContext;
+export default useAuth;

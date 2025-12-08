@@ -1,8 +1,11 @@
 import React from "react";
 import Button from "../../components/Button";
+import { useNavbar } from "./useNavBar";
 
 
-export default function NavBar({ username, handleLogout }) {
+export default function NavBar({ username, logout }) {
+  const {handleLogout} = useNavbar(logout);
+  
   return (
     <nav className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

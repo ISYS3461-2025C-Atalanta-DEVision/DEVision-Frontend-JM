@@ -8,6 +8,7 @@ export default {
         primary2: "var(--color-primary-2)",
         textBlack: "var(--color-blacktxt)",
         backGround: "var(--color-bg)",
+        bgComponent: "var(--color-bg-component)",
         neutral1: "var(--color-neutral1)",
         neutral2: "var(--color-neutral2)",
         neutral3: "var(--color-neutral3)",

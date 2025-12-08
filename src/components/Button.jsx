@@ -20,7 +20,7 @@ const Button = ({
     outline:
       "border-2 border-primary text-primary hover:bg-blue-50 focus:ring-blue-500 disabled:border-blue-300 disabled:text-blue-300",
     danger:
-      "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 disabled:bg-red-400",
+      "bg-red-600 text-white hover:bg-red-700 focus:ring-error disabled:bg-red-400",
     success:
       "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 disabled:bg-green-400",
   };

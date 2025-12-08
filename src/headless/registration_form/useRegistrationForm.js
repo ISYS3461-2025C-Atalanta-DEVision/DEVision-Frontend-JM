@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthRegisterStore from "../../store/auth.store";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 import authService from "../../services/authService";
 
 function useRegistrationForm(validateAll, values) {

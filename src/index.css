@@ -9,7 +9,9 @@
   --color-primary-2: #2c5282;
 
   --color-blacktxt: #222222;
-  --color-bg: #ffffff;
+
+  --color-bg: #F3F4F6;
+  --color-bg-component: #FFFFFF;
 
   --color-neutral1: #f7f7f7;
   --color-neutral2: #ebebeb;
