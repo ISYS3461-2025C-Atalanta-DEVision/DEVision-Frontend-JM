@@ -7,30 +7,26 @@ export const useAuth = () => {
   const { user, loading, error, setUser, setLoading, setError } =
     useAuthLoginStore();
 
-  const isTokenExpired = (token) => {
-    return false;
-  };
 
   // Initialize auth state from localStorage
+  // Dont need to decode the token here, just check its presence
+  // Backend will validate tokens on each request
   useEffect(() => {
     const initAuth = async () => {
       const accessToken = localStorage.getItem("accessToken");
       const storedUser = localStorage.getItem("user");
 
-      if (accessToken && !isTokenExpired(accessToken)) {
+      if (accessToken) {
         try {
-          const userData = storedUser
-            ? JSON.parse(storedUser)
-            : jwtDecode(accessToken);
+          const userData = JSON.parse(storedUser)
           setUser(userData);
         } catch (err) {
           console.error("Failed to parse user data:", err);
           logout();
         }
       } else if (accessToken) {
-        // Token expired, try to refresh
         const refreshToken = localStorage.getItem("refreshToken");
-        if (refreshToken && !isTokenExpired(refreshToken)) {
+        if (refreshToken) {
           try {
             const response = await authService.refreshToken(refreshToken);
             const {
