@@ -13,7 +13,6 @@ export const useAuth = () => {
 
   // Initialize auth state from localStorage
   useEffect(() => {
-    console.log("Initializing auth state from localStorage");
     const initAuth = async () => {
       const accessToken = localStorage.getItem("accessToken");
       const storedUser = localStorage.getItem("user");
