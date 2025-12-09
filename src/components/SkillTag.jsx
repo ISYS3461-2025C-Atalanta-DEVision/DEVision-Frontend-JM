@@ -1,14 +1,12 @@
 import React from 'react'
-import { SKILL_ICON } from '../ui_config/IconSkill'
 
 export default function SkillTag( {skillName}) {
-  const skillIcon = SKILL_ICON.find(
-    (item) => item.skillname === skillName.toLowerCase()
-  );
-  
+  const skillIcon = skillName.toLowerCase()
+
   return (
-    <div className="ml-4">
-        {skillIcon.icon}
+    <div className="flex items-center justify-center w-content h-content px-3 py-2 gap-2 bg-neutral1 rounded-lg">
+        <p className="text-blacktxt font-medium">{skillName}</p>
+        <i className={`devicon-${skillIcon}-plain colored text-[25px]`}></i>
     </div>
   )
 }

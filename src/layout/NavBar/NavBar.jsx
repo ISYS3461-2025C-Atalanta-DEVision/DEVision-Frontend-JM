@@ -17,7 +17,6 @@ export default function NavBar({ activepage }) {
           <div className="flex items-center">
             <h1 className="text-xl font-bold text-primary">DEVision</h1>
             <span className="ml-2 text-sm text-neutral6">Job Manager</span>
-            <SkillTag skillName="springboot" />
           </div>
 
           <nav className="flex flex-1 items-center justify-center gap-12 text-xl font-medium text-gray-800">

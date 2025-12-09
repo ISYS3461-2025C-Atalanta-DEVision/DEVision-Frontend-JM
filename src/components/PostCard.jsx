@@ -1,6 +1,7 @@
 import React from "react";
 import ImageHolder from "../components/ImageHolder";
 import Button from "../components/Button";
+import SkillTag from "../components/SkillTag";
 
 export default function PostCard({ item }) {
   if (!item) return null;
@@ -20,10 +21,27 @@ export default function PostCard({ item }) {
       </div>
 
       {/* Description */}
-      <p className="text-neutral7 mt-2 line-clamp-3">{item.description}</p>
+      <p className="text-blacktxt line-clamp-3">{item.description}</p>
+
+      <hr className="my-4 border-t border-neutral7" />
+
+      <div className="mt-5 gap-2 flex justify-start items-center">
+        <p>
+          <span className="font-semibold">Requirements:</span>
+        </p>
+        <p></p>
+        {/* Skill tag */}
+        {item.skillRequire?.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {item.skillRequire.map((skill, idx) => (
+              <SkillTag key={idx} skillName={skill} />
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Job Info */}
-      <div className="mt-3 space-y-1 text-s text-neutral8">
+      <div className="mt-3 space-y-1 text-s text-blacktxt">
         <p>
           <span className="font-semibold">Location:</span> {item.location}
         </p>

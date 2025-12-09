@@ -63,6 +63,43 @@ export const SKILL_ICON = [
     skillname: "mongodb",
     icon: <i className="devicon-mongodb-plain colored text-[25px]"></i>,
   },
+  {
+    skillname: "aws",
+    icon: <i className="devicon-amazonwebservices-plain colored text-[25px]"></i>,
+  },
+  {
+    skillname: "tensorflow",
+    icon: <i className="devicon-tensorflow-original colored text-[25px]"></i>,
+  },
+  {
+    skillname: "pytorch",
+    icon: <i className="devicon-pytorch-original colored text-[25px]"></i>,
+  },
+  {
+    skillname: "php",
+    icon: <i className="devicon-php-plain colored text-[25px]"></i>,
+  },
+  {
+    skillname: "reactnative",
+    icon: <i className="devicon-react-original colored text-[25px]"></i>,
+  },
+  {
+    skillname: "flutter",
+    icon: <i className="devicon-flutter-plain colored text-[25px]"></i>,
+  },
+
+  {
+    skillname: "moodle",
+    icon: <i className="devicon-html5-plain text-[25px]"></i>,
+  },
+  {
+    skillname: "adobepremiere",
+    icon: <i className="devicon-photoshop-plain text-[25px]"></i>, 
+  },
+  {
+    skillname: "aftereffects",
+    icon: <i className="devicon-photoshop-plain text-[25px]"></i>,
+  },
 ];
 
 export default SKILL_ICON;
