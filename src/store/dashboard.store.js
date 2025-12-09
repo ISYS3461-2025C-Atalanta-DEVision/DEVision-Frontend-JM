@@ -1,19 +1,7 @@
 import { create } from "zustand";
 
-const initialState = {
-  name: "",
-  contactEmail: "",
-  phoneNumber: "",
-  address: "",
-  city: "",
-  country: "",
-  website: "",
-  avatarURL: "",
-  subscriptionType: "",
-}
-
 const useDashboardStore = create((set, get) => ({
-  companyData: { ...initialState },
+  companyData: null,
   loading: false,
   error: null,
   

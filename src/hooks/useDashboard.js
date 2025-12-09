@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import useDashboardStore from "../store/dashboard.store";
-import dashboardServices from "../services/companyServices";
 
 export const useDashboard = (dashboardAPI, comapanyId) => {
   const { companyData, loading, error,setLoading, setError, setProfile, reset } = useDashboardStore();
@@ -20,11 +19,7 @@ export const useDashboard = (dashboardAPI, comapanyId) => {
 
   useEffect(() => {
     fetchDashboardProfile(comapanyId);
-
-    return () => {
-      reset();
-    }
-  }, [comapanyId]);
+  }, []);
 
   return {
     companyData,

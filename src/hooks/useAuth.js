@@ -1,16 +1,11 @@
-import {
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
+import { useState, useEffect, useCallback } from "react";
 import { jwtDecode } from "jwt-decode";
 import authService from "../services/authService";
-import useAuthStore from "../store/auth.store";
-
+import useAuthLoginStore from "../store/auth.login.store";
 
 export const useAuth = () => {
   const { user, loading, error, setUser, setLoading, setError } =
-    useAuthStore();
+    useAuthLoginStore();
 
   const isTokenExpired = (token) => {
     try {
@@ -23,6 +18,7 @@ export const useAuth = () => {
 
   // Initialize auth state from localStorage
   useEffect(() => {
+    console.log("Initializing auth state from localStorage");
     const initAuth = async () => {
       const accessToken = localStorage.getItem("accessToken");
       const storedUser = localStorage.getItem("user");
@@ -69,15 +65,15 @@ export const useAuth = () => {
     setError(null);
     try {
       const response = await authService.login(email, password);
-      const { accessToken, refreshToken, user: userData } = response.data;
+      const { accessToken, refreshToken, user: userData } = response;
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("user", JSON.stringify(userData));
-
       setUser(userData);
       return { success: true, data: userData };
     } catch (err) {
+      console.log("Login error:", err);
       const message = err.response?.data?.message || "Login failed";
       setError(message);
       return { success: false, error: message };

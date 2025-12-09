@@ -9,41 +9,66 @@ import ProtectedRoute from "./components/ProtectedRoute";
 // Pages
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import ActivateAccount from "./pages/ActivateAccount";
-import OAuthCallback from "./pages/OAuthCallback";
 import Dashboard from "./pages/Dashboard";
+import JobPostPage from "./pages/JobPostPage";
+import OAuthCallback from "./pages/temp/OAuthCallback";
 
 function App() {
   return (
-      <Router>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password/:token" element={<ResetPassword />} />
-          <Route path="/activate/:token" element={<ActivateAccount />} />
-          <Route path="/oauth2/callback" element={<OAuthCallback />} />
+    <Router>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        {/* <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/activate/:token" element={<ActivateAccount />} /> */}
+        <Route path="/oauth2/callback" element={<OAuthCallback />} />
 
-          {/* Protected Routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
-          {/* Redirect root to dashboard or login */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        {/* <Route
+          path="/your-applicants"
+          element={
+            <ProtectedRoute>
 
-          {/* 404 - Redirect to dashboard */}
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
-      </Router>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/your-events"
+          element={
+            <ProtectedRoute>
+
+            </ProtectedRoute>
+          }
+        /> */}
+
+        <Route
+          path="/jobpost"
+          element={
+            <ProtectedRoute>
+              <JobPostPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Redirect root to dashboard or login */}
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+        {/* 404 - Redirect to dashboard */}
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </Router>
   );
 }
 

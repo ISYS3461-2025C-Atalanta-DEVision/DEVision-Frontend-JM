@@ -5,6 +5,8 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   const { user, loading, isAuthenticated } = useAuth();
   const location = useLocation();
 
+  const devMode = true
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">

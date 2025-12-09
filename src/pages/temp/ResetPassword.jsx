@@ -1,22 +1,32 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useForm, validators } from "../hooks/useForm";
-import authService from "../services/authService";
-import Input from "../components/Input";
-import Button from "../components/Button";
-import Alert from "../components/Alert";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useForm, validators } from "../../hooks/useForm";
+import authService from "../../services/authService";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import Alert from "../../components/Alert";
 
-const ForgotPassword = () => {
+const ResetPassword = () => {
+  const { token } = useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const { values, errors, handleChange, handleBlur, validateAll } = useForm(
     {
-      email: "",
+      password: "",
+      confirmPassword: "",
     },
     {
-      email: [validators.required("Email is required"), validators.email()],
+      password: [
+        validators.required("Password is required"),
+        validators.password(),
+      ],
+      confirmPassword: [
+        validators.required("Please confirm your password"),
+        validators.confirmPassword("password"),
+      ],
     }
   );
 
@@ -29,14 +39,20 @@ const ForgotPassword = () => {
       return;
     }
 
+    if (!token) {
+      setError("Invalid reset link. No token provided.");
+      return;
+    }
+
     setLoading(true);
     try {
-      await authService.forgotPassword(values.email);
-      setSuccess("Password reset instructions have been sent to your email.");
+      await authService.resetPassword(token, values.password);
+      setSuccess("Your password has been successfully reset!");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Failed to send reset email. Please try again."
+          "Failed to reset password. The link may have expired."
       );
     } finally {
       setLoading(false);
@@ -53,12 +69,9 @@ const ForgotPassword = () => {
           </div>
 
           <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-            Forgot Password
+            Reset Password
           </h2>
-          <p className="text-gray-600 mb-6">
-            Enter your email address and we&apos;ll send you instructions to
-            reset your password.
-          </p>
+          <p className="text-gray-600 mb-6">Enter your new password below.</p>
 
           {error && (
             <Alert
@@ -75,16 +88,33 @@ const ForgotPassword = () => {
 
           <form onSubmit={handleSubmit}>
             <Input
-              label="Email"
-              name="email"
-              type="email"
-              value={values.email}
+              label="New Password"
+              name="password"
+              type="password"
+              value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={errors.email}
-              placeholder="Enter your email"
+              error={errors.password}
+              placeholder="Enter new password"
               required
             />
+
+            <Input
+              label="Confirm New Password"
+              name="confirmPassword"
+              type="password"
+              value={values.confirmPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.confirmPassword}
+              placeholder="Confirm new password"
+              required
+            />
+
+            <div className="text-xs text-neutral6 mb-4">
+              Password must be at least 8 characters with 1 uppercase, 1 number,
+              and 1 special character.
+            </div>
 
             <Button
               type="submit"
@@ -93,7 +123,7 @@ const ForgotPassword = () => {
               loading={loading}
               className="w-full"
             >
-              Send Reset Link
+              Reset Password
             </Button>
           </form>
 
@@ -111,4 +141,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ResetPassword;

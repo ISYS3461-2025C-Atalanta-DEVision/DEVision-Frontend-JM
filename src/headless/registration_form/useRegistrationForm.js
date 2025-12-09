@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuthRegisterStore from "../../store/auth.store";
+import useAuthRegisterStore from "../../store/auth.register.store";
 import { useAuth } from "../../hooks/useAuth";
 import authService from "../../services/authService";
 

@@ -25,7 +25,6 @@ export const authService = {
     const response = await api.post(`${LOGIN_SERVICE_URL}`, {
       email,
       password,
-      deviceInfo,
     });
     return response.data;
   },

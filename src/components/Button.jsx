@@ -16,11 +16,11 @@ const Button = ({
     primary:
       "bg-primary text-white hover:bg-blue-700 focus:ring-blue-500 disabled:bg-blue-400",
     secondary:
-      "bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-neutral6 disabled:bg-gray-100",
+      "bg-neutral2 text-neutral8 hover:bg-gray-300 focus:ring-neutral6 disabled:bg-gray-100",
     outline:
       "border-2 border-primary text-primary hover:bg-blue-50 focus:ring-blue-500 disabled:border-blue-300 disabled:text-blue-300",
     danger:
-      "bg-red-600 text-white hover:bg-red-700 focus:ring-error disabled:bg-red-400",
+      "bg-error text-white hover:bg-red-700 focus:ring-error disabled:bg-red-400",
     success:
       "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 disabled:bg-green-400",
   };

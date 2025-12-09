@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import authService from "../services/authService";
-import Button from "../components/Button";
-import Alert from "../components/Alert";
+import authService from "../../services/authService";
+import Button from "../../components/Button";
+import Alert from "../../components/Alert";
 
 const ActivateAccount = () => {
   const { token } = useParams();

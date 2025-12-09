@@ -1,24 +1,26 @@
-import { useAuth } from "../hooks/useAuth";
 import { motion } from "framer-motion";
 import Button from "../components/Button";
 import NavBar from "../layout/NavBar/NavBar";
-import DashboardCard from "../components/DashboardCard";
+import QuickStatsCard from "../components/QuickStatsCard";
 import GridTable from "../headless/grid_table/GridTable";
-import useDashboard from "../hooks/useDashboard";
-import dashboardServices from "../services/companyServices";
 import ImageHolder from "../components/ImageHolder";
 import Default from "../assets/photo/company_default.png";
 
+import useDashboard from "../hooks/useDashboard";
+import dashboardServices from "../services/companyServices";
+
+import useAuthLoginStore from "../store/auth.login.store";
+
 const Dashboard = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuthLoginStore();
   const { companyData, loading, error } = useDashboard(
     dashboardServices,
-    "123"
+    user?.id
   );
 
   return (
     <div className="min-h-screen bg-backGround">
-      <NavBar username={companyData?.name} logout={logout} />
+      <NavBar activepage={"dashboard"} />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -73,7 +75,7 @@ const Dashboard = () => {
 
           {/* Quick Actions Section */}
           <GridTable
-            CardComponent={DashboardCard}
+            CardComponent={QuickStatsCard}
             fetchItemAPI={dashboardServices.getQuickActionStats}
             className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           />
