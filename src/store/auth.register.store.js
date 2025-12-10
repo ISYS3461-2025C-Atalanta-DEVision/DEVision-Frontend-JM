@@ -8,10 +8,10 @@ const useAuthRegisterStore = create((set, get) => ({
   countries: [],
   loadingCountries: true,
 
-  setUserRegister: (user) => set({ user }),
-  setLoadingRegister: (loading) => set({ loading }),
-  setErrorRegister: (error) => set({ error }),
-  setSuccessRegister: (success) => set({ success }),
+  setUser: (user) => set({ user }),
+  setLoading: (loading) => set({ loading }),
+  setError: (error) => set({ error }),
+  setSuccess: (success) => set({ success }),
   setCountries: (countries) => set({ countries }),
   setLoadingCountries: (loadingCountries) => set({ loadingCountries }),
 }));

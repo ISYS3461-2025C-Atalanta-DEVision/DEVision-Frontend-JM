@@ -13,9 +13,9 @@ const MOCK_PROFILE = [
     subscriptionType: "PREMIUM",
   },
   {
-    company_id: "company_101",
-    name: "Talent JDI",
-    contactEmail: "info@rmit.edu.vn",
+    company_id: "69392cc1e27ee6205c928bd9",
+    name: "Devision",
+    contactEmail: "khoamaidang2611@gmail.com",
     phoneNumber: "+84 28 3776 1300",
     address: "201 Vo Van Ngan, Binh Tho, Quan Thu Duc",
     city: "TP. Hồ Chí Minh",

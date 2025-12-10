@@ -29,7 +29,7 @@ function useRegistrationForm(validateAll, values) {
       await new Promise((resolve) => setTimeout(resolve, 800));
       try {
         const response = await authService.getCountries();
-        setCountries(response.data || []);
+        setCountries(response);
       } catch (err) {
         console.error("Failed to fetch countries:", err);
         setCountries([

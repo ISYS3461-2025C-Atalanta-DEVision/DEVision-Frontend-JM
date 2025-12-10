@@ -4,8 +4,8 @@ import authService from "../../services/authService";
 import companyServices from "../../services/companyServices";
 import useAuth from "../../hooks/useAuth";
 
-export const useNavbar = (activepage, companyId) => {
-  const { logout } = useAuth();
+export const useNavbar = (activepage) => {
+  const { logout, user } = useAuth();
   const [companyName, setCompanyName] = useState("");
   const [ loading, setLoading ] = useState(false);
 
@@ -15,8 +15,7 @@ export const useNavbar = (activepage, companyId) => {
     const fetchCompanyName = async () => {
       try {
         setLoading(true);
-        const name = await companyServices.getCompanyProfile(companyId);
-        setCompanyName(name.name);
+        setCompanyName(user.companyName);
         setLoading(false);
       } catch (error) {
         console.error("Failed to fetch company name:", error);
