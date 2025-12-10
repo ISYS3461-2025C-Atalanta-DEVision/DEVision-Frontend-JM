@@ -1,13 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthRegisterStore from "../../store/auth.register.store";
-import { useAuth } from "../../hooks/useAuth";
-import authService from "../../services/authService";
 
-function useRegistrationForm(validateAll, values) {
+function useRegistrationForm(validateAll, values, registerApi, getCountryApi) {
   const navigate = useNavigate();
-
-  const { register } = useAuth();
 
   const {
     user,
@@ -28,7 +24,7 @@ function useRegistrationForm(validateAll, values) {
     const fetchCountries = async () => {
       await new Promise((resolve) => setTimeout(resolve, 800));
       try {
-        const response = await authService.getCountries();
+        const response = await getCountryApi();
         setCountries(response);
       } catch (err) {
         console.error("Failed to fetch countries:", err);
@@ -57,7 +53,7 @@ function useRegistrationForm(validateAll, values) {
     }
 
     setLoading(true);
-    const result = await register({
+    const result = await registerApi({
       email: values.email,
       password: values.password,
       companyName: values.companyName,

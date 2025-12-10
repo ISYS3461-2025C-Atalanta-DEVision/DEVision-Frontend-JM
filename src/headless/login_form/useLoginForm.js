@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import useAuthLoginStore from "../../store/auth.login.store";
 
-function useLoginForm(validateAll, values) {
+function useLoginForm(validateAll, values, loginApi) {
   const navigate = useNavigate();
-  const { user, login, error, loading, setLoading, setError, isAuthenticated } =
-    useAuth();
 
+  const { loading, isAuthenticated, setError, setLoading, error } =
+    useAuthLoginStore();
+    
   useEffect(() => {
     if (!loading && isAuthenticated) {
       navigate("/dashboard");
@@ -22,7 +23,7 @@ function useLoginForm(validateAll, values) {
     }
 
     setLoading(true);
-    const result = await login(values.email, values.password);
+    const result = await loginApi(values.email, values.password);
     setLoading(false);
 
     await new Promise((resolve) => setTimeout(resolve, 800));

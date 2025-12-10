@@ -14,6 +14,15 @@ export default function PostList({
 
   return (
     <>
+      {CreatePostComponent ? (
+        <CreatePostComponent />
+      ) : (
+        <div className="mt-6 mb-6 bg-white rounded-lg shadow p-6">
+          <p className="text-error text-center w-full">
+            Cannot create post rightnow
+          </p>
+        </div>
+      )}
       {loading ? (
         <div className="flex items-center justify-center w-full h-full">
           <p className="text-gray-600 text-lg">Loading post.</p>

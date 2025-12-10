@@ -5,7 +5,7 @@ import useRegistrationForm from "./useRegistrationForm";
 import Select from "../../components/Select";
 import Alert from "../../components/Alert";
 
-export default function RegistrationForm() {
+export default function RegistrationForm({registerApi, getCountryApi}) {
   const { values, errors, handleChange, handleBlur, validateAll } = useForm(
     {
       email: "",
@@ -40,7 +40,7 @@ export default function RegistrationForm() {
     loading,
     loadingCountries,
     handleRegisterSubmit,
-  } = useRegistrationForm(validateAll, values);
+  } = useRegistrationForm(validateAll, values, registerApi, getCountryApi);
 
   return (
     <div className="w-full max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-sm">

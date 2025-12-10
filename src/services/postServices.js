@@ -20,7 +20,7 @@ const MOCK_POST_DATA = [
   },
   {
     id: "job_002",
-    company_id: "company_101",
+    company_id: "69392cc1e27ee6205c928bd9",
     company_name: "Talent JDI",
     title: "Data Analyst Intern",
     description:
@@ -58,7 +58,7 @@ const MOCK_POST_DATA = [
   },
   {
     id: "job_004",
-    company_id: "company_101",
+    company_id: "69392cc1e27ee6205c928bd9",
     company_name: "Talent JDI",
     title: "Marketing Assistant",
     description:
@@ -95,7 +95,7 @@ const MOCK_POST_DATA = [
   },
   {
     id: "job_006",
-    company_id: "company_101",
+    company_id: "69392cc1e27ee6205c928bd9",
     company_name: "Talent JDI",
     title: "HR Specialist (Contract + Internship)",
     description:
@@ -132,7 +132,7 @@ const MOCK_POST_DATA = [
   },
   {
     id: "job_008",
-    company_id: "company_101",
+    company_id: "69392cc1e27ee6205c928bd9",
     company_name: "Talent JDI",
     title: "Content Creator Intern",
     description:

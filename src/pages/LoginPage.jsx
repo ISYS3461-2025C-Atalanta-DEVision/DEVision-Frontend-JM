@@ -4,8 +4,10 @@ import LoginForm from "../headless/login_form/LoginForm";
 import AuthService from "../services/authService";
 import BgImage from "../assets/photo/bg-login.jpg";
 import { floatingShapes } from "../frame-motion/FlyingShape";
+import useAuth from "../hooks/useAuth";
 
 export default function LoginPage() {
+  const { login } = useAuth();
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-emerald-50 flex items-center justify-center px-4"
@@ -56,7 +58,7 @@ export default function LoginPage() {
         </div>
 
         <div className="border-t border-gray-100 pt-6">
-          <LoginForm />
+          <LoginForm loginApi={login} />
         </div>
       </motion.div>
     </div>

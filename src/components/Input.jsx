@@ -32,6 +32,7 @@ const Input = ({
         onBlur={onBlur}
         placeholder={placeholder}
         disabled={disabled}
+        rows={type === "textarea" ? 5 : undefined}
         className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors
           ${
             error

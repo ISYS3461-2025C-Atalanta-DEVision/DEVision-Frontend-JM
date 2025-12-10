@@ -3,8 +3,11 @@ import { motion } from "framer-motion";
 import RegistrationForm from "../headless/registration_form/RegistrationForm";
 import BgImage from "../assets/photo/bg-login.jpg";
 import { floatingShapes } from "../frame-motion/FlyingShape";
+import useAuth from "../hooks/useAuth";
+import authService from "../services/authService";
 
 export default function RegisterPage() {
+  const { register } = useAuth();
   return (
     <div
       className="relative min-h-screen overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-emerald-50 flex items-center justify-center p-8"
@@ -55,7 +58,10 @@ export default function RegisterPage() {
         </div>
 
         <div className="border-t border-gray-100 pt-6">
-          <RegistrationForm />
+          <RegistrationForm
+            registerApi={register}
+            getCountryApi={authService.getCountries}
+          />
         </div>
       </motion.div>
     </div>

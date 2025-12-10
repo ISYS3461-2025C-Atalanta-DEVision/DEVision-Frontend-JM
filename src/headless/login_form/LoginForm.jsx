@@ -6,7 +6,7 @@ import useLoginForm from "./useLoginForm";
 import { useForm, validators } from "../../hooks/useForm";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function LoginForm() {
+export default function LoginForm({ loginApi }) {
   const { values, errors, handleChange, handleBlur, validateAll } = useForm(
     {
       email: "",
@@ -23,7 +23,8 @@ export default function LoginForm() {
 
   const { toSignUp, error, loading, handleLoginSubmit } = useLoginForm(
     validateAll,
-    values
+    values,
+    loginApi
   );
 
   return (

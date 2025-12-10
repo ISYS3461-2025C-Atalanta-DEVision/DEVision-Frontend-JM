@@ -1,10 +1,17 @@
 import { useState, useEffect } from "react";
+import useJobPostStore from "../../store/jobpost.store";
 
 function usePostList(fetchItemAPI, company_Id) {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [filter, setFilter] = useState([]);
+  const {
+    items,
+    setItems,
+    loading,
+    setLoading,
+    error,
+    setError,
+    filter,
+    setFilter,
+  } = useJobPostStore();
 
   async function fetchItems() {
     try {
@@ -26,7 +33,7 @@ function usePostList(fetchItemAPI, company_Id) {
     fetchItems();
   }, []);
 
-  return { items, loading, error, fetchItems, filter, setFilter };
+  return { items, loading, error };
 }
 
 export default usePostList;

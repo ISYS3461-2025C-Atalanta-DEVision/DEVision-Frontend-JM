@@ -14,7 +14,7 @@ const MOCK_PROFILE = [
   },
   {
     company_id: "69392cc1e27ee6205c928bd9",
-    name: "Devision",
+    name: "DEVision",
     contactEmail: "khoamaidang2611@gmail.com",
     phoneNumber: "+84 28 3776 1300",
     address: "201 Vo Van Ngan, Binh Tho, Quan Thu Duc",
