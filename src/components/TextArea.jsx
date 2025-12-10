@@ -1,9 +1,10 @@
-const Input = ({
+const TextArea = ({
   label,
   name,
   type = "text",
   value,
   onChange,
+  rows = 5,
   onBlur,
   error,
   placeholder,
@@ -17,13 +18,13 @@ const Input = ({
       {label && (
         <label
           htmlFor={name}
-          className="block text-sm font-medium text-neutral8 mb-1"
+          className="block text-sm font-medium text-gray-700 mb-1"
         >
           {label}
           {required && <span className="text-error ml-1">*</span>}
         </label>
       )}
-      <input
+      <textarea
         id={name}
         name={name}
         type={type}
@@ -32,8 +33,8 @@ const Input = ({
         onBlur={onBlur}
         placeholder={placeholder}
         disabled={disabled}
-        rows={type === "textarea" ? 5 : undefined}
-        className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors
+        rows={rows}
+        className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors
           ${
             error
               ? "border-error focus:ring-error focus:border-error"
@@ -48,4 +49,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default TextArea;

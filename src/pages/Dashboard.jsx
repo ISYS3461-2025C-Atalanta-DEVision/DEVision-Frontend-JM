@@ -31,12 +31,12 @@ const Dashboard = () => {
               <p className="text-gray-600 text-lg">Loading dashboard...</p>
             </div>
           ) : error ? (
-            <div className="mt-6 mb-6 bg-white rounded-lg shadow p-6">
+            <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6">
               <p className="text-error text-center w-full">{error}</p>
             </div>
           ) : (
             <motion.div
-              className="mt-6 mb-6 bg-white rounded-lg shadow p-6"
+              className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -86,12 +86,12 @@ const Dashboard = () => {
               <p className="text-gray-600 text-lg">Loading profile...</p>
             </div>
           ) : error ? (
-            <div className="mt-6 mb-6 bg-white rounded-lg shadow p-6">
+            <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6">
               <p className="text-error text-center w-full">{error}</p>
             </div>
           ) : (
             <motion.div
-              className="mt-6 bg-white rounded-lg shadow p-6"
+              className="mt-6 bg-bgComponent rounded-lg shadow p-6"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}

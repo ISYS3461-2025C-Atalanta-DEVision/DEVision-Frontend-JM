@@ -35,7 +35,7 @@ const floatingShapes = [
   },
   {
     id: "tiny-bottom-right",
-    className: "w-3 h-3 rounded-full bg-white/80",
+    className: "w-3 h-3 rounded-full bg-bgComponent/80",
     style: { bottom: "14%", right: "16%" },
     animation: { y: [0, -10, 0], x: [0, 6, 0] },
     duration: 3.6,

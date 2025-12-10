@@ -7,7 +7,7 @@ export default function PostCard({ item }) {
   if (!item) return null;
 
   return (
-    <div className="bg-white border rounded-xl p-5 shadow-sm hover:shadow-md transition">
+    <div className="bg-bgComponent border rounded-xl p-5 shadow-sm hover:shadow-md transition">
       {/* Title */}
       <div className="flex justify-between items-start">
         <h2 className="text-2xl font-semibold text-primary2">{item.title}</h2>

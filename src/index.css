@@ -10,8 +10,8 @@
 
   --color-blacktxt: #222222;
 
-  --color-bg: #F3F4F6;
-  --color-bg-component: #FFFFFF;
+  --color-bg: #f3f4f6;
+  --color-bg-component: #ffffff;
 
   --color-neutral1: #f7f7f7;
   --color-neutral2: #ebebeb;
@@ -47,7 +47,7 @@
   }
 
   .card {
-    @apply bg-white rounded-lg shadow-md p-6;
+    @apply bg-bgComponent rounded-lg shadow-md p-6;
   }
 }
 

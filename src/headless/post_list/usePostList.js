@@ -18,7 +18,6 @@ function usePostList(fetchItemAPI, company_Id) {
       setError(null);
       setLoading(true);
       const result = await fetchItemAPI(company_Id);
-      console.log("Fetched items:", result);
       setItems(result);
       setLoading(false);
     } catch (error) {

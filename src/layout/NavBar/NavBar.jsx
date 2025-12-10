@@ -3,15 +3,15 @@ import { React, useState } from "react";
 import Button from "../../components/Button";
 import { useNavbar } from "./useNavBar";
 import SkillTag from "../../components/SkillTag";
-import useAuthStore from "../../store/auth.login.store";
+import useAuthLoginStore from "../../store/auth.login.store";
 
 export default function NavBar({ activepage }) {
-  const { user } = useAuthStore();
+  const { user } = useAuthLoginStore();
   const { handleLogout, companyName, isActive, handleNavigate, loading } =
-    useNavbar(activepage, user?.id);
+    useNavbar(activepage, user);
 
   return (
-    <nav className="bg-white shadow-sm">
+    <nav className="bg-bgComponent shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">

@@ -18,7 +18,7 @@ export default function JobPostPage() {
         <PostList
           PostCardComponent={PostCard}
           fetchPostAPI={postServices.getPostList}
-          company_Id={user?.id}
+          company={user}
           className="flex flex-col w-full gap-6 p-6"
           CreatePostComponent={CreateJobPost}
         />

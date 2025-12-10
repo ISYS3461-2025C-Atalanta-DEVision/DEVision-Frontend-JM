@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, use } from "react";
 
 export const useForm = (initialValues = {}, validationRules = {}) => {
   const [values, setValues] = useState(initialValues);
@@ -23,9 +23,7 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
     (e) => {
       const { name, value, type, checked } = e.target;
       const newValue = type === "checkbox" ? checked : value;
-
       setValues((prev) => ({ ...prev, [name]: newValue }));
-
       if (touched[name]) {
         setErrors((prev) => ({
           ...prev,
@@ -34,6 +32,37 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
       }
     },
     [touched, validateField]
+  );
+
+  const handleListChange = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+
+      setValues((prev) => {
+        const prevArr = Array.isArray(prev[name]) ? prev[name] : [];
+
+        // Prevent duplicates (optional)
+        if (prevArr.includes(value)) {
+          return prev;
+        }
+
+        const updatedArr = [...prevArr, value];
+
+        return {
+          ...prev,
+          [name]: updatedArr,
+        };
+      });
+
+      // Revalidate if field already touched
+      if (touched[name]) {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: validateField(name, [...(values[name] || []), value]),
+        }));
+      }
+    },
+    [touched, validateField, values]
   );
 
   const handleBlur = useCallback(
@@ -82,6 +111,7 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
     values,
     errors,
     touched,
+    handleListChange,
     handleChange,
     handleBlur,
     validateAll,
@@ -202,16 +232,13 @@ export const postValidators = {
       }
       return "";
     },
-    minArrayLength:
-    (min, message) =>
-    (value) => {
-      if (!Array.isArray(value)) return "";
-      if (value.length < min) {
-        return message || `Select at least ${min} items`;
-      }
-      return "";
-    },
-    
+  minArrayLength: (min, message) => (value) => {
+    if (!Array.isArray(value)) return "";
+    if (value.length < min) {
+      return message || `Select at least ${min} items`;
+    }
+    return "";
+  },
 };
 
 export default useForm;

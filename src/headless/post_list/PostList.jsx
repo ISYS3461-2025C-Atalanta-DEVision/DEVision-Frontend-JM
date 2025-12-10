@@ -5,19 +5,19 @@ import { motion } from "framer-motion";
 export default function PostList({
   PostCardComponent,
   fetchPostAPI,
-  company_Id,
+  company,
   className,
   CreatePostComponent,
   createPostAPI,
 }) {
-  const { items, loading, error } = usePostList(fetchPostAPI, company_Id);
+  const { items, loading, error } = usePostList(fetchPostAPI, company?.id);
 
   return (
     <>
       {CreatePostComponent ? (
-        <CreatePostComponent />
+        <CreatePostComponent company={company} />
       ) : (
-        <div className="mt-6 mb-6 bg-white rounded-lg shadow p-6">
+        <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6">
           <p className="text-error text-center w-full">
             Cannot create post rightnow
           </p>
@@ -28,7 +28,7 @@ export default function PostList({
           <p className="text-gray-600 text-lg">Loading post.</p>
         </div>
       ) : error ? (
-        <div className="mt-6 mb-6 bg-white rounded-lg shadow p-6">
+        <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6">
           <p className="text-error text-center w-full">{error}</p>
         </div>
       ) : (

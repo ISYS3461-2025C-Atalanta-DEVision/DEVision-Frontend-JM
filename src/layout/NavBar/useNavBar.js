@@ -4,8 +4,8 @@ import authService from "../../services/authService";
 import companyServices from "../../services/companyServices";
 import useAuth from "../../hooks/useAuth";
 
-export const useNavbar = (activepage) => {
-  const { logout, user } = useAuth();
+export const useNavbar = (activepage, user) => {
+  const { logout } = useAuth();
   const [companyName, setCompanyName] = useState("");
   const [ loading, setLoading ] = useState(false);
 

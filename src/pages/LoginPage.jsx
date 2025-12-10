@@ -18,7 +18,7 @@ export default function LoginPage() {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="absolute inset-0 backdrop-blur-sm bg-white/50 z-0" />
+      <div className="absolute inset-0 backdrop-blur-sm bg-bgComponent/50 z-0" />
 
       {floatingShapes.map(
         ({ id, className, style, animation, duration, delay }) => (
@@ -43,7 +43,7 @@ export default function LoginPage() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6 z-10"
+        className="w-full max-w-md bg-bgComponent rounded-2xl shadow-xl p-8 space-y-6 z-10"
       >
         <div className="text-center space-y-1">
           <p className="text-sm uppercase tracking-[0.3em] text-primary">

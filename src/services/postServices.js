@@ -3,12 +3,15 @@ const MOCK_POST_DATA = [
     id: "job_001",
     company_id: "69354d0b3614820ce068eb51",
     company_name: "RMIT University Vietnam",
+
     title: "Frontend Developer",
     description:
       "Develop UI components and improve user-facing features using React and TypeScript.",
     employmentType: ["Full-time"],
+
     postedDate: "2025-01-10",
     expiryDate: "2025-02-10",
+    
     salary: { type: "Range", value: "1200 - 1800 USD" },
     location: "Ho Chi Minh City, Vietnam",
     published: true,
