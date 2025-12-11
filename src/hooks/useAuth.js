@@ -7,6 +7,14 @@ export const useAuth = () => {
   const { user, loading, error, setUser, setLoading, setError } =
     useAuthLoginStore();
 
+  const checkExpiredToken = useCallback((expireAt) => {
+    try {
+      const now = Date.now();
+      return now >= expireAt;
+    } catch {
+      return true;
+    }
+  });
 
   // Initialize auth state from localStorage
   // Dont need to decode the token here, just check its presence
@@ -15,10 +23,11 @@ export const useAuth = () => {
     const initAuth = async () => {
       const accessToken = localStorage.getItem("accessToken");
       const storedUser = localStorage.getItem("user");
+      const accessExpiresAt = localStorage.getItem("accessExpiresAt");
 
-      if (accessToken) {
+      if (accessToken && !checkExpiredToken(parseInt(accessExpiresAt))) {
         try {
-          const userData = JSON.parse(storedUser)
+          const userData = JSON.parse(storedUser);
           setUser(userData);
         } catch (err) {
           console.error("Failed to parse user data:", err);
@@ -26,17 +35,34 @@ export const useAuth = () => {
         }
       } else if (accessToken) {
         const refreshToken = localStorage.getItem("refreshToken");
-        if (refreshToken) {
+        const refreshExpiresAt = localStorage.getItem("refreshExpiresAt");
+        if (refreshToken && !checkExpiredToken(parseInt(refreshExpiresAt))) {
           try {
             const response = await authService.refreshToken(refreshToken);
             const {
               accessToken: newAccessToken,
               refreshToken: newRefreshToken,
               user: userData,
+              expireAt: newExpireAt,
+              refreshExpireAt: newRefreshExpireAt,
             } = response.data;
+            const now = Date.now();
+            const newAccessExpiresAt = now + response.expiresIn * 1000;
+            const newRefreshExpiresAt = now + response.refreshExpiresIn * 1000;
+            
             localStorage.setItem("accessToken", newAccessToken);
             localStorage.setItem("refreshToken", newRefreshToken);
             localStorage.setItem("user", JSON.stringify(userData));
+
+            localStorage.setItem(
+              "accessExpiresAt",
+              newAccessExpiresAt.toString()
+            );
+            localStorage.setItem(
+              "refreshExpiresAt",
+              newRefreshExpiresAt.toString()
+            );
+
             setUser(userData);
           } catch {
             logout();
@@ -55,11 +81,25 @@ export const useAuth = () => {
     setError(null);
     try {
       const response = await authService.login(email, password);
-      const { accessToken, refreshToken, user: userData } = response;
+      const {
+        accessToken,
+        refreshToken,
+        user: userData,
+        expiresIn,
+        refreshExpiresIn,
+      } = response;
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("user", JSON.stringify(userData));
+
+      const now = Date.now();
+      const accessExpiresAt = now + response.expiresIn * 1000;
+      const refreshExpiresAt = now + response.refreshExpiresIn * 1000;
+
+      localStorage.setItem("accessExpiresAt", accessExpiresAt.toString());
+      localStorage.setItem("refreshExpiresAt", refreshExpiresAt.toString());
+
       setUser(userData);
       return { success: true, data: userData };
     } catch (err) {
