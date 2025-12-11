@@ -12,8 +12,6 @@ import RegisterPage from "./pages/RegisterPage";
 import Dashboard from "./pages/Dashboard";
 import JobPostPage from "./pages/JobPostPage";
 import OAuthCallback from "./pages/temp/OAuthCallback";
-import ForgotPassword from "./pages/temp/ForgotPassword";
-import ResetPassword from "./pages/temp/ResetPassword";
 
 function App() {
   return (
@@ -22,8 +20,6 @@ function App() {
         {/* Public Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/oauth2/callback" element={<OAuthCallback />} />
 
         {/* Protected Routes */}
