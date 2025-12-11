@@ -30,21 +30,11 @@ const OAuthCallback = () => {
         localStorage.setItem("tokenExpiry", expiryTime.toString());
       }
 
-      // Decode token to get user info
-      try {
-        const payload = JSON.parse(atob(accessToken.split(".")[1]));
-        const user = {
-          id: payload.userId || payload.sub,
-          email: payload.email,
-          role: payload.role,
-          companyName: payload.companyName,
-        };
-        localStorage.setItem("user", JSON.stringify(user));
-      } catch (err) {
-        console.error("Failed to decode token:", err);
-      }
+      // Note: Access token is JWE (encrypted), not plain JWT
+      // We can't decode it client-side - user info will be fetched from backend
+      // The ProtectedRoute or Dashboard component should fetch user info using the token
 
-      // Redirect to dashboard
+      // Redirect to dashboard - it will fetch user info with the access token
       window.location.href = "/dashboard";
     } else {
       setError("OAuth authentication failed. No tokens received.");
