@@ -12,6 +12,7 @@ import RegisterPage from "./pages/RegisterPage";
 import Dashboard from "./pages/Dashboard";
 import JobPostPage from "./pages/JobPostPage";
 import OAuthCallback from "./pages/temp/OAuthCallback";
+import ActivateAccount from "./pages/temp/ActivateAccount";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         {/* Public Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/activate/:token" element={<ActivateAccount />} />
         <Route path="/oauth2/callback" element={<OAuthCallback />} />
 
         {/* Protected Routes */}
