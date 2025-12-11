@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 const jobPostCreateStore = create((set, get) => ({
   postData: null,
+  companyData: null,
   loading: false,
   error: null,
   isCreating: false,
@@ -11,8 +12,15 @@ const jobPostCreateStore = create((set, get) => ({
 
   setIsCreating: (isCreating) => set(() => ({ isCreating })),
   setLoading: (loading) => set(() => ({ loading })),
+  setCompanyData: (companyData) => set(() => ({ companyData })),
   setError: (error) => set(() => ({ error })),
-  reset: () => set(() => ({ postData: null, loading: false, error: null, isCreating: false })),
+  reset: () =>
+    set(() => ({
+      postData: null,
+      loading: false,
+      error: null,
+      isCreating: false,
+    })),
 }));
 
 export default jobPostCreateStore;

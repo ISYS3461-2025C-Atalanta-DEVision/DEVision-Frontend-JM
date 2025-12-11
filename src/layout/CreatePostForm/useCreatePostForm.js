@@ -1,11 +1,45 @@
 import jobPostCreateStore from "../../store/jobpost.create.store";
 import jobPostStore from "../../store/jobpost.store";
+import { useEffect } from "react";
 
-function useCreatePostForm(createPostApi, validateAll, values, company) {
+function useCreatePostForm(
+  createPostApi,
+  validateAll,
+  values,
+  company,
+  dashboardServices
+) {
   const addItem = jobPostStore((state) => state.addItem);
 
-  const { postData, loading, error, setPostData, setLoading, setError, isCreating, setIsCreating } =
-    jobPostCreateStore();
+  const {
+    postData,
+    loading,
+    error,
+    setPostData,
+    setLoading,
+    setError,
+    isCreating,
+    setIsCreating,
+    companyData,
+    setCompanyData,
+  } = jobPostCreateStore();
+
+  const fetchDashboardProfile = async (companyId) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const profileData = await dashboardServices.getCompanyProfile(companyId);
+      setCompanyData(profileData);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardProfile(company?.id);
+  }, [company]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,7 +116,8 @@ function useCreatePostForm(createPostApi, validateAll, values, company) {
     error,
     handleSubmit,
     isCreating,
-    setIsCreating
+    setIsCreating,
+    companyData
   };
 }
 

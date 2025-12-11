@@ -11,6 +11,8 @@ import CategoryInput from "../../components/CategoryInput/CategoryInput";
 import { employmentTypes, salaryTypes } from "../../ui_config/PostCreate";
 import useCreatePostForm from "./useCreatePostForm";
 import { motion, AnimatePresence } from "framer-motion";
+import dasboardServices from "../../services/companyServices";
+import ImageHolder from "../../components/ImageHolder";
 
 export default function CreateJobPost({ company }) {
   const {
@@ -84,17 +86,24 @@ export default function CreateJobPost({ company }) {
     }
   );
 
-  const { handleSubmit, loading, error, isCreating, setIsCreating } =
-    useCreatePostForm(null, validateAll, values, company);
+  const {
+    handleSubmit,
+    loading,
+    error,
+    isCreating,
+    setIsCreating,
+    companyData,
+  } = useCreatePostForm(null, validateAll, values, company, dasboardServices);
 
   const formVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 },
   };
+
   return (
     <AnimatePresence mode="wait">
-      <div className="w-full h-content bg-backGround p-6">
+      <div className=" w-content h-content bg-backGround p-6">
         {!isCreating ? (
           <motion.div
             key="create-button"
@@ -103,11 +112,39 @@ export default function CreateJobPost({ company }) {
             animate="visible"
             exit="exit"
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="text-3xl text-neutral8 flex flex-row items-center justify-center bg-bgComponent hover:bg-primary hover:text-neutral1 rounded-lg shadow p-6 gap-3"
-            onClick={() => setIsCreating(true)}
+            className="w-full flex flex-row items-center justify-center gap-6 p-6"
           >
-            <h1 className="font-bold">Create New Job Post</h1>
-            <i class="ri-add-circle-line"></i>
+            {!loading ? (
+              <>
+                <div className="flex flex-row items-center justify-center gap-4">
+                  <ImageHolder
+                    src={companyData?.avatarURL}
+                    alt="Company Logo"
+                    className="h-20 aspect-square rounded-full object-cover border"
+                    canOpen={false}
+                  />
+                  <div className="flex flex-col justify-center">
+                    <h2 className="text-3xl text-neutral8 font-medium">
+                      Hello,{" "}
+                      <span className="text-primary">{companyData?.name}</span>
+                    </h2>
+                    <h2 className="text-3xl text-neutral8 font-medium">
+                      What you looking for today?
+                    </h2>
+                  </div>
+                </div>
+
+                <div
+                  className="flex-1 text-3xl text-neutral8 flex flex-row items-center justify-center bg-bgComponent hover:bg-primary hover:text-neutral1 rounded-lg shadow p-6 gap-3"
+                  onClick={() => setIsCreating(true)}
+                >
+                  <h1 className="font-bold">Create New Job Post</h1>
+                  <i className="ri-add-circle-line"></i>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
           </motion.div>
         ) : (
           <motion.div
@@ -116,7 +153,7 @@ export default function CreateJobPost({ company }) {
             initial="hidden"
             animate="visible"
             exit="exit"
-            transition={{ duration: 0.3, ease: "easeOut"}}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             className="max-full mx-auto"
           >
             {/* Header */}
@@ -386,7 +423,7 @@ export default function CreateJobPost({ company }) {
                 <Button
                   variant="outline"
                   size="lg"
-                  onClick={async() => {
+                  onClick={async () => {
                     window.scrollTo({ top: 0, behavior: "smooth" });
                     setIsCreating(false);
                     reset();

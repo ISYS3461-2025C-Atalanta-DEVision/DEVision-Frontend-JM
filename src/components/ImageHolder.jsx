@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function ImageHolder({ src, alt, className }) {
+export default function ImageHolder({ src, alt, className, canOpen = true }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -9,7 +9,9 @@ export default function ImageHolder({ src, alt, className }) {
         src={src}
         alt={alt}
         className={`${className} cursor-pointer`}
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          if (canOpen) setOpen(true);
+        }}
       />
 
       {/* Fullscreen Overlay */}
