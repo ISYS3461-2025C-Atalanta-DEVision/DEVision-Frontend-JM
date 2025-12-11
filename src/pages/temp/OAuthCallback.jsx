@@ -10,17 +10,25 @@ const OAuthCallback = () => {
   useEffect(() => {
     const accessToken = searchParams.get("access_token");
     const refreshToken = searchParams.get("refresh_token");
+    const expiresIn = searchParams.get("expires_in");
     const errorParam = searchParams.get("error");
 
     if (errorParam) {
       setError(errorParam);
-      setTimeout(() => navigate("/login"), 3000);
+      setTimeout(() => navigate("/login?error=oauth_failed"), 3000);
       return;
     }
 
     if (accessToken && refreshToken) {
+      // Store tokens
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
+
+      // Store token expiry time
+      if (expiresIn) {
+        const expiryTime = Date.now() + parseInt(expiresIn) * 1000;
+        localStorage.setItem("tokenExpiry", expiryTime.toString());
+      }
 
       // Decode token to get user info
       try {
@@ -29,16 +37,18 @@ const OAuthCallback = () => {
           id: payload.userId || payload.sub,
           email: payload.email,
           role: payload.role,
+          companyName: payload.companyName,
         };
         localStorage.setItem("user", JSON.stringify(user));
       } catch (err) {
         console.error("Failed to decode token:", err);
       }
 
-      navigate("/dashboard");
+      // Redirect to dashboard
+      window.location.href = "/dashboard";
     } else {
       setError("OAuth authentication failed. No tokens received.");
-      setTimeout(() => navigate("/login"), 3000);
+      setTimeout(() => navigate("/login?error=oauth_failed"), 3000);
     }
   }, [searchParams, navigate]);
 
