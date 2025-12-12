@@ -9,7 +9,7 @@ const useAuthLoginStore = create((set, get) => ({
   setUser: (user) => set({ user }),
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error }),
-  setAccessToken: (accessToken) => set({accessToken})
+  setAccessToken: (accessToken) => set({accessToken}),
 }));
 
 
