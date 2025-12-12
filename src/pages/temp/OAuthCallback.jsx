@@ -7,7 +7,7 @@ const OAuthCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const {setAccesstoken } = useAuthLoginStore
+  const { setAccesstoken } = useAuthLoginStore();
 
   useEffect(() => {
     const accessToken = searchParams.get("access_token");
@@ -31,8 +31,8 @@ const OAuthCallback = () => {
         const expiryTime = Date.now() + parseInt(expiresIn) * 1000;
         localStorage.setItem("tokenExpiry", expiryTime.toString());
       }
-      
-      setAccesstoken(accessToken)
+
+      setAccesstoken(accessToken);
       // Note: Access token is JWE (encrypted), not plain JWT
       // We can't decode it client-side - user info will be fetched from backend
       // The ProtectedRoute or Dashboard component should fetch user info using the token
