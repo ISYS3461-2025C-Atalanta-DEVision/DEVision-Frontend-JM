@@ -4,7 +4,7 @@ import authService from "../services/authService";
 import useAuthLoginStore from "../store/auth.login.store";
 
 export const useAuth = () => {
-  const { user, loading, error, setUser, setLoading, setError } =
+  const { user, loading, error, setUser, setLoading, setError, setAccessToken, accessToken } =
     useAuthLoginStore();
 
   const checkExpiredToken = useCallback((expireAt) => {
@@ -29,6 +29,8 @@ export const useAuth = () => {
         try {
           const userData = JSON.parse(storedUser);
           setUser(userData);
+          setAccessToken(accessToken)
+
         } catch (err) {
           console.error("Failed to parse user data:", err);
           logout();
@@ -47,12 +49,13 @@ export const useAuth = () => {
               refreshExpireAt: newRefreshExpireAt,
             } = response.data;
             const now = Date.now();
-            const newAccessExpiresAt = now + response.expiresIn * 1000;
-            const newRefreshExpiresAt = now + response.refreshExpiresIn * 1000;
+            const newAccessExpiresAt = now + newExpireAt * 1000;
+            const newRefreshExpiresAt = now + newRefreshExpireAt * 1000;
             
             localStorage.setItem("accessToken", newAccessToken);
             localStorage.setItem("refreshToken", newRefreshToken);
             localStorage.setItem("user", JSON.stringify(userData));
+            
 
             localStorage.setItem(
               "accessExpiresAt",
@@ -64,6 +67,7 @@ export const useAuth = () => {
             );
 
             setUser(userData);
+            setAccessToken(newAccessToken);
           } catch {
             logout();
           }
@@ -161,7 +165,7 @@ export const useAuth = () => {
     user,
     loading,
     error,
-    isAuthenticated: !!user,
+    isAuthenticated: !!accessToken,
     setError,
     setLoading,
     setUser,

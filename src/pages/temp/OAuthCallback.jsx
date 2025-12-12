@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Alert from "../../components/Alert";
+import useAuthLoginStore from "../../store/auth.login.store";
 
 const OAuthCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const {setAccesstoken } = useAuthLoginStore
 
   useEffect(() => {
     const accessToken = searchParams.get("access_token");
@@ -29,13 +31,14 @@ const OAuthCallback = () => {
         const expiryTime = Date.now() + parseInt(expiresIn) * 1000;
         localStorage.setItem("tokenExpiry", expiryTime.toString());
       }
-
+      
+      setAccesstoken(accessToken)
       // Note: Access token is JWE (encrypted), not plain JWT
       // We can't decode it client-side - user info will be fetched from backend
       // The ProtectedRoute or Dashboard component should fetch user info using the token
 
       // Redirect to dashboard - it will fetch user info with the access token
-      window.location.href = "/dashboard";
+      navigate("/dashboard");
     } else {
       setError("OAuth authentication failed. No tokens received.");
       setTimeout(() => navigate("/login?error=oauth_failed"), 3000);
