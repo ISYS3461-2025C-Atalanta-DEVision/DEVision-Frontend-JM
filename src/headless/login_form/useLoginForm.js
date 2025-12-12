@@ -5,14 +5,14 @@ import useAuthLoginStore from "../../store/auth.login.store";
 function useLoginForm(validateAll, values, loginApi) {
   const navigate = useNavigate();
 
-  const { loading, isAuthenticated, setError, setLoading, error } =
+  const { loading, accessToken, setError, setLoading, error } =
     useAuthLoginStore();
     
   useEffect(() => {
-    if (!loading && isAuthenticated) {
+    if (!loading && accessToken) {
       navigate("/dashboard");
     }
-  }, [loading, isAuthenticated]);
+  }, [loading, accessToken]);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
