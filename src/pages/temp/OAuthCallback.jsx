@@ -2,48 +2,72 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Alert from "../../components/Alert";
 import useAuthLoginStore from "../../store/auth.login.store";
+import authService from "../../services/authService";
 
 const OAuthCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const { setAccessToken } = useAuthLoginStore();
+  const { setAccessToken, setUser } = useAuthLoginStore();
 
   useEffect(() => {
-    const accessToken = searchParams.get("access_token");
-    const refreshToken = searchParams.get("refresh_token");
-    const expiresIn = searchParams.get("expires_in");
-    const errorParam = searchParams.get("error");
+    const handleOAuthCallback = async () => {
+      const accessToken = searchParams.get("access_token");
+      const refreshToken = searchParams.get("refresh_token");
+      const expiresIn = searchParams.get("expires_in");
+      const refreshExpiresIn = searchParams.get("refresh_expires_in");
+      const errorParam = searchParams.get("error");
 
-    if (errorParam) {
-      setError(errorParam);
-      setTimeout(() => navigate("/login?error=oauth_failed"), 3000);
-      return;
-    }
-
-    if (accessToken && refreshToken) {
-      // Store tokens
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-
-      // Store token expiry time
-      if (expiresIn) {
-        const expiryTime = Date.now() + parseInt(expiresIn) * 1000;
-        localStorage.setItem("tokenExpiry", expiryTime.toString());
+      if (errorParam) {
+        setError(errorParam);
+        setTimeout(() => navigate("/login?error=oauth_failed"), 3000);
+        return;
       }
 
-      setAccessToken(accessToken);
-      // Note: Access token is JWE (encrypted), not plain JWT
-      // We can't decode it client-side - user info will be fetched from backend
-      // The ProtectedRoute or Dashboard component should fetch user info using the token
+      if (accessToken && refreshToken) {
+        try {
+          // Store tokens first
+          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
 
-      // Redirect to dashboard - it will fetch user info with the access token
-      navigate("/dashboard");
-    } else {
-      setError("OAuth authentication failed. No tokens received.");
-      setTimeout(() => navigate("/login?error=oauth_failed"), 3000);
-    }
-  }, [searchParams, navigate]);
+          // Store token expiry times
+          const now = Date.now();
+          if (expiresIn) {
+            const accessExpiresAt = now + parseInt(expiresIn) * 1000;
+            localStorage.setItem("accessExpiresAt", accessExpiresAt.toString());
+          }
+          if (refreshExpiresIn) {
+            const refreshExpiresAt = now + parseInt(refreshExpiresIn) * 1000;
+            localStorage.setItem("refreshExpiresAt", refreshExpiresAt.toString());
+          }
+
+          setAccessToken(accessToken);
+
+          // Fetch user profile after storing tokens
+          const userData = await authService.getProfile();
+          localStorage.setItem("user", JSON.stringify(userData));
+          setUser(userData);
+
+          // Redirect to dashboard
+          navigate("/dashboard");
+        } catch (err) {
+          console.error("Failed to fetch user profile:", err);
+          setError("Failed to complete authentication. Please try again.");
+          // Clear any stored tokens on error
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("accessExpiresAt");
+          localStorage.removeItem("refreshExpiresAt");
+          setTimeout(() => navigate("/login?error=oauth_failed"), 3000);
+        }
+      } else {
+        setError("OAuth authentication failed. No tokens received.");
+        setTimeout(() => navigate("/login?error=oauth_failed"), 3000);
+      }
+    };
+
+    handleOAuthCallback();
+  }, [searchParams, navigate, setAccessToken, setUser]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
