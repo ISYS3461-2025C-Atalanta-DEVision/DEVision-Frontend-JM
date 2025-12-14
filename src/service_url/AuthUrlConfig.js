@@ -1,5 +1,3 @@
-import API_GATEWAY_URL from "./AppUrlConfig";
-
 // Auth Service endpoints via API Gateway
 // Gateway routes /api/v1/auth/** to AUTH-SERVICE
 const AUTH_BASE_URL = "/auth-service/api/auth";
@@ -20,5 +18,6 @@ export const VALIDATE_TOKEN_URL = `${AUTH_BASE_URL}/validate-token`;
 
 export const COUNTRIES_URL = `${AUTH_BASE_URL}/countries`;
 
-export const PROFILE_URL = `${AUTH_BASE_URL}/profile`;
+// Profile is now in Profile Service (microservice split)
+export const PROFILE_URL = `/profile-service/api/profile/me`;
 
