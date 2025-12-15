@@ -3,12 +3,15 @@ import { React, useState } from "react";
 import Button from "../../components/Button";
 import { useNavbar } from "./useNavBar";
 import SkillTag from "../../components/SkillTag";
-import useAuthLoginStore from "../../store/auth.login.store";
+
+import useProfileStore from "../../store/profile.store";
 
 export default function NavBar({ activepage }) {
-  const { user } = useAuthLoginStore();
+
+  const {profile} = useProfileStore();
+  
   const { handleLogout, companyName, isActive, handleNavigate, loading } =
-    useNavbar(activepage, user);
+    useNavbar(activepage, profile);
 
   return (
     <nav className="bg-bgComponent shadow-sm">

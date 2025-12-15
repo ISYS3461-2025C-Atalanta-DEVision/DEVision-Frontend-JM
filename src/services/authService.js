@@ -11,7 +11,6 @@ import {
   CHANGE_PASSWORD_URL,
   VALIDATE_TOKEN_URL,
   COUNTRIES_URL,
-  PROFILE_URL,
 } from "../service_url/AuthUrlConfig";
 
 export const authService = {
@@ -98,11 +97,6 @@ export const authService = {
     return response.data;
   },
 
-  // Get user profile
-  getProfile: async () => {
-    const response = await api.get(`${PROFILE_URL}`);
-    return response.data;
-  },
 };
 
 export default authService;

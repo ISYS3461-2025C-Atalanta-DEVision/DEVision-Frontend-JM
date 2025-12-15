@@ -268,7 +268,7 @@ const MOCK_POST_DATA = [
   },
 ];
 
-export const postServices = {
+export const postService = {
   getPostList: async (companyId) => {
     const posts = MOCK_POST_DATA.filter(
       (post) => post.company_id === companyId
@@ -280,4 +280,4 @@ export const postServices = {
   },
 };
 
-export default postServices;
+export default postService;

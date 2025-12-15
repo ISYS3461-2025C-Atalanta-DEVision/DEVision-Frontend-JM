@@ -1,13 +1,11 @@
 import { create } from "zustand";
 
-const useDashboardStore = create((set, get) => ({
-  companyData: null,
+const useProfileStore = create((set, get) => ({
+  profile: null,
   loading: false,
   error: null,
   
-  setProfile: (profile) => set(() => ({ companyData: { ...profile } })),
-  getProfile: () => get(),
- 
+  setProfile: (profile) => set(() => ({ profile: { ...profile } })),
   setLoading: (loading) => set(() => ({ loading })),
   setError: (error) => set(() => ({ error })),  
 
@@ -15,4 +13,4 @@ const useDashboardStore = create((set, get) => ({
 }));
 
 
-export default useDashboardStore;
+export default useProfileStore;

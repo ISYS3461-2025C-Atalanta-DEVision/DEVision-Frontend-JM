@@ -11,7 +11,7 @@ import CategoryInput from "../../components/CategoryInput/CategoryInput";
 import { employmentTypes, salaryTypes } from "../../ui_config/PostCreate";
 import useCreatePostForm from "./useCreatePostForm";
 import { motion, AnimatePresence } from "framer-motion";
-import dasboardServices from "../../services/companyServices";
+import profileService from "../../services/profileService";
 import ImageHolder from "../../components/ImageHolder";
 
 export default function CreateJobPost({ company }) {
@@ -93,7 +93,7 @@ export default function CreateJobPost({ company }) {
     isCreating,
     setIsCreating,
     companyData,
-  } = useCreatePostForm(null, validateAll, values, company, dasboardServices);
+  } = useCreatePostForm(null, validateAll, values, company, profileService);
 
   const formVariants = {
     hidden: { opacity: 0, y: -20 },

@@ -2,10 +2,22 @@ import { useState, useEffect, useCallback } from "react";
 import { jwtDecode } from "jwt-decode";
 import authService from "../services/authService";
 import useAuthLoginStore from "../store/auth.login.store";
+import useProfile from "./useProfile";
 
 export const useAuth = () => {
-  const { user, loading, error, setUser, setLoading, setError, setAccessToken, accessToken } =
-    useAuthLoginStore();
+  const {
+    accessToken,
+    refreshToken,
+    loading,
+    error,
+    setUser,
+    setLoading,
+    setError,
+    setAccessToken,
+    setRefreshToken,
+  } = useAuthLoginStore();
+
+  const { fechCompanyProfile } = useProfile();
 
   const checkExpiredToken = useCallback((expireAt) => {
     try {
@@ -22,20 +34,19 @@ export const useAuth = () => {
   useEffect(() => {
     const initAuth = async () => {
       const accessToken = localStorage.getItem("accessToken");
-      const storedUser = localStorage.getItem("user");
       const accessExpiresAt = localStorage.getItem("accessExpiresAt");
 
       if (accessToken && !checkExpiredToken(parseInt(accessExpiresAt))) {
         try {
-          if (!storedUser || storedUser === "undefined" || storedUser === "null") {
-            throw new Error("No valid user data in localStorage");
-          }
-          const userData = JSON.parse(storedUser);
-          setUser(userData);
-          setAccessToken(accessToken)
+          setAccessToken(accessToken);
 
+          try {
+            await fechCompanyProfile();
+          } catch (err) {
+            console.error("Failed to fetch profile: ", err);
+          }
         } catch (err) {
-          console.error("Failed to parse user data:", err);
+          console.error("Failed to parse ACCESS TOKEN: ", err);
           logout();
         }
       } else if (accessToken) {
@@ -57,7 +68,6 @@ export const useAuth = () => {
             localStorage.setItem("accessToken", newAccessToken);
             localStorage.setItem("refreshToken", newRefreshToken);
 
-
             localStorage.setItem(
               "accessExpiresAt",
               newAccessExpiresAt.toString()
@@ -67,6 +77,13 @@ export const useAuth = () => {
               newRefreshExpiresAt.toString()
             );
             setAccessToken(newAccessToken);
+            setRefreshToken(newRefreshToken);
+
+            try {
+              await fechCompanyProfile();
+            } catch (err) {
+              console.error("Failed to fetch profile: ", err);
+            }
           } catch {
             logout();
           }
@@ -81,10 +98,12 @@ export const useAuth = () => {
   }, []);
 
   const login = async (email, password) => {
+    setLoading(true);
     setError(null);
     try {
       const response = await authService.login(email, password);
-      const { accessToken, refreshToken, expiresIn, refreshExpiresIn } = response;
+      const { accessToken, refreshToken, expiresIn, refreshExpiresIn } =
+        response;
 
       // Store tokens first
       localStorage.setItem("accessToken", accessToken);
@@ -98,17 +117,20 @@ export const useAuth = () => {
       localStorage.setItem("accessExpiresAt", accessExpiresAt.toString());
       localStorage.setItem("refreshExpiresAt", refreshExpiresAt.toString());
 
-      // Fetch user profile after storing tokens
-      const userData = await authService.getProfile();
-      localStorage.setItem("user", JSON.stringify(userData));
-      setUser(userData);
+      try {
+        await fechCompanyProfile();
+      } catch (err) {
+        console.error("Failed to fetch profile: ", err);
+      }
 
-      return { success: true, data: userData };
+      return { success: true };
     } catch (err) {
       console.log("Login error:", err);
       const message = err.response?.data?.message || "Login failed";
       setError(message);
       return { success: false, error: message };
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -116,7 +138,8 @@ export const useAuth = () => {
     setError(null);
     try {
       const response = await authService.adminLogin(email, password);
-      const { accessToken, refreshToken, expiresIn, refreshExpiresIn } = response;
+      const { accessToken, refreshToken, expiresIn, refreshExpiresIn } =
+        response;
 
       // Store tokens first
       localStorage.setItem("accessToken", accessToken);
@@ -168,12 +191,11 @@ export const useAuth = () => {
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("user");
       setUser(null);
-      setAccessToken(null)
+      setAccessToken(null);
     }
   }, []);
 
   return {
-    user,
     loading,
     error,
     isAuthenticated: !!accessToken,

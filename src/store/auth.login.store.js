@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 const useAuthLoginStore = create((set, get) => ({
-  user: null,
   accessToken: null,
+  refreshToken: null,
   loading: true,
   error: null,
 
@@ -10,6 +10,7 @@ const useAuthLoginStore = create((set, get) => ({
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error }),
   setAccessToken: (accessToken) => set({accessToken}),
+  setRefreshToken: (refreshToken) => set({refreshToken}),
 }));
 
 

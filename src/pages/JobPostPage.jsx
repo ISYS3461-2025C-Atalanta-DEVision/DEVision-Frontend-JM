@@ -1,7 +1,6 @@
 import React from "react";
 import PostList from "../headless/post_list/PostList";
-import postServices from "../services/postServices";
-import useDashboardStore from "../store/dashboard.store";
+import postService from "../services/postService";
 import PostCard from "../components/PostCard";
 import NavBar from "../layout/NavBar/NavBar";
 import CreateJobPost from "../layout/CreatePostForm/CreateJobPost";
@@ -17,7 +16,7 @@ export default function JobPostPage() {
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <PostList
           PostCardComponent={PostCard}
-          fetchPostAPI={postServices.getPostList}
+          fetchPostAPI={postService.getPostList}
           company={user}
           className="flex flex-col w-full gap-6 p-6"
           CreatePostComponent={CreateJobPost}

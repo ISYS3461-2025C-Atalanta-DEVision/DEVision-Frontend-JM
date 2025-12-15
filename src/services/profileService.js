@@ -1,3 +1,6 @@
+import api from "../http_call/HttpRequest";
+import { PROFILE_URL } from "../service_url/ProfileUrlConfig";
+
 const MOCK_PROFILE = [
   {
     company_id: "69354d0b3614820ce068eb51",
@@ -27,7 +30,7 @@ const MOCK_PROFILE = [
   },
 ];
 
-export const companyServices = {
+export const companyService = {
   getQuickActionStats: async (companyId) => {
     const quickStats = [
       { key: "jobPostsCount", value: 12 },
@@ -40,16 +43,10 @@ export const companyServices = {
 
     return quickStats;
   },
-
-  getCompanyProfile: async (companyId) => {
-    const profile = MOCK_PROFILE.find(
-      (company) => company.company_id === companyId
-    );
-    
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    // throw new Error("Failed to  company profile");
-    return profile;
+  getProfile: async () => {
+    const response = await api.get(`${PROFILE_URL}`);
+    return response.data;
   },
 };
 
-export default companyServices;
+export default companyService;

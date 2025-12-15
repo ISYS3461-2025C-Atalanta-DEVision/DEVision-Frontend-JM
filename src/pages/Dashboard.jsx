@@ -6,18 +6,15 @@ import GridTable from "../headless/grid_table/GridTable";
 import ImageHolder from "../components/ImageHolder";
 import Default from "../assets/photo/company_default.png";
 
-import useDashboard from "../hooks/useDashboard";
-import dashboardServices from "../services/companyServices";
+import profileService from "../services/profileService";
 
-import useAuthLoginStore from "../store/auth.login.store";
+import useProfileStore from "../store/profile.store";
 
 const Dashboard = () => {
-  const { user } = useAuthLoginStore();
-  const { companyData, loading, error } = useDashboard(
-    dashboardServices,
-    user?.id
-  );
+  const { profile: companyData, loading, error } = useProfileStore();
+  // console.log("Company Data:", companyData);\
 
+  console.log("Dashboard rendered with company data:", companyData);
   return (
     <div className="min-h-screen bg-backGround">
       <NavBar activepage={"dashboard"} />
@@ -36,39 +33,47 @@ const Dashboard = () => {
             </div>
           ) : (
             <motion.div
-              className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6"
+              className="flex flex-row gap-3"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <div className="flex flex-row gap-3">
+              <div className=" flex-1 mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6 flex flex-row gap-3">
                 <ImageHolder
                   className="w-24 h-24 rounded-full mr-4 object-cover border-2 border-primary"
                   src={companyData?.avatarURL || Default}
                   alt="Company Avatar"
                 />
 
-                <div className="flex flex-col">
+                <div className="flex flex-col flex-1">
                   <h2 className="text-2xl font-bold text-textBlack mb-2">
-                    Welcome, {companyData?.name || "Company"}!
+                    Welcome, {companyData?.companyName || "Company"}!
                   </h2>
                   <p className="text-gray-600">
                     You are logged in as{" "}
-                    <span className="font-medium">
-                      {companyData?.contactEmail}
-                    </span>
+                    <span className="font-medium">{companyData?.email}</span>
                   </p>
                   <p className="text-sm text-neutral6 mt-1">
-                    Role:{" "}
-                    <span className="font-medium">
-                      {companyData?.role || "COMPANY"}
-                    </span>{" "}
-                    | Country:{" "}
+                    Country:{" "}
                     <span className="font-medium">
                       {companyData?.country || "N/A"}
                     </span>
                   </p>
                 </div>
+              </div>
+
+              <div className="flex flex-col mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6 gap-2 ">
+                <h2 className="text-lg font-bold text-textBlack">
+                  Subscrition plan
+                </h2>
+
+                <h1 className="text-2xl font-extrabold text-primary">
+                  {companyData?.subscriptionType || "Company"}
+                </h1>
+
+                <Button variant="outline" size="sm" className="self-start">
+                  Upgrade Plan
+                </Button>
               </div>
             </motion.div>
           )}
@@ -76,7 +81,7 @@ const Dashboard = () => {
           {/* Quick Actions Section */}
           <GridTable
             CardComponent={QuickStatsCard}
-            fetchItemAPI={dashboardServices.getQuickActionStats}
+            fetchItemAPI={profileService.getQuickActionStats}
             className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           />
 
@@ -105,14 +110,14 @@ const Dashboard = () => {
                     Company Name
                   </label>
                   <p className="text-textBlack">
-                    {companyData?.name || "Not set"}
+                    {companyData?.companyName || "Not set"}
                   </p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-neutral6">
                     Email
                   </label>
-                  <p className="text-textBlack">{companyData?.contactEmail}</p>
+                  <p className="text-textBlack">{companyData?.email}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-neutral6">

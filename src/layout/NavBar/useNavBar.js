@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "../../services/authService";
-import companyServices from "../../services/companyServices";
+import companyServices from "../../services/profileService";
 import useAuth from "../../hooks/useAuth";
+import useProfileStore from "../../store/profile.store";
 
-export const useNavbar = (activepage, user) => {
+export const useNavbar = (activepage) => {
   const { logout } = useAuth();
+  const {profile} = useProfileStore();
   const [companyName, setCompanyName] = useState("");
-  const [ loading, setLoading ] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -15,7 +17,7 @@ export const useNavbar = (activepage, user) => {
     const fetchCompanyName = async () => {
       try {
         setLoading(true);
-        setCompanyName(user.companyName);
+        await setCompanyName(profile.companyName);
         setLoading(false);
       } catch (error) {
         console.error("Failed to fetch company name:", error);
@@ -23,7 +25,7 @@ export const useNavbar = (activepage, user) => {
     };
 
     fetchCompanyName();
-  }, []);
+  }, [profile.companyName]);
 
   const isActive = (page) =>
     activepage && activepage.toLowerCase() === page.toLowerCase();
