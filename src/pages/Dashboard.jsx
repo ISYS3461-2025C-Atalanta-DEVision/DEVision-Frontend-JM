@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link, useSearchParams } from "react-router-dom";
 import Button from "../components/Button";
 import NavBar from "../layout/NavBar/NavBar";
 import QuickStatsCard from "../components/QuickStatsCard";
@@ -9,12 +10,13 @@ import Default from "../assets/photo/company_default.png";
 import profileService from "../services/profileService";
 
 import useProfileStore from "../store/profile.store";
+import EditProfile from "../headless/edit_profile/EditProfile";
 
 const Dashboard = () => {
   const { profile: companyData, loading, error } = useProfileStore();
-  // console.log("Company Data:", companyData);\
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isEditMode = searchParams.get("edit") === "true";
 
-  console.log("Dashboard rendered with company data:", companyData);
   return (
     <div className="min-h-screen bg-backGround">
       <NavBar activepage={"dashboard"} />
@@ -94,17 +96,17 @@ const Dashboard = () => {
             <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6">
               <p className="text-error text-center w-full">{error}</p>
             </div>
-          ) : (
+          ) : !isEditMode ? (
             <motion.div
               className="mt-6 bg-bgComponent rounded-lg shadow p-6"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <h3 className="text-lg font-semibold text-textBlack mb-4">
+              <h3 className="text-lg font-semibold text-textBlack mb-2">
                 Company Profile
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 <div>
                   <label className="text-sm font-medium text-neutral6">
                     Company Name
@@ -115,9 +117,11 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-neutral6">
-                    Email
+                    Address
                   </label>
-                  <p className="text-textBlack">{companyData?.email}</p>
+                  <p className="text-textBlack">
+                    {companyData?.streetAddress}, {companyData?.city}
+                  </p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-neutral6">
@@ -134,12 +138,36 @@ const Dashboard = () => {
                   <p className="text-green-600 font-medium">Active</p>
                 </div>
               </div>
+
+              <h3 className="text-lg font-semibold text-textBlack mb-2">
+                Contact Information
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div>
+                  <label className="text-sm font-medium text-neutral6">
+                    Email
+                  </label>
+                  <p className="text-textBlack">{companyData?.email}</p>
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-neutral6">
+                    Phone Number
+                  </label>
+                  <p className="text-textBlack">
+                    {companyData?.phoneNumber || "Not set"}
+                  </p>
+                </div>
+              </div>
+
               <div className="mt-4">
                 <Button variant="outline" size="sm">
-                  Edit Profile
+                  <Link to="/dashboard?edit=true">Edit Profile</Link>
                 </Button>
               </div>
             </motion.div>
+          ) : (
+            <EditProfile currentData={companyData} setSearchParams={setSearchParams} />
           )}
         </div>
       </main>

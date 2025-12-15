@@ -30,6 +30,8 @@ export default function RegistrationForm({ registerApi, getCountryApi }) {
       companyName: [validators.required("Company name is required")],
       country: [validators.required("Country is required")],
       phoneNumber: [validators.phone()],
+      streetAddress: [validators.required("Street address is required")],
+      city: [validators.required("City is required")],
     }
   );
 

@@ -40,11 +40,8 @@ export const useAuth = () => {
         try {
           setAccessToken(accessToken);
 
-          try {
-            await fechCompanyProfile();
-          } catch (err) {
-            console.error("Failed to fetch profile: ", err);
-          }
+          await fechCompanyProfile();
+          
         } catch (err) {
           console.error("Failed to parse ACCESS TOKEN: ", err);
           logout();
@@ -79,11 +76,7 @@ export const useAuth = () => {
             setAccessToken(newAccessToken);
             setRefreshToken(newRefreshToken);
 
-            try {
-              await fechCompanyProfile();
-            } catch (err) {
-              console.error("Failed to fetch profile: ", err);
-            }
+            await fechCompanyProfile();
           } catch {
             logout();
           }
@@ -117,11 +110,7 @@ export const useAuth = () => {
       localStorage.setItem("accessExpiresAt", accessExpiresAt.toString());
       localStorage.setItem("refreshExpiresAt", refreshExpiresAt.toString());
 
-      try {
-        await fechCompanyProfile();
-      } catch (err) {
-        console.error("Failed to fetch profile: ", err);
-      }
+      await fechCompanyProfile();
 
       return { success: true };
     } catch (err) {
@@ -189,7 +178,6 @@ export const useAuth = () => {
     } finally {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      localStorage.removeItem("user");
       setUser(null);
       setAccessToken(null);
     }
