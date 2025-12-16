@@ -6,6 +6,9 @@ import QuickStatsCard from "../components/QuickStatsCard";
 import GridTable from "../headless/grid_table/GridTable";
 import ImageHolder from "../components/ImageHolder";
 import Default from "../assets/photo/company_default.png";
+import React, { useEffect } from "react";
+
+import { formatDateYear } from "../utils/DateTime";
 
 import profileService from "../services/profileService";
 
@@ -13,9 +16,23 @@ import useProfileStore from "../store/profile.store";
 import EditProfile from "../headless/edit_profile/EditProfile";
 
 const Dashboard = () => {
-  const { profile: companyData, loading, error } = useProfileStore();
+  const {
+    profile: companyData,
+    loading,
+    error,
+    setProfile,
+  } = useProfileStore();
   const [searchParams, setSearchParams] = useSearchParams();
+
   const isEditMode = searchParams.get("edit") === "true";
+
+  useEffect(() => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete("edit");
+      return next;
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-backGround">
@@ -103,6 +120,29 @@ const Dashboard = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                
+                <div className="flex flex-col justify-start items-start gap-2 px-2">
+                  <h3 className="text-2xl font-semibold text-primary">
+                    Our vision
+                  </h3>
+                  <p className={` ${companyData?.aboutUs ? "text-textBlack" : "text-neutral6"} font-semibold text-xl h-full`}>
+                    {companyData?.aboutUs || "Add your company vision in update profile section."}
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-end items-end gap-2 px-2">
+                  <h3 className="text-2xl font-semibold text-primary">
+                    What we looking for
+                  </h3>
+                  <p className={` ${companyData?.whoWeAreLookingFor ? "text-textBlack" : "text-neutral6"} font-semibold text-xl h-full`}>
+                    {companyData?.whoWeAreLookingFor || "Update in profile edit section"}
+                  </p>
+                </div>
+              </div>
+
+              <hr className="my-6 border-t-2 border-primary2" />
+
               <h3 className="text-lg font-semibold text-textBlack mb-2">
                 Company Profile
               </h3>
@@ -133,12 +173,15 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-neutral6">
-                    Account Status
+                    Joined Devision since
                   </label>
-                  <p className="text-green-600 font-medium">Active</p>
+                  <p className="text-textBlack">
+                    {companyData?.createdAt
+                      ? formatDateYear(companyData.createdAt)
+                      : "Not set"}
+                  </p>
                 </div>
               </div>
-
               <h3 className="text-lg font-semibold text-textBlack mb-2">
                 Contact Information
               </h3>
@@ -167,7 +210,11 @@ const Dashboard = () => {
               </div>
             </motion.div>
           ) : (
-            <EditProfile currentData={companyData} setSearchParams={setSearchParams} />
+            <EditProfile
+              currentData={companyData}
+              setSearchParams={setSearchParams}
+              setNewProfile={setProfile}
+            />
           )}
         </div>
       </main>

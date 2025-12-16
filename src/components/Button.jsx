@@ -37,11 +37,11 @@ const Button = ({
       disabled={disabled || loading}
       onClick={onClick}
       className={`
+        ${className}
         ${baseStyles}
         ${variants[variant]}
         ${sizes[size]}
         ${disabled || loading ? "cursor-not-allowed" : "cursor-pointer"}
-        ${className}
       `}
       {...props}
     >

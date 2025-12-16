@@ -47,6 +47,11 @@ export const companyService = {
     const response = await api.get(`${PROFILE_URL}`);
     return response.data;
   },
+
+  editProfile: async (editedValues) => {
+   const response = await api.put(`${PROFILE_URL}`, editedValues);
+   return response.data;
+  },
 };
 
 export default companyService;

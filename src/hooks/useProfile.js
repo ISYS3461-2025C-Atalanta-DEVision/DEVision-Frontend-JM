@@ -11,6 +11,7 @@ export const useProfile = () => {
     setError(null);
     try {
       const profileData = await profileService.getProfile();
+      console.log("Fetched profile data:", profileData);
       setProfile(profileData);
     } catch (error) {
       setError(error.message);

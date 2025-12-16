@@ -1,110 +1,269 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Button from "../../components/Button";
 import useProfileStore from "../../store/profile.store";
 import { useForm, validators } from "../../hooks/useForm";
 import Input from "../../components/Input";
+import Select from "../../components/Select";
+import Button from "../../components/Button";
+import TextArea from "../../components/TextArea";
+import ImageHolder from "../../components/ImageHolder";
 import { Link, useSearchParams } from "react-router-dom";
+import { formatDateYear } from "../../utils/DateTime";
 
-export default function EditProfile({ currentData, setSearchParams }) {
+import authService from "../../services/authService";
+import profileService from "../../services/profileService";
+
+import useEditProfile from "./useEditProfile";
+import Default from "../../assets/photo/company_default.png";
+
+export default function EditProfile({
+  currentData,
+  setSearchParams,
+  setNewProfile,
+}) {
   const companyData = currentData;
-  const { values, errors, handleChange, handleBlur, validateAll } = useForm(
+
+  const {
+    values,
+    errors,
+    handleChange,
+    handleBlur,
+    validateAll,
+    handleFileChange,
+  } = useForm(
     {
-      companyName: "",
-      streetAddress: "",
-      city: "",
-      country: "",
-      email: "",
-      phoneNumber: "",
+      ...companyData,
+      whoWeAreLookingFor: companyData?.whoWeAreLookingFor ?? "",
+      aboutUs: companyData?.aboutUs ?? "",
     },
     {
       companyName: [validators.required("Company name is required")],
-      email: [validators.required("Email is required"), validators.email()],
       country: [validators.required("Country is required")],
       phoneNumber: [validators.phone()],
       streetAddress: [validators.required("Street address is required")],
       city: [validators.required("City is required")],
+      email: [validators.required("Email is required"), validators.email()],
     }
   );
 
+  const {
+    countries,
+    loadingCountries,
+    error,
+    isSaving,
+    confirmationMessage,
+    handleSubmit,
+  } = useEditProfile(
+    profileService.editProfile,
+    authService.getCountries,
+    values,
+    validateAll,
+    setSearchParams,
+    setNewProfile
+  );
+
   return (
-    <motion.div
-      className="mt-6 bg-bgComponent rounded-lg shadow p-6"
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-    >
-      <h3 className="text-lg font-semibold text-textBlack mb-2">
-        Company Profile
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        <Input
-          label="Company Name"
-          name="companyName"
-          type="text"
-          value={companyData.companyName}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={errors.companyName}
-          placeholder="Enter your company name"
-          required
-          className="w-[80%]"
-        />
-        <div>
-          <label className="text-sm font-medium text-neutral6">Address</label>
-          <p className="text-textBlack">
-            {companyData?.streetAddress}, {companyData?.city}
-          </p>
-        </div>
-        <div>
-          <label className="text-sm font-medium text-neutral6">Country</label>
-          <p className="text-textBlack">{companyData?.country || "Not set"}</p>
-        </div>
-        <div>
-          <label className="text-sm font-medium text-neutral6">
-            Account Status
-          </label>
-          <p className="text-green-600 font-medium">Active</p>
-        </div>
-      </div>
+    <div className="relative">
+      <motion.div
+        className="mt-6 bg-bgComponent rounded-lg shadow p-6"
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <div className="flex flex-col items-center gap-3 justify-center mb-8 w-full">
+          <ImageHolder
+            className="w-36 h-36 rounded-full object-cover border-2 border-primary"
+            src={values?.avatarURL || Default}
+            alt="Company Avatar"
+          />
 
-      <h3 className="text-lg font-semibold text-textBlack mb-2">
-        Contact Information
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        <div>
-          <label className="text-sm font-medium text-neutral6">Email</label>
-          <p className="text-textBlack">{companyData?.email}</p>
+          <Button
+            size="sm"
+            onClick={() => document.getElementById("avatar-upload").click()}
+            className="text-sm bg-neutral6 font-semibold text-primary transition"
+          >
+            Change profile photo
+          </Button>
+
+          <input
+            id="avatar-upload"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) =>
+              handleFileChange(e, {
+                fileField: "avatarURL",
+                previewField: "avatarURL",
+              })
+            }
+          />
         </div>
 
-        <div>
-          <label className="text-sm font-medium text-neutral6">
-            Phone Number
-          </label>
-          <p className="text-textBlack">
-            {companyData?.phoneNumber || "Not set"}
-          </p>
-        </div>
-      </div>
+        <hr className="my-6 border-t-2 border-neutral3" />
 
-      <div className="mt-4 flex justify-end gap-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => {
-            setSearchParams((prev) => {
-              const next = new URLSearchParams(prev);
-              next.delete("edit");
-              return next;
-            });
-          }}
-        >
-          Cancel
-        </Button>
-        <Button variant="primary" size="sm">
-          Save
-        </Button>
-      </div>
-    </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+          <div className="flex flex-col justify-start items-start gap-2 px-2">
+            <h3 className="text-2xl font-semibold text-primary">Our vision</h3>
+            <TextArea
+              name="aboutUs"
+              type="text"
+              value={values.aboutUs}
+              rows={5}
+              onChange={handleChange}
+              placeholder="Update your company vision"
+              className="w-[80%]"
+            />
+          </div>
+
+          <div className="flex flex-col justify-start items-end gap-2 px-2">
+            <h3 className="text-2xl font-semibold text-primary">
+              What we looking for
+            </h3>
+            <TextArea
+              name="whoWeAreLookingFor"
+              type="text"
+              rows={5}
+              value={values.whoWeAreLookingFor}
+              onChange={handleChange}
+              placeholder="What you looking for"
+              className="w-[80%]"
+            />
+          </div>
+        </div>
+        <h3 className="text-lg font-semibold text-textBlack mb-2">
+          Company Information
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <Input
+            label="Company Name"
+            name="companyName"
+            type="text"
+            value={values.companyName}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.companyName}
+            placeholder="Enter your company name"
+            required
+            className="w-[80%]"
+          />
+          <div className="flex flex-row gap-5">
+            <Input
+              label="Street Address"
+              name="streetAddress"
+              type="text"
+              value={values.streetAddress}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.streetAddress}
+              placeholder="Enter street address"
+            />
+            <Input
+              label="City"
+              name="city"
+              type="text"
+              value={values.city}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.city}
+              placeholder="Enter your city"
+            />
+          </div>
+          <div>
+            <Select
+              label="Country"
+              name="country"
+              value={values.country}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.country}
+              options={loadingCountries ? ["Loading..."] : countries}
+              placeholder={"Select your country"}
+              required
+              className="w-[80%]"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-neutral6">
+              Joined Devision since
+            </label>
+            <p className="text-textBlack">
+              {companyData?.createdAt
+                ? formatDateYear(companyData.createdAt)
+                : "Not set"}
+            </p>
+          </div>
+        </div>
+
+        <h3 className="text-lg font-semibold text-textBlack mb-2">
+          Contact Information
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <Input
+            label="Email"
+            name="email"
+            type="email"
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.email}
+            placeholder="Enter your email"
+            required
+            className="w-[80%]"
+          />
+
+          <div>
+            <Input
+              label="Phone Number"
+              name="phoneNumber"
+              type="tel"
+              value={values.phoneNumber}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.phoneNumber}
+              placeholder="+84912345678"
+              required
+              className="w-[80%]"
+            />
+          </div>
+        </div>
+
+        <div className="mt-4 flex justify-end gap-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setSearchParams((prev) => {
+                const next = new URLSearchParams(prev);
+                next.delete("edit");
+                return next;
+              });
+            }}
+          >
+            Cancel
+          </Button>
+          <Button variant="primary" size="sm" onClick={() => handleSubmit()}>
+            Save
+          </Button>
+        </div>
+      </motion.div>
+
+      {isSaving && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm rounded-lg">
+          <div className="bg-bgComponent px-6 py-4 rounded-md shadow-lg text-textBlack font-medium flex items-center gap-3">
+            {confirmationMessage ? (
+              <>
+                <i className="ri-checkbox-circle-fill text-lg text-primary"></i>
+                Saved
+              </>
+            ) : (
+              <>
+                <i className="ri-loader-4-line animate-spin text-lg" />
+                Saving changes...
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

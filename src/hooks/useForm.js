@@ -65,6 +65,24 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
     [touched, validateField, values]
   );
 
+  const handleFileChange = useCallback(
+    (e, { fileField = "file", previewField, createPreview = true } = {}) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      setValues((prev) => {
+        const next = { ...prev, [fileField]: file };
+
+        if (createPreview && previewField) {
+          next[previewField] = URL.createObjectURL(file);
+        }
+
+        return next;
+      });
+    },
+    []
+  );
+
   const handleBlur = useCallback(
     (e) => {
       const { name, value } = e.target;
@@ -119,6 +137,7 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
     setValue,
     setValues,
     setErrors,
+    handleFileChange
   };
 };
 

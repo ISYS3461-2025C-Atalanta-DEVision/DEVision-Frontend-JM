@@ -18,6 +18,4 @@ export const VALIDATE_TOKEN_URL = `${AUTH_BASE_URL}/validate-token`;
 
 export const COUNTRIES_URL = `${AUTH_BASE_URL}/countries`;
 
-// Profile is now in Profile Service (microservice split)
-export const PROFILE_URL = `/profile-service/api/profile/me`;
 
