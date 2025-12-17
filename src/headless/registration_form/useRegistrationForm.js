@@ -43,6 +43,10 @@ function useRegistrationForm(validateAll, values, registerApi, getCountryApi) {
     fetchCountries();
   }, []);
 
+  const toLogin = () => {
+    navigate("/login");
+  }
+
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -88,6 +92,7 @@ function useRegistrationForm(validateAll, values, registerApi, getCountryApi) {
     setCountries,
     setLoadingCountries,
     handleRegisterSubmit,
+    toLogin,
   };
 }
 

@@ -42,10 +42,11 @@ export default function RegistrationForm({ registerApi, getCountryApi }) {
     loading,
     loadingCountries,
     handleRegisterSubmit,
+    toLogin,
   } = useRegistrationForm(validateAll, values, registerApi, getCountryApi);
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6 bg-bgComponent rounded-xl shadow-sm">
+    <div className="w-full max-w-2xl mx-auto p-6 bg-bgComponent rounded-xl">
       <h2 className="text-2xl font-semibold text-textBlack mb-6">
         Create Account
       </h2>
@@ -63,6 +64,7 @@ export default function RegistrationForm({ registerApi, getCountryApi }) {
 
       <form onSubmit={handleRegisterSubmit}>
         <Input
+          className="mb-4"
           label="Company Name"
           name="companyName"
           type="text"
@@ -75,6 +77,7 @@ export default function RegistrationForm({ registerApi, getCountryApi }) {
         />
 
         <Input
+          className="mb-4"
           label="Email"
           name="email"
           type="email"
@@ -88,6 +91,7 @@ export default function RegistrationForm({ registerApi, getCountryApi }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
+            className="mb-4"
             label="Password"
             name="password"
             type="password"
@@ -100,6 +104,7 @@ export default function RegistrationForm({ registerApi, getCountryApi }) {
           />
 
           <Input
+            className="mb-4"
             label="Confirm Password"
             name="confirmPassword"
             type="password"
@@ -133,6 +138,7 @@ export default function RegistrationForm({ registerApi, getCountryApi }) {
         />
 
         <Input
+          className="mb-4"
           label="Phone Number"
           name="phoneNumber"
           type="tel"
@@ -145,6 +151,7 @@ export default function RegistrationForm({ registerApi, getCountryApi }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
+            className="mb-4"
             label="City"
             name="city"
             type="text"
@@ -156,6 +163,7 @@ export default function RegistrationForm({ registerApi, getCountryApi }) {
           />
 
           <Input
+            className="mb-4"
             label="Street Address"
             name="streetAddress"
             type="text"
@@ -175,6 +183,16 @@ export default function RegistrationForm({ registerApi, getCountryApi }) {
           className="w-full mt-4"
         >
           Create Account
+        </Button>
+
+        <Button
+          type="button"
+          variant="secondary"
+          size="lg"
+          onClick={toLogin}
+          className="w-full mt-4"
+        >
+          Back To Login
         </Button>
       </form>
     </div>

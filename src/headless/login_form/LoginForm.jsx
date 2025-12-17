@@ -50,6 +50,7 @@ export default function LoginForm({ loginApi }) {
           error={errors.email}
           placeholder="Enter your email"
           required
+          className="mb-4"
         />
 
         <Input
@@ -62,6 +63,7 @@ export default function LoginForm({ loginApi }) {
           error={errors.password}
           placeholder="Enter your password"
           required
+          className="mb-4"
         />
 
         <div className="flex items-center justify-between mb-6">
@@ -72,12 +74,6 @@ export default function LoginForm({ loginApi }) {
             />
             <span className="ml-2 text-sm text-gray-600">Remember me</span>
           </label>
-          <Link
-            to="/forgot-password"
-            className="text-sm text-primary hover:text-primary2"
-          >
-            Forgot password?
-          </Link>
         </div>
 
         <Button
@@ -107,7 +103,9 @@ export default function LoginForm({ loginApi }) {
           <div className="w-full border-t border-gray-300" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-bgComponent text-gray-500">Or continue with</span>
+          <span className="px-2 bg-bgComponent text-gray-500">
+            Or continue with
+          </span>
         </div>
       </div>
 

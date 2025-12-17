@@ -57,7 +57,7 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        <div className="border-t border-gray-100 pt-6">
+        <div className="border-t-2 border-neutral6 pt-6">
           <RegistrationForm
             registerApi={register}
             getCountryApi={authService.getCountries}
