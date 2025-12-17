@@ -11,7 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Dashboard from "./pages/Dashboard";
 import JobPostPage from "./pages/JobPostPage";
-import OAuthCallback from "./pages/temp/OAuthCallback";
+import OAuthCallback from "./pages/OAuthCallback";
 import ActivateAccount from "./pages/temp/ActivateAccount";
 
 function App() {

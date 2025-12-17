@@ -8,7 +8,7 @@ import ImageHolder from "../components/ImageHolder";
 import Default from "../assets/photo/company_default.png";
 import React, { useEffect } from "react";
 
-import { formatDateYear } from "../utils/DateTime";
+import { formatDateYear, countDaysFromDate } from "../utils/DateTime";
 
 import profileService from "../services/profileService";
 
@@ -121,13 +121,17 @@ const Dashboard = () => {
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                
                 <div className="flex flex-col justify-start items-start gap-2 px-2">
                   <h3 className="text-2xl font-semibold text-primary">
                     Our vision
                   </h3>
-                  <p className={` ${companyData?.aboutUs ? "text-textBlack" : "text-neutral6"} font-semibold text-xl h-full`}>
-                    {companyData?.aboutUs || "Add your company vision in update profile section."}
+                  <p
+                    className={` ${
+                      companyData?.aboutUs ? "text-textBlack" : "text-neutral6"
+                    } font-semibold text-xl h-full`}
+                  >
+                    {companyData?.aboutUs ||
+                      "Add your company vision in update profile section."}
                   </p>
                 </div>
 
@@ -135,8 +139,15 @@ const Dashboard = () => {
                   <h3 className="text-2xl font-semibold text-primary">
                     What we looking for
                   </h3>
-                  <p className={` ${companyData?.whoWeAreLookingFor ? "text-textBlack" : "text-neutral6"} font-semibold text-xl h-full`}>
-                    {companyData?.whoWeAreLookingFor || "Update in profile edit section"}
+                  <p
+                    className={` ${
+                      companyData?.whoWeAreLookingFor
+                        ? "text-textBlack"
+                        : "text-neutral6"
+                    } font-semibold text-xl h-full`}
+                  >
+                    {companyData?.whoWeAreLookingFor ||
+                      "Update in profile edit section"}
                   </p>
                 </div>
               </div>
@@ -159,26 +170,41 @@ const Dashboard = () => {
                   <label className="text-sm font-medium text-neutral6">
                     Address
                   </label>
-                  <p className="text-textBlack">
-                    {companyData?.streetAddress}, {companyData?.city}
-                  </p>
+                  {companyData?.streetAddress && companyData?.city ? (
+                    <p className="text-textBlack">
+                      {companyData?.streetAddress}, {companyData?.city}
+                    </p>
+                  ) : (
+                    <p className="text-neutral6 font-semibold">Not set</p>
+                  )}
                 </div>
                 <div>
                   <label className="text-sm font-medium text-neutral6">
                     Country
                   </label>
-                  <p className="text-textBlack">
-                    {companyData?.country || "Not set"}
-                  </p>
+                  {companyData?.country ? (
+                    <p className="text-textBlack">
+                      {formatDateYear(companyData.createdAt)}
+                    </p>
+                  ) : (
+                    <p className="text-neutral6 font-semibold">Not set</p>
+                  )}
                 </div>
                 <div>
                   <label className="text-sm font-medium text-neutral6">
                     Joined Devision since
                   </label>
                   <p className="text-textBlack">
-                    {companyData?.createdAt
-                      ? formatDateYear(companyData.createdAt)
-                      : "Not set"}
+                    {companyData?.createdAt ? (
+                      <>
+                        {formatDateYear(companyData.createdAt)} –{" "}
+                        <span className="font-semibold text-primary">
+                          {countDaysFromDate(companyData.createdAt)} days ago
+                        </span>
+                      </>
+                    ) : (
+                      "Not set"
+                    )}
                   </p>
                 </div>
               </div>
@@ -198,7 +224,13 @@ const Dashboard = () => {
                     Phone Number
                   </label>
                   <p className="text-textBlack">
-                    {companyData?.phoneNumber || "Not set"}
+                    {companyData?.phoneNumber ? (
+                      <p className="text-textBlack">
+                        {companyData?.phoneNumber}
+                      </p>
+                    ) : (
+                      <p className="text-neutral6 font-semibold">Not set</p>
+                    )}
                   </p>
                 </div>
               </div>

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Alert from "../../components/Alert";
-import useAuthLoginStore from "../../store/auth.login.store";
-import profileService from "../../services/profileService";
+import Alert from "../components/Alert";
+import useAuthLoginStore from "../store/auth.login.store";
+import profileService from "../services/profileService";
 
 const OAuthCallback = () => {
   const [searchParams] = useSearchParams();
