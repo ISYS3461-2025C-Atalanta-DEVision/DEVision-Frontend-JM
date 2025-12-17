@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Alert from "../../components/Alert";
 import useAuthLoginStore from "../../store/auth.login.store";
-import authService from "../../services/authService";
+import profileService from "../../services/profileService";
 
 const OAuthCallback = () => {
   const [searchParams] = useSearchParams();
@@ -44,7 +44,7 @@ const OAuthCallback = () => {
           setAccessToken(accessToken);
 
           // Fetch user profile after storing tokens
-          const userData = await authService.getProfile();
+          const userData = await profileService.getProfile();
           localStorage.setItem("user", JSON.stringify(userData));
           setUser(userData);
 
