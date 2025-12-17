@@ -13,7 +13,7 @@ const Input = ({
   ...props
 }) => {
   return (
-    <div className={`mb-4 ${className}`}>
+    <div className={`${className}`}>
       {label && (
         <label
           htmlFor={name}

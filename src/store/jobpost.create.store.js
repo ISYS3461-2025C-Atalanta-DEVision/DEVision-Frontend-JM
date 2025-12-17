@@ -1,25 +1,23 @@
 import { create } from "zustand";
 
 const jobPostCreateStore = create((set, get) => ({
-  postData: null,
-  companyData: null,
-  loading: false,
+  isFormOpen: false,
   error: null,
   isCreating: false,
-
-  setPostData: (data) => set(() => ({ postData: { ...data } })),
-  getPostData: () => get(),
+  success: null,
+  confirmBoxOpen: false,
 
   setIsCreating: (isCreating) => set(() => ({ isCreating })),
-  setLoading: (loading) => set(() => ({ loading })),
-  setCompanyData: (companyData) => set(() => ({ companyData })),
   setError: (error) => set(() => ({ error })),
+  setSuccess: (success) => set(() => ({ success })),
+  setFormOpen: (isOpen) => set(() => ({ isFormOpen: isOpen })),
+  setConfirmBoxOpen: (isOpen) => set(() => ({ confirmBoxOpen: isOpen })),
   reset: () =>
     set(() => ({
       postData: null,
-      loading: false,
       error: null,
       isCreating: false,
+      confirmBoxOpen: false,  
     })),
 }));
 

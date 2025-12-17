@@ -11,10 +11,14 @@ import CategoryInput from "../../components/CategoryInput/CategoryInput";
 import { employmentTypes, salaryTypes } from "../../ui_config/PostCreate";
 import useCreatePostForm from "./useCreatePostForm";
 import { motion, AnimatePresence } from "framer-motion";
-import profileService from "../../services/profileService";
+import postService from "../../services/postService";
 import ImageHolder from "../../components/ImageHolder";
+import useProfile from "../../hooks/useProfile";
+import ConfirmBox from "../../components/ConfirmBox";
 
-export default function CreateJobPost({ company }) {
+export default function CreateJobPost() {
+  const { profile } = useProfile();
+
   const {
     values,
     errors,
@@ -88,12 +92,14 @@ export default function CreateJobPost({ company }) {
 
   const {
     handleSubmit,
-    loading,
-    error,
     isCreating,
-    setIsCreating,
-    companyData,
-  } = useCreatePostForm(null, validateAll, values, company, profileService);
+    success,
+    error,
+    isFormOpen,
+    setFormOpen,
+    confirmBoxOpen,
+    setConfirmBoxOpen,
+  } = useCreatePostForm(values, postService.createPost, validateAll, reset);
 
   const formVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -104,7 +110,7 @@ export default function CreateJobPost({ company }) {
   return (
     <AnimatePresence mode="wait">
       <div className=" w-content h-content bg-backGround p-6">
-        {!isCreating ? (
+        {!isFormOpen ? (
           <motion.div
             key="create-button"
             variants={formVariants}
@@ -114,11 +120,11 @@ export default function CreateJobPost({ company }) {
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="w-full flex flex-row items-center justify-center gap-6 p-6"
           >
-            {!loading ? (
+            {!isFormOpen ? (
               <>
                 <div className="flex flex-row items-center justify-center gap-4">
                   <ImageHolder
-                    src={companyData?.avatarURL}
+                    src={profile?.avatarUrl}
                     alt="Company Logo"
                     className="h-20 aspect-square rounded-full object-cover border"
                     canOpen={false}
@@ -126,7 +132,9 @@ export default function CreateJobPost({ company }) {
                   <div className="flex flex-col justify-center">
                     <h2 className="text-3xl text-neutral8 font-medium">
                       Hello,{" "}
-                      <span className="text-primary">{companyData?.name}</span>
+                      <span className="text-primary">
+                        {profile?.companyName}
+                      </span>
                     </h2>
                     <h2 className="text-3xl text-neutral8 font-medium">
                       What you looking for today?
@@ -136,7 +144,7 @@ export default function CreateJobPost({ company }) {
 
                 <div
                   className="flex-1 text-3xl text-neutral8 flex flex-row items-center justify-center bg-bgComponent hover:bg-primary hover:text-neutral1 rounded-lg shadow p-6 gap-3"
-                  onClick={() => setIsCreating(true)}
+                  onClick={() => setFormOpen(true)}
                 >
                   <h1 className="font-bold">Create New Job Post</h1>
                   <i className="ri-add-circle-line"></i>
@@ -191,6 +199,7 @@ export default function CreateJobPost({ company }) {
                   error={errors.title}
                   placeholder="e.g., Frontend Developer"
                   required
+                  className="mb-4"
                 />
 
                 <div className="mb-4">
@@ -401,11 +410,13 @@ export default function CreateJobPost({ company }) {
                 </h2>
 
                 <div className="flex items-center gap-3">
-                  <label className="flex items-center cursor-pointer">
-                    <input
+                  <label className="flex flex-row items-center justify-center cursor-pointer">
+                    <Input
                       type="checkbox"
                       name="published"
-                      className="h-4 w-4 text-primary focus:ring-blue-500 border-gray-300 rounded"
+                      value={values.published}
+                      onChange={handleChange}
+                      className="text-primary focus:ring-blue-500 border-gray-300 rounded"
                     />
                     <span className="ml-2 text-sm text-neutral8">
                       Publish immediately
@@ -425,7 +436,7 @@ export default function CreateJobPost({ company }) {
                   size="lg"
                   onClick={async () => {
                     window.scrollTo({ top: 0, behavior: "smooth" });
-                    setIsCreating(false);
+                    setFormOpen(false);
                     reset();
                   }}
                 >
@@ -438,7 +449,7 @@ export default function CreateJobPost({ company }) {
                   variant="primary"
                   size="lg"
                   onClick={handleSubmit}
-                  loading={loading}
+                  loading={isCreating}
                 >
                   Create Job Post
                 </Button>
@@ -449,7 +460,32 @@ export default function CreateJobPost({ company }) {
                   <Alert type="error" message={error} />
                 </div>
               )}
+
+              {success && (
+                <div className="mt-4">
+                  <Alert type="success" message={success} />
+                </div>
+              )}
             </div>
+
+            {confirmBoxOpen && (
+              <ConfirmBox
+                buttons={[
+                  {
+                    type: "return",
+                    content: "Return",
+                    onClick: () => setConfirmBoxOpen(false),
+                  },
+                  {
+                    type: "confirm",
+                    content: "Save as draft",
+                    onClick: () => setConfirmBoxOpen(false),
+                  },
+                ]}
+                title="Your post is not published, do you want to save it to drafts?"
+                subTitle="Check 'Publish immediately' to publish right away."
+              />
+            )}
           </motion.div>
         )}
       </div>

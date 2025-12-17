@@ -223,15 +223,11 @@ const Dashboard = () => {
                   <label className="text-sm font-medium text-neutral6">
                     Phone Number
                   </label>
-                  <p className="text-textBlack">
-                    {companyData?.phoneNumber ? (
-                      <p className="text-textBlack">
-                        {companyData?.phoneNumber}
-                      </p>
-                    ) : (
-                      <p className="text-neutral6 font-semibold">Not set</p>
-                    )}
-                  </p>
+                  {companyData?.phoneNumber ? (
+                    <p className="text-textBlack">{companyData?.phoneNumber}</p>
+                  ) : (
+                    <p className="text-neutral6 font-semibold">Not set</p>
+                  )}
                 </div>
               </div>
 

@@ -278,6 +278,10 @@ export const postService = {
 
     return posts;
   },
+  createPost: async (postData) => {
+    console.log("API received post data:", postData);
+    await new Promise((resolve) => setTimeout(resolve, 800));
+  }
 };
 
 export default postService;

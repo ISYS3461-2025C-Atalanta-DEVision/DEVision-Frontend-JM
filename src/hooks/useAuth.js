@@ -41,7 +41,6 @@ export const useAuth = () => {
           setAccessToken(accessToken);
 
           await fechCompanyProfile();
-          
         } catch (err) {
           console.error("Failed to parse ACCESS TOKEN: ", err);
           logout();
@@ -73,10 +72,9 @@ export const useAuth = () => {
               "refreshExpiresAt",
               newRefreshExpiresAt.toString()
             );
+            await fechCompanyProfile();
             setAccessToken(newAccessToken);
             setRefreshToken(newRefreshToken);
-
-            await fechCompanyProfile();
           } catch {
             logout();
           }
