@@ -7,24 +7,14 @@ import useProfileStore from "../../store/profile.store";
 
 export const useNavbar = (activepage) => {
   const { logout } = useAuth();
-  const {profile} = useProfileStore();
+  const { profile } = useProfileStore();
   const [companyName, setCompanyName] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCompanyName = async () => {
-      try {
-        setLoading(true);
-        await setCompanyName(profile.companyName);
-        setLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch company name:", error);
-      }
-    };
-
-    fetchCompanyName();
+    setCompanyName(profile.companyName);
   }, [profile.companyName]);
 
   const isActive = (page) =>
