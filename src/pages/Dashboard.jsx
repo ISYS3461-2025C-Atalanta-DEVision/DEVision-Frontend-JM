@@ -8,6 +8,8 @@ import ImageHolder from "../components/ImageHolder";
 import Default from "../assets/photo/company_default.png";
 import React, { useEffect } from "react";
 
+import TalentSearchAds from "../components/TalentSearchAds";
+
 import { formatDateYear, countDaysFromDate } from "../utils/DateTime";
 
 import profileService from "../services/profileService";
@@ -243,6 +245,21 @@ const Dashboard = () => {
               setSearchParams={setSearchParams}
               setNewProfile={setProfile}
             />
+          )}
+
+          {loading ? (
+            <div className="flex items-center justify-center w-full h-full">
+              <p className="text-gray-600 text-lg">Loading advertisements...</p>
+            </div>
+          ) : (
+            <motion.div
+              className="mt-6 bg-bgComponent rounded-lg shadow"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <TalentSearchAds price={30} />
+            </motion.div>
           )}
         </div>
       </main>

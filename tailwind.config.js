@@ -1,3 +1,5 @@
+import { p, pre } from 'framer-motion/client';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -19,6 +21,7 @@ export default {
         neutral8: "var(--color-neutral8)",
         neutral9: "var(--color-neutral9)",
         error: "var(--color-error)",
+        premium: "var(--color-premium)",
       },
     },
   },

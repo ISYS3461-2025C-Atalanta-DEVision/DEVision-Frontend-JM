@@ -8,10 +8,12 @@ export const useProfile = () => {
 
   const fechCompanyProfile = async () => {
     setLoading(true);
+    console.log("Fetching company profile...", loading);
     setError(null);
     try {
       const profileData = await profileService.getProfile();
       setProfile(profileData);
+      setLoading(false);
     } catch (error) {
       setError(error.message);
     } finally {

@@ -4,18 +4,13 @@ import authService from "../../services/authService";
 import companyServices from "../../services/profileService";
 import useAuth from "../../hooks/useAuth";
 import useProfileStore from "../../store/profile.store";
+import { p } from "framer-motion/client";
 
 export const useNavbar = (activepage) => {
   const { logout } = useAuth();
-  const { profile } = useProfileStore();
-  const [companyName, setCompanyName] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setCompanyName(profile.companyName);
-  }, [profile.companyName]);
 
   const isActive = (page) =>
     activepage && activepage.toLowerCase() === page.toLowerCase();
@@ -33,7 +28,6 @@ export const useNavbar = (activepage) => {
     loading,
     isActive,
     handleLogout,
-    companyName,
     handleNavigate,
   };
 };

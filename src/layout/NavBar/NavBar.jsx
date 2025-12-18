@@ -10,8 +10,8 @@ export default function NavBar({ activepage }) {
 
   const {profile} = useProfileStore();
   
-  const { handleLogout, companyName, isActive, handleNavigate, loading } =
-    useNavbar(activepage, profile);
+  const { handleLogout, isActive, handleNavigate, loading } =
+    useNavbar(activepage);
 
   return (
     <nav className="bg-bgComponent shadow-sm">
@@ -66,7 +66,7 @@ export default function NavBar({ activepage }) {
             {loading ? (
               <span className="text-neutral7">Loading...</span>
             ) : (
-              <span className="text-neutral7">{companyName}</span>
+              <span className="text-neutral7">{profile.companyName}</span>
             )}
             <Button variant="outline" size="sm" onClick={handleLogout}>
               Logout
