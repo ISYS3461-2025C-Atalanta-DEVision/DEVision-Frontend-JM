@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import JobPostPage from "./pages/JobPostPage";
 import OAuthCallback from "./pages/OAuthCallback";
 import ActivateAccount from "./pages/ActivateAccount";
+import SubscriptionPayment from "./pages/SubscriptionPayment";
 
 function App() {
   return (
@@ -34,29 +35,20 @@ function App() {
           }
         />
 
-        {/* <Route
-          path="/your-applicants"
-          element={
-            <ProtectedRoute>
-
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/your-events"
-          element={
-            <ProtectedRoute>
-
-            </ProtectedRoute>
-          }
-        /> */}
-
         <Route
           path="/jobpost"
           element={
             <ProtectedRoute>
               <JobPostPage />
+            </ProtectedRoute>
+          }
+        />
+
+         <Route
+          path="/payment"
+          element={
+            <ProtectedRoute>
+              <SubscriptionPayment />
             </ProtectedRoute>
           }
         />

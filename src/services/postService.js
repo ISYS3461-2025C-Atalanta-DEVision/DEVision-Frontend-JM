@@ -11,7 +11,7 @@ const MOCK_POST_DATA = [
 
     postedDate: "2025-01-10",
     expiryDate: "2025-02-10",
-    
+
     salary: { type: "Range", value: "1200 - 1800 USD" },
     location: "Ho Chi Minh City, Vietnam",
     published: true,
@@ -270,18 +270,20 @@ const MOCK_POST_DATA = [
 
 export const postService = {
   getPostList: async (companyId) => {
-    const posts = MOCK_POST_DATA.filter(
-      (post) => post.company_id === companyId
-    );
+    const posts = MOCK_POST_DATA;
+    // const posts = MOCK_POST_DATA.filter(
+    //   (post) => post.company_id === companyId
+    // );
     await new Promise((resolve) => setTimeout(resolve, 800));
     // throw new Error("Failed to load posts");
 
     return posts;
   },
+  
   createPost: async (postData) => {
     console.log("API received post data:", postData);
     await new Promise((resolve) => setTimeout(resolve, 800));
-  }
+  },
 };
 
 export default postService;

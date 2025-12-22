@@ -13,7 +13,7 @@ export default function PostCard({ item }) {
         <h2 className="text-2xl font-semibold text-primary2">{item.title}</h2>
 
         <span
-          className="text-xl px-2 py-1 rounded bg-primary2 text-neutral1 font-medium"
+          className="text-sm px-2 py-1 rounded bg-primary2 text-neutral1 font-medium"
           title="Company Name"
         >
           {item.company_name}

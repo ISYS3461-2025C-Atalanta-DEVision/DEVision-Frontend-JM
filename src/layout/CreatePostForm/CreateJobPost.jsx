@@ -109,7 +109,7 @@ export default function CreateJobPost() {
 
   return (
     <AnimatePresence mode="wait">
-      <div className=" w-content h-content bg-backGround p-6">
+      <div className=" w-content h-content bg-backGround">
         {!isFormOpen ? (
           <motion.div
             key="create-button"
@@ -118,30 +118,10 @@ export default function CreateJobPost() {
             animate="visible"
             exit="exit"
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="w-full flex flex-row items-center justify-center gap-6 p-6"
+            className="w-full flex flex-row items-center justify-center gap-6"
           >
             {!isFormOpen ? (
               <>
-                <div className="flex flex-row items-center justify-center gap-4">
-                  <ImageHolder
-                    src={profile?.avatarUrl}
-                    alt="Company Logo"
-                    className="h-20 aspect-square rounded-full object-cover border"
-                    canOpen={false}
-                  />
-                  <div className="flex flex-col justify-center">
-                    <h2 className="text-3xl text-neutral8 font-medium">
-                      Hello,{" "}
-                      <span className="text-primary">
-                        {profile?.companyName}
-                      </span>
-                    </h2>
-                    <h2 className="text-3xl text-neutral8 font-medium">
-                      What you looking for today?
-                    </h2>
-                  </div>
-                </div>
-
                 <div
                   className="flex-1 text-3xl text-neutral8 flex flex-row items-center justify-center bg-bgComponent hover:bg-primary hover:text-neutral1 rounded-lg shadow p-6 gap-3"
                   onClick={() => setFormOpen(true)}

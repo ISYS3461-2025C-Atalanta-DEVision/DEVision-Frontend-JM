@@ -17,7 +17,7 @@ export default function PostList({
       {CreatePostComponent ? (
         <CreatePostComponent company={company} />
       ) : (
-        <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6">
+        <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-2">
           <p className="text-error text-center w-full">
             Cannot create post rightnow
           </p>

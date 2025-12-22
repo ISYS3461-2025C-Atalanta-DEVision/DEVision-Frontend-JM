@@ -73,7 +73,7 @@ export default function EditProfile({
         <div className="flex flex-col items-center gap-3 justify-center mb-8 w-full">
           <ImageHolder
             className="w-36 h-36 rounded-full object-cover border-2 border-primary"
-            src={values?.avatarURL || Default}
+            src={values?.avatarUrl}
             alt="Company Avatar"
           />
 
@@ -92,8 +92,8 @@ export default function EditProfile({
             className="hidden"
             onChange={(e) =>
               handleFileChange(e, {
-                fileField: "avatarURL",
-                previewField: "avatarURL",
+                fileField: "avatarUrl",
+                previewField: "avatarUrl",
               })
             }
           />
