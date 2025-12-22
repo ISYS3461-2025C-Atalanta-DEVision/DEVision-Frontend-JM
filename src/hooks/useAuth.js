@@ -17,7 +17,7 @@ export const useAuth = () => {
     setRefreshToken,
   } = useAuthLoginStore();
 
-  const { fechCompanyProfile } = useProfile();
+  const { fetchCompanyProfile } = useProfile();
 
   const checkExpiredToken = useCallback((expireAt) => {
     try {
@@ -40,7 +40,6 @@ export const useAuth = () => {
         try {
           setAccessToken(accessToken);
 
-          await fechCompanyProfile();
         } catch (err) {
           console.error("Failed to parse ACCESS TOKEN: ", err);
           logout();
@@ -72,7 +71,6 @@ export const useAuth = () => {
               "refreshExpiresAt",
               newRefreshExpiresAt.toString()
             );
-            await fechCompanyProfile();
             setAccessToken(newAccessToken);
             setRefreshToken(newRefreshToken);
           } catch {
@@ -87,6 +85,20 @@ export const useAuth = () => {
 
     initAuth();
   }, []);
+
+  useEffect(() => {
+    if (!accessToken) return;
+
+    const loadProfile = async () => {
+      try {
+        await fetchCompanyProfile();
+      } catch (e) {
+        logout();
+      }
+    };
+
+    loadProfile();
+  }, [accessToken]);
 
   const login = async (email, password) => {
     setLoading(true);
@@ -107,8 +119,7 @@ export const useAuth = () => {
 
       localStorage.setItem("accessExpiresAt", accessExpiresAt.toString());
       localStorage.setItem("refreshExpiresAt", refreshExpiresAt.toString());
-
-      await fechCompanyProfile();
+      
 
       return { success: true };
     } catch (err) {

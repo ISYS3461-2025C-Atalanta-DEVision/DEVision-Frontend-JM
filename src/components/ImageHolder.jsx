@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import CompanyDefault from "../assets/photo/company_default.png";
 
 export default function ImageHolder({ src, alt, className, canOpen = true }) {
   const [open, setOpen] = useState(false);
-
+  const finalSrc = src && src !== "default" ? `${src}` : CompanyDefault;
   return (
     <>
       <img
-        src={src}
+        src={finalSrc}
         alt={alt}
         className={`${className} cursor-pointer`}
         onClick={() => {

@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 const useProfileStore = create((set, get) => ({
   profile: null,
-  loading: false,
+  loading: true,
   error: null,
   
   setProfile: (profile) => set(() => ({ profile: { ...profile } })),

@@ -7,14 +7,13 @@ import SkillTag from "../../components/SkillTag";
 import useProfileStore from "../../store/profile.store";
 
 export default function NavBar({ activepage }) {
+  const { profile } = useProfileStore();
 
-  const {profile} = useProfileStore();
-  
   const { handleLogout, isActive, handleNavigate, loading } =
     useNavbar(activepage);
 
   return (
-    <nav className="bg-bgComponent shadow-sm">
+    <nav className="sticky top-0 z-50 bg-bgComponent shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
@@ -66,7 +65,7 @@ export default function NavBar({ activepage }) {
             {loading ? (
               <span className="text-neutral7">Loading...</span>
             ) : (
-              <span className="text-neutral7">{profile.companyName}</span>
+              <span className="text-neutral7">{profile?.companyName}</span>
             )}
             <Button variant="outline" size="sm" onClick={handleLogout}>
               Logout

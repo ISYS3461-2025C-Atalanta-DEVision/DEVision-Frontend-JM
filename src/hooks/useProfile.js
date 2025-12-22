@@ -6,14 +6,11 @@ export const useProfile = () => {
   const { profile, loading, error, setLoading, setError, setProfile, reset } =
     useProfileStore();
 
-  const fechCompanyProfile = async () => {
-    setLoading(true);
-    console.log("Fetching company profile...", loading);
+  const fetchCompanyProfile = async () => {
     setError(null);
     try {
       const profileData = await profileService.getProfile();
       setProfile(profileData);
-      setLoading(false);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -21,12 +18,11 @@ export const useProfile = () => {
     }
   };
 
-
   return {
     profile,
     loading,
     error,
-    fechCompanyProfile
+    fetchCompanyProfile,
   };
 };
 

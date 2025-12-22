@@ -1,11 +1,10 @@
 import { motion } from "framer-motion";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import NavBar from "../layout/NavBar/NavBar";
 import QuickStatsCard from "../components/QuickStatsCard";
 import GridTable from "../headless/grid_table/GridTable";
 import ImageHolder from "../components/ImageHolder";
-import Default from "../assets/photo/company_default.png";
 import React, { useEffect } from "react";
 
 import TalentSearchAds from "../components/TalentSearchAds";
@@ -24,8 +23,9 @@ const Dashboard = () => {
     error,
     setProfile,
   } = useProfileStore();
-  const [searchParams, setSearchParams] = useSearchParams();
 
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const isEditMode = searchParams.get("edit") === "true";
 
   useEffect(() => {
@@ -36,17 +36,18 @@ const Dashboard = () => {
     });
   }, []);
 
+
   return (
     <div className="min-h-screen bg-backGround">
       <NavBar activepage={"dashboard"} />
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto py-2 sm:px-6 lg:px-8">
         {/* Welcome Section */}
-        <div className="px-4 py-6 sm:px-0">
+        <div className="px-4 sm:px-0">
           {loading ? (
             <div className="flex items-center justify-center w-full h-full">
-              <p className="text-gray-600 text-lg">Loading dashboard...</p>
+              <p className="text-neutral7 text-lg">Loading dashboard...</p>
             </div>
           ) : error ? (
             <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6">
@@ -62,7 +63,7 @@ const Dashboard = () => {
               <div className=" flex-1 mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6 flex flex-row gap-3">
                 <ImageHolder
                   className="w-24 h-24 rounded-full mr-4 object-cover border-2 border-primary"
-                  src={companyData?.avatarURL || Default}
+                  src={companyData?.avatarUrl}
                   alt="Company Avatar"
                 />
 
@@ -92,7 +93,7 @@ const Dashboard = () => {
                   {companyData?.subscriptionType || "Company"}
                 </h1>
 
-                <Button variant="outline" size="sm" className="self-start">
+                <Button variant="outline" size="sm" className="self-start" onClick={() => navigate("/payment")}>
                   Upgrade Plan
                 </Button>
               </div>
