@@ -5,7 +5,7 @@ import AuthService from "../services/authService";
 import BgImage from "../assets/photo/bg-login.jpg";
 import { floatingShapes } from "../frame-motion/FlyingShape";
 import useAuth from "../hooks/useAuth";
-
+import Snowfall from "react-snowfall";
 export default function LoginPage() {
   const { login } = useAuth();
   return (
@@ -18,6 +18,13 @@ export default function LoginPage() {
         backgroundRepeat: "no-repeat",
       }}
     >
+      <Snowfall
+        snowflakeCount={300}
+        speed={[0.5, 2.5]}
+        wind={[-0.5, 1.5]}
+        radius={[0.5, 3]}
+        color="#ffffff"
+      />
       <div className="absolute inset-0 backdrop-blur-sm bg-bgComponent/50 z-0" />
 
       {floatingShapes.map(
