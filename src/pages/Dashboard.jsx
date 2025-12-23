@@ -6,15 +6,14 @@ import QuickStatsCard from "../components/QuickStatsCard";
 import GridTable from "../headless/grid_table/GridTable";
 import ImageHolder from "../components/ImageHolder";
 import React, { useEffect } from "react";
-
 import TalentSearchAds from "../components/TalentSearchAds";
-
 import { formatDateYear, countDaysFromDate } from "../utils/DateTime";
-
 import profileService from "../services/profileService";
-
 import useProfileStore from "../store/profile.store";
 import EditProfile from "../headless/edit_profile/EditProfile";
+import EventCard from "../components/EventCard";
+
+
 
 const Dashboard = () => {
   const {
@@ -36,15 +35,14 @@ const Dashboard = () => {
     });
   }, []);
 
-
   return (
-    <div className="min-h-screen bg-backGround">
+    <div className="min-h-screen bg-backGround pb-5">
       <NavBar activepage={"dashboard"} />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-2 sm:px-6 lg:px-8">
-        {/* Welcome Section */}
         <div className="px-4 sm:px-0">
+          {/* Welcome Section */}
           {loading ? (
             <div className="flex items-center justify-center w-full h-full">
               <p className="text-neutral7 text-lg">Loading dashboard...</p>
@@ -93,7 +91,12 @@ const Dashboard = () => {
                   {companyData?.subscriptionType || "Company"}
                 </h1>
 
-                <Button variant="outline" size="sm" className="self-start" onClick={() => navigate("/payment")}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="self-start"
+                  onClick={() => navigate("/payment")}
+                >
                   Upgrade Plan
                 </Button>
               </div>
@@ -262,6 +265,12 @@ const Dashboard = () => {
               <TalentSearchAds price={30} />
             </motion.div>
           )}
+
+          <GridTable
+            CardComponent={EventCard}
+            fetchItemAPI={profileService.getCompanyEvents}
+            className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6"
+          />
         </div>
       </main>
     </div>

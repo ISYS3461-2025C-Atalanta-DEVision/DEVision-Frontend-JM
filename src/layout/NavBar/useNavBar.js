@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "../../services/authService";
-import companyServices from "../../services/profileService";
+import profileServices from "../../services/profileService";
 import useAuth from "../../hooks/useAuth";
 import useProfileStore from "../../store/profile.store";
 import { p } from "framer-motion/client";

@@ -1,12 +1,12 @@
 import React from "react";
 import TalentSearch from "../assets/photo/talent_search_ads.png";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 
 export default function TalentSearchAds({ price }) {
   const navigate = useNavigate();
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-neutral-50">
+    <div className="relative overflow-hidden rounded-lg bg-neutral-50">
       <div
         className="absolute inset-0 pointer-events-none
     bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.35),transparent_60%)]"
@@ -71,7 +71,11 @@ export default function TalentSearchAds({ price }) {
             </h1>
           </div>
 
-          <Button className="w-full z-999" variant="primary" onClick={() => navigate("/payment")}>
+          <Button
+            className="w-full z-999"
+            variant="primary"
+            onClick={() => navigate("/payment")}
+          >
             Get it now
           </Button>
         </div>
