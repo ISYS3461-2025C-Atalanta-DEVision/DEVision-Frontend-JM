@@ -9,7 +9,7 @@ const jobPostStore = create((set, get) => ({
   setItems: (items) => set({ items }),
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error }),
-  setFilter: (filter) => set({ ...filter }),
+  setFilter: (filter) => set({ filter }),
 
   addItem: (newItem) =>
     set((state) => ({
