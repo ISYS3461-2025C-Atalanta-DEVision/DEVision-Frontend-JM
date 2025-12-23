@@ -2,7 +2,6 @@ import React from "react";
 import ImageHolder from "../components/ImageHolder";
 
 export default function CompanyCard({ items }) {
-
   return (
     <div className="w-full max-w-lg rounded-2xl bg-white border border-neutral-200 shadow-sm overflow-hidden hover:shadow-md transition">
       {/* Cover image */}
@@ -32,10 +31,10 @@ export default function CompanyCard({ items }) {
         <div className="flex flex-wrap gap-3 text-sm text-neutral-500 pt-2">
           <span className="flex items-center gap-1">
             <i className="ri-briefcase-line text-base" />
-            {items.jobs} jobs
+            {items.whoWeAreLookingFor}
           </span>
 
-          <span className="flex items-center gap-1">
+          <span className="flex items-start gap-1">
             <i className="ri-map-pin-line text-base" />
             {items?.streetAddress}, {items?.city}
           </span>

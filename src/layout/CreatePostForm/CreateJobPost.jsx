@@ -123,7 +123,7 @@ export default function CreateJobPost() {
             {!isFormOpen ? (
               <>
                 <div
-                  className="flex-1 text-3xl text-neutral8 flex flex-row items-center justify-center bg-bgComponent hover:bg-primary hover:text-neutral1 rounded-lg shadow p-6 gap-3"
+                  className="flex-1 text-2xl text-neutral8 flex flex-row items-center justify-center bg-bgComponent hover:bg-primary hover:text-neutral1 rounded-lg shadow p-2 gap-3"
                   onClick={() => setFormOpen(true)}
                 >
                   <h1 className="font-bold">Create New Job Post</h1>
