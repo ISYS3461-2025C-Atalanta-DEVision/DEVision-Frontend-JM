@@ -31,8 +31,7 @@ export default function JobPostPage() {
             <PostList
               PostCardComponent={PostCard}
               fetchPostAPI={postService.getPostList}
-              company={profile}
-              className="flex flex-col gap-6 mt-5"
+              className="flex flex-col gap-6 my-5"
               CreatePostComponent={CreateJobPost}
             />
           </section>

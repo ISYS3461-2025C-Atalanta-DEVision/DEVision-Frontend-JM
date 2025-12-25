@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import useJobPostStore from "../../store/jobpost.store";
 
 function usePostList(fetchItemAPI, company_Id) {
@@ -13,26 +13,36 @@ function usePostList(fetchItemAPI, company_Id) {
     setFilter,
   } = useJobPostStore();
 
-  async function fetchItems() {
+  // Fetch all items
+  const fetchItems = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
     try {
-      setError(null);
-      setLoading(true);
-      const result = await fetchItemAPI(company_Id);
+      const result = await fetchItemAPI();
       setItems(result);
-      setLoading(false);
-    } catch (error) {
-      setError(error.message);
-      setLoading(false);
+    } catch (err) {
+      setError(err.message || "Failed to fetch job posts");
     } finally {
       setLoading(false);
     }
-  }
+  }, [fetchItemAPI, company_Id, setItems, setLoading, setError]);
+
+  // Filter only PUBLIC posts
+  const filterPublic = useCallback(() => {
+    return items?.filter((item) => item.status === "PUBLIC") || [];
+  }, [items]);
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, [fetchItems]);
 
-  return { items, loading, error };
+  return {
+    items,
+    publicItems: filterPublic(),
+    loading,
+    error,
+  };
 }
 
 export default usePostList;

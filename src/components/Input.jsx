@@ -3,6 +3,7 @@ const Input = ({
   name,
   type = "text",
   value,
+  checked,
   onChange,
   onBlur,
   error,
@@ -12,6 +13,7 @@ const Input = ({
   className = "",
   ...props
 }) => {
+  const isCheckbox = type === "checkbox";
   return (
     <div className={`${className}`}>
       {label && (
@@ -27,10 +29,11 @@ const Input = ({
         id={name}
         name={name}
         type={type}
+        {...(isCheckbox ? { checked } : { value })}
         value={value}
         onChange={onChange}
         onBlur={onBlur}
-        placeholder={placeholder}
+        placeholder={!isCheckbox ? placeholder : undefined}
         disabled={disabled}
         rows={type === "textarea" ? 5 : undefined}
         className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors

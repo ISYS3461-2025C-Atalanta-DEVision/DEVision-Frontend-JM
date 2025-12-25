@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { QUICK_STATS_CARD_CONFIG } from "../ui_config/QuickStats";
+import { QUICK_STATS_CARD_CONFIG } from "../static/QuickStats";
 
 
 export default function QuickStatsCard({ item, key }) {

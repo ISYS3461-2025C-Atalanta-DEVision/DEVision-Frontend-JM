@@ -22,7 +22,14 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
   const handleChange = useCallback(
     (e) => {
       const { name, value, type, checked } = e.target;
-      const newValue = type === "checkbox" ? checked : value;
+      let newValue;
+
+      if (type === "checkbox" && name === "status") {
+        newValue = checked ? "PUBLIC" : "PRIVATE";
+      } else {
+        newValue = type === "checkbox" ? checked : value;
+      }
+      
       setValues((prev) => ({ ...prev, [name]: newValue }));
       if (touched[name]) {
         setErrors((prev) => ({
@@ -83,6 +90,18 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
     []
   );
 
+  const handlerRemoveListItem = useCallback((name, valueToRemove) => {
+    setValues((prev) => {
+      const prevArr = Array.isArray(prev[name]) ? prev[name] : [];
+      const updatedArr = prevArr.filter((item) => item !== valueToRemove);
+
+      return {
+        ...prev,
+        [name]: updatedArr,
+      };
+    });
+  }, []);
+
   const handleBlur = useCallback(
     (e) => {
       const { name, value } = e.target;
@@ -131,13 +150,14 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
     touched,
     handleListChange,
     handleChange,
+    handlerRemoveListItem,
     handleBlur,
     validateAll,
     reset,
     setValue,
     setValues,
     setErrors,
-    handleFileChange
+    handleFileChange,
   };
 };
 

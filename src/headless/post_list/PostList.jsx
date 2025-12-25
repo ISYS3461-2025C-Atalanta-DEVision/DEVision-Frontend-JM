@@ -5,17 +5,16 @@ import { motion } from "framer-motion";
 export default function PostList({
   PostCardComponent,
   fetchPostAPI,
-  company,
   className,
   CreatePostComponent,
   createPostAPI,
 }) {
-  const { items, loading, error } = usePostList(fetchPostAPI, company?.id);
+  const { publicItems,items, loading, error } = usePostList(fetchPostAPI);
 
   return (
     <>
       {CreatePostComponent ? (
-        <CreatePostComponent company={company} />
+        <CreatePostComponent />
       ) : (
         <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-2">
           <p className="text-error text-center w-full">
@@ -33,7 +32,7 @@ export default function PostList({
         </div>
       ) : (
         <div className={className}>
-          {items.map((item, index) => (
+          {publicItems.map((item, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 10 }}

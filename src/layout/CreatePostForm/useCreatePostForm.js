@@ -1,6 +1,6 @@
 import jobPostCreateStore from "../../store/jobpost.create.store";
 import jobPostStore from "../../store/jobpost.store";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 
 function useCreatePostForm(values, createPostApi, validateAll, reset) {
   const {
@@ -38,23 +38,23 @@ function useCreatePostForm(values, createPostApi, validateAll, reset) {
         return;
       }
 
-      if (!values.published) {
+      if (values.status !== "PUBLIC") {
         setConfirmBoxOpen(true);
         return;
       }
 
+      const payload = cleanPayload();
       setIsCreating(true);
-      await createPostApi(values);
+      await createPostApi(payload);
 
-      console.log("Submitting post data:", values);
       await new Promise((resolve) => setTimeout(resolve, 800));
       setIsCreating(false);
       setSuccess("Your post has been created successfully!");
 
       await new Promise((resolve) => setTimeout(resolve, 1200));
       setFormOpen(false);
-      setSuccess(null);
-      reset();
+      // Reload the page so PostList fetches fresh posts without manual refresh
+      window.location.reload();
     } catch (err) {
       console.error("Failed to create post:", err);
       setError(err.message || "Failed to create post");
@@ -63,6 +63,47 @@ function useCreatePostForm(values, createPostApi, validateAll, reset) {
       setIsCreating(false);
     }
   };
+
+  const cleanPayload = useCallback(() => {
+    // 1️⃣ Merge employment types
+    const employmentTypes = [
+      values.employmentTypes,
+      ...(values.additionalEmploymentType || []),
+    ].filter(Boolean);
+
+    const payload = {
+      title: values.title,
+      description: values.description,
+      location: values.location,
+      status: values.status,
+      employmentTypes,
+      salaryType: values.salaryType,
+      skills: values.skills,
+      expireDate: values.expireDate,
+      salaryCurrency: values.salaryCurrency,
+    };
+
+    switch (values.salaryType) {
+      case "RANGE":
+        payload.salaryMin = values.salaryMin ? Number(values.salaryMin) : null;
+        payload.salaryMax = values.salaryMax ? Number(values.salaryMax) : null;
+        break;
+
+      case "ESTIMATION":
+        payload.salaryAmount = values.salaryAmount
+          ? Number(values.salaryAmount)
+          : null;
+        payload.salaryEstimationType = values.salaryEstimationType || null;
+        break;
+
+      case "NEGOTIABLE":
+      default:
+        // do NOTHING → no salary fields included
+        break;
+    }
+
+    return payload;
+  }, [values]);
 
   return {
     isCreating,
