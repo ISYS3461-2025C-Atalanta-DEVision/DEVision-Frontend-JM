@@ -9,7 +9,7 @@ export default function CompanyCard({ items }) {
         <div className="bg-neutral4 w-full h-full object-cover" />
 
         {/* Logo */}
-        <div className="absolute -bottom-8 left-6 w-16 h-16 rounded-full bg-white p-1 shadow">
+        <div className="absolute -bottom-8 left-7 w-20 h-20 rounded-full bg-white p-1 shadow">
           <ImageHolder
             src={`${items.avatarUrl}`}
             alt="Company logo"
