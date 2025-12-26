@@ -24,6 +24,19 @@ export const profileService = {
     return response.data;
   },
 
+  editAvatar: async (file) => {
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    const response = await api.post(`${PROFILE_URL}/avatar`, formData, {
+      headers: {
+        "Content-Type": undefined,
+      },
+    });
+
+    return response.data;
+  },
+
   getCompanyEvents: async (companyId) => {
     const mockEvents = [
       {

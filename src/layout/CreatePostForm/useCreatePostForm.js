@@ -2,7 +2,13 @@ import jobPostCreateStore from "../../store/jobpost.create.store";
 import jobPostStore from "../../store/jobpost.store";
 import { useEffect, useCallback } from "react";
 
-function useCreatePostForm(values, createPostApi, validateAll, reset) {
+function useCreatePostForm(
+  values,
+  createPostApi,
+  validateAll,
+  reset,
+  onPostCreated
+) {
   const {
     success,
     error,
@@ -54,7 +60,7 @@ function useCreatePostForm(values, createPostApi, validateAll, reset) {
       await new Promise((resolve) => setTimeout(resolve, 1200));
       setFormOpen(false);
       // Reload the page so PostList fetches fresh posts without manual refresh
-      window.location.reload();
+      onPostCreated?.();
     } catch (err) {
       console.error("Failed to create post:", err);
       setError(err.message || "Failed to create post");

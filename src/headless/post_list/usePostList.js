@@ -40,6 +40,7 @@ function usePostList(fetchItemAPI, company_Id) {
   return {
     items,
     publicItems: filterPublic(),
+    refetch: fetchItems,
     loading,
     error,
   };

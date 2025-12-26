@@ -5,15 +5,13 @@ import NavBar from "../layout/NavBar/NavBar";
 import QuickStatsCard from "../components/QuickStatsCard";
 import GridTable from "../headless/grid_table/GridTable";
 import ImageHolder from "../components/ImageHolder";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import TalentSearchAds from "../components/TalentSearchAds";
 import { formatDateYear, countDaysFromDate } from "../utils/DateTime";
 import profileService from "../services/profileService";
 import useProfileStore from "../store/profile.store";
 import EditProfile from "../headless/edit_profile/EditProfile";
 import EventCard from "../components/EventCard";
-
-
 
 const Dashboard = () => {
   const {
@@ -23,6 +21,7 @@ const Dashboard = () => {
     setProfile,
   } = useProfileStore();
 
+  const editProfileRef = useRef(null);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const isEditMode = searchParams.get("edit") === "true";
@@ -34,6 +33,20 @@ const Dashboard = () => {
       return next;
     });
   }, []);
+
+  useEffect(() => {
+    if (!isEditMode || !editProfileRef.current) return;
+
+    const navbarHeight = 72; // adjust if your NavBar height differs
+
+    const elementTop =
+      editProfileRef.current.getBoundingClientRect().top + window.pageYOffset;
+
+    window.scrollTo({
+      top: elementTop - navbarHeight,
+      behavior: "smooth",
+    });
+  }, [isEditMode]);
 
   return (
     <div className="min-h-screen bg-backGround pb-5">
@@ -244,11 +257,13 @@ const Dashboard = () => {
               </div>
             </motion.div>
           ) : (
-            <EditProfile
-              currentData={companyData}
-              setSearchParams={setSearchParams}
-              setNewProfile={setProfile}
-            />
+            <div ref={editProfileRef}>
+              <EditProfile
+                currentData={companyData}
+                setSearchParams={setSearchParams}
+                setNewProfile={setProfile}
+              />
+            </div>
           )}
 
           {loading ? (

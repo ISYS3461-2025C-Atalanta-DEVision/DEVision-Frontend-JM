@@ -14,7 +14,6 @@ export default function EventCard({ item }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  console.log(item);
   return (
     <>
       {/* CARD */}

@@ -15,6 +15,9 @@ import profileService from "../../services/profileService";
 
 import useEditProfile from "./useEditProfile";
 import Default from "../../assets/photo/company_default.png";
+import AvatarModal from "../../components/AvatarModal";
+import useProfile from "../../hooks/useProfile";
+import Alert from "../../components/Alert";
 
 export default function EditProfile({
   currentData,
@@ -23,6 +26,7 @@ export default function EditProfile({
 }) {
   const companyData = currentData;
 
+  const { fetchCompanyProfile } = useProfile();
   const {
     values,
     errors,
@@ -30,6 +34,7 @@ export default function EditProfile({
     handleBlur,
     validateAll,
     handleFileChange,
+    setValues,
   } = useForm(
     {
       ...companyData,
@@ -49,17 +54,24 @@ export default function EditProfile({
   const {
     countries,
     loadingCountries,
-    error,
     isSaving,
     confirmationMessage,
     handleSubmit,
+    avatarModal,
+    setAvatarModal,
+    handleAvatarSave,
+    isSavingAvatar,
+    avatarMessage,
   } = useEditProfile(
     profileService.editProfile,
+    profileService.editAvatar,
     authService.getCountries,
     values,
     validateAll,
-    setSearchParams,
-    setNewProfile
+    setNewProfile,
+    fetchCompanyProfile,
+    setValues,
+    setSearchParams
   );
 
   return (
@@ -90,13 +102,19 @@ export default function EditProfile({
             type="file"
             accept="image/*"
             className="hidden"
-            onChange={(e) =>
-              handleFileChange(e, {
-                fileField: "avatarUrl",
-                previewField: "avatarUrl",
-              })
-            }
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+
+              const previewUrl = URL.createObjectURL(file);
+              setAvatarModal(previewUrl);
+
+              e.target.value = "";
+            }}
           />
+
+          {avatarMessage && <Alert type={avatarMessage.type} message={avatarMessage.message} />}
+          
         </div>
 
         <hr className="my-6 border-t-2 border-neutral3" />
@@ -228,9 +246,17 @@ export default function EditProfile({
         </div>
 
         <div className="mt-4 flex justify-end gap-4">
+          {confirmationMessage ? (
+            <>
+              <Alert type={confirmationMessage.type} message={confirmationMessage.message} />
+            </>
+          ) : (
+            <></>
+          )}
+
           <Button
             variant="outline"
-            size="sm"
+            size="md"
             onClick={() => {
               setSearchParams((prev) => {
                 const next = new URLSearchParams(prev);
@@ -238,31 +264,33 @@ export default function EditProfile({
                 return next;
               });
             }}
+            disabled={isSaving}
           >
             Cancel
           </Button>
-          <Button variant="primary" size="sm" onClick={() => handleSubmit()}>
-            Save
+          <Button variant="primary" size="md" onClick={() => handleSubmit()}>
+            {isSaving ? (
+              <>
+                <i className="ri-loader-4-line animate-spin" />
+                Saving changes...
+              </>
+            ) : (
+              "Save"
+            )}
           </Button>
         </div>
       </motion.div>
 
-      {isSaving && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm rounded-lg">
-          <div className="bg-bgComponent px-6 py-4 rounded-md shadow-lg text-textBlack font-medium flex items-center gap-3">
-            {confirmationMessage ? (
-              <>
-                <i className="ri-checkbox-circle-fill text-lg text-primary"></i>
-                Saved
-              </>
-            ) : (
-              <>
-                <i className="ri-loader-4-line animate-spin text-lg" />
-                Saving changes...
-              </>
-            )}
-          </div>
-        </div>
+      {avatarModal && (
+        <AvatarModal
+          image={avatarModal}
+          onSave={handleAvatarSave}
+          onClose={() => {
+            URL.revokeObjectURL(avatarModal);
+            setAvatarModal(null);
+          }}
+          isSaving={isSavingAvatar}
+        />
       )}
     </div>
   );

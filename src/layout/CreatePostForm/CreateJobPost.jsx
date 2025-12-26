@@ -17,11 +17,9 @@ import useCreatePostForm from "./useCreatePostForm";
 import { motion, AnimatePresence } from "framer-motion";
 import postService from "../../services/postService";
 import ImageHolder from "../../components/ImageHolder";
-import useProfile from "../../hooks/useProfile";
 import ConfirmBox from "../../components/ConfirmBox";
 
-export default function CreateJobPost() {
-  const { profile } = useProfile();
+export default function CreateJobPost({onPostCreated}) {
 
   const {
     values,
@@ -124,7 +122,7 @@ export default function CreateJobPost() {
     setFormOpen,
     confirmBoxOpen,
     setConfirmBoxOpen,
-  } = useCreatePostForm(values, postService.createPost, validateAll, reset);
+  } = useCreatePostForm(values, postService.createPost, validateAll, reset, onPostCreated);
 
   const formVariants = {
     hidden: { opacity: 0, y: -20 },

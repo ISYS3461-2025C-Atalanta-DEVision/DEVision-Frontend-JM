@@ -9,12 +9,12 @@ export default function PostList({
   CreatePostComponent,
   createPostAPI,
 }) {
-  const { publicItems,items, loading, error } = usePostList(fetchPostAPI);
+  const { publicItems,items, loading, error, refetch } = usePostList(fetchPostAPI);
 
   return (
     <>
       {CreatePostComponent ? (
-        <CreatePostComponent />
+        <CreatePostComponent onPostCreated={refetch} />
       ) : (
         <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-2">
           <p className="text-error text-center w-full">
