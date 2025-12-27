@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import useGridTable from "./useGridTable";
 
-export default function GridTable({ CardComponent, fetchItemAPI, className }) {
+export default function GridTable({ customItems=[],CardComponent, fetchItemAPI = null, className }) {
   const { items, loading, error } = useGridTable(fetchItemAPI);
   return (
     <>
@@ -15,8 +15,8 @@ export default function GridTable({ CardComponent, fetchItemAPI, className }) {
           <p className="text-error text-center w-full">{error}</p>
         </div>
       ) : (
-        <div className={className}>
-          {items.map((item, index) => (
+        <div className={`grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ${className}`}>
+          {(customItems.length > 0 ? customItems : items).map((item, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 10 }}

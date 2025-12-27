@@ -14,7 +14,6 @@ const jobPostCreateStore = create((set, get) => ({
   setConfirmBoxOpen: (isOpen) => set(() => ({ confirmBoxOpen: isOpen })),
   reset: () =>
     set(() => ({
-      postData: null,
       error: null,
       isCreating: false,
       confirmBoxOpen: false,  
