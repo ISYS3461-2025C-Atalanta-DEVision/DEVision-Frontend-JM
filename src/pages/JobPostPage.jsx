@@ -5,7 +5,7 @@ import PostCard from "../components/PostCard";
 import NavBar from "../layout/NavBar/NavBar";
 import CreateJobPost from "../layout/CreatePostForm/CreateJobPost";
 import CompanyCard from "../components/CompanyCard";
-
+import jobPostService from "../services/jobPostService";
 import useProfileStore from "../store/profile.store";
 
 export default function JobPostPage() {
@@ -30,7 +30,7 @@ export default function JobPostPage() {
           <section className="flex-1">
             <PostList
               PostCardComponent={PostCard}
-              fetchPostAPI={postService.getPostList}
+              fetchPostAPI={jobPostService.getJobPostsByCompany}
               company={profile}
               className="flex flex-col gap-6 mt-5"
               CreatePostComponent={CreateJobPost}

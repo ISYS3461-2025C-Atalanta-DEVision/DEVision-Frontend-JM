@@ -31,9 +31,9 @@ export default function PostCard({ item }) {
         </p>
         <p></p>
         {/* Skill tag */}
-        {item.skillRequire?.length > 0 && (
+        {item.skills?.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            {item.skillRequire.map((skill, idx) => (
+            {item.skills.map((skill, idx) => (
               <SkillTag key={idx} skillName={skill} />
             ))}
           </div>
@@ -51,7 +51,10 @@ export default function PostCard({ item }) {
         </p>
         <p>
           <span className="font-semibold">Employment:</span>{" "}
-          {item.employmentType.join(", ")}
+          {[
+            item.employmentType,
+            ...(item.additionalEmploymentTypes || [])
+          ].filter(Boolean).join(", ") || "-"}
         </p>
         <p>
           <span className="font-semibold">Posted:</span> {item.postedDate}

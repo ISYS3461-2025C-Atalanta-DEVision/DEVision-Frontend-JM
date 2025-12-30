@@ -15,8 +15,8 @@ export const jobPostService = {
   },
 
   // Get job posts by company
-  getJobPostsByCompany: async (companyId) => {
-    const response = await api.get(JOBPOST_COMPANY_URL(companyId));
+  getJobPostsByCompany: async ()=> {
+    const response = await api.get(`${JOBPOST_COMPANY_URL}`);
     return response.data;
   },
 
