@@ -1,5 +1,5 @@
 import React from "react";
-import usePostList from "./usePostList";
+import usePostList from "./hooks/usePostList";
 import { motion } from "framer-motion";
 
 export default function PostList({
@@ -10,8 +10,23 @@ export default function PostList({
   CreatePostComponent,
   createPostAPI,
 }) {
-  const { items, loading, error } = usePostList(fetchPostAPI, company?.id);
+  const loaderRef = useRef(null);
+  const {
+    items,
+    loading,
+    error,
+    loadMore,
+    hasMore,
+  } = usePostList(
+    jobPostService.getJobPostsByCompany, // or getJobPostsByCompanyMe
+    /* companyId if needed, or null if backend infers from token */
+  );
 
+  useObserveScrolling({
+    loadMore: hasMore ? loadMore : () => { },
+    loaderRef,
+    loading,
+  });
   return (
     <>
       {CreatePostComponent ? (
@@ -44,7 +59,12 @@ export default function PostList({
             </motion.div>
           ))}
         </div>
+
       )}
+      <div ref={loaderRef} className="h-8 flex justify-center items-center">
+        {loading && <span>Loading…</span>}
+        {!hasMore && !loading && <span>No more jobs</span>}
+      </div>
     </>
   );
 }

@@ -1,7 +1,7 @@
 import React from "react";
-import ImageHolder from "../components/ImageHolder";
-import Button from "../components/Button";
-import SkillTag from "../components/SkillTag";
+import ImageHolder from "../../../components/ImageHolder";
+import Button from "../../../components/Button";
+import SkillTag from "../../../components/SkillTag";
 
 export default function PostCard({ item }) {
   if (!item) return null;

@@ -1,11 +1,13 @@
 import { create } from "zustand";
 
-const jobPostStore = create((set, get) => ({
+const jobPostStore = create((set) => ({
+  allItems: [],
   items: [],
   loading: false,
   error: null,
-  filter: [],
+  filter: null,
 
+  setAllItems: (allItems) => set({ allItems }),
   setItems: (items) => set({ items }),
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error }),
