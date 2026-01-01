@@ -16,7 +16,7 @@ export default function PostCard({ item }) {
           className="text-sm px-2 py-1 rounded bg-primary2 text-neutral1 font-medium"
           title="Company Name"
         >
-          {item.company_name}
+          {item.companyName}
         </span>
       </div>
 
