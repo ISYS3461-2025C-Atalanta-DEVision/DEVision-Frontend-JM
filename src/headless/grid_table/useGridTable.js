@@ -6,6 +6,7 @@ function useGridTable(fetchItemAPI) {
   const [error, setError] = useState(null);
 
   async function fetchItems() {
+    if (! fetchItemAPI) return;
     try {
       setError(null);
       setLoading(true);

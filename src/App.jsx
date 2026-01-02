@@ -14,6 +14,7 @@ import JobPostPage from "./pages/JobPostPage";
 import OAuthCallback from "./pages/OAuthCallback";
 import ActivateAccount from "./pages/ActivateAccount";
 import SubscriptionPayment from "./pages/SubscriptionPayment";
+import EventPage from "./pages/EventsPage";
 
 function App() {
   return (
@@ -40,6 +41,14 @@ function App() {
           element={
             <ProtectedRoute>
               <JobPostPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/event"
+          element={
+            <ProtectedRoute>
+              <EventPage/>
             </ProtectedRoute>
           }
         />

@@ -25,11 +25,10 @@ export default function NavBar({ activepage }) {
             {/* Dashboard */}
             <a
               className={`cursor-pointer transition-colors 
-              ${
-                isActive("dashboard")
+              ${isActive("dashboard")
                   ? "text-primary font-semibold"
                   : "hover:text-primary"
-              }`}
+                }`}
               onClick={() => handleNavigate("/dashboard")}
             >
               Dashboard
@@ -38,11 +37,10 @@ export default function NavBar({ activepage }) {
             {/* Jobs */}
             <a
               className={`cursor-pointer transition-colors 
-              ${
-                isActive("jobs")
+              ${isActive("jobs")
                   ? "text-primary font-semibold"
                   : "hover:text-primary"
-              }`}
+                }`}
               onClick={() => handleNavigate("/jobpost")}
             >
               Recruitment
@@ -51,11 +49,12 @@ export default function NavBar({ activepage }) {
             {/* Event */}
             <a
               className={`cursor-pointer transition-colors 
-              ${
-                isActive("event")
+              ${isActive("event")
                   ? "text-primary font-semibold"
                   : "hover:text-primary"
-              }`}
+                }`}
+              onClick={() => handleNavigate("/event")}
+
             >
               Events
             </a>

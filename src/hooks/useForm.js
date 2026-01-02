@@ -278,6 +278,20 @@ export const postValidators = {
     }
     return "";
   },
+  maxLength: (max, message) => (value) => {
+    if (!value) return "";
+    if (value.length > max) {
+      return message || `Must be less than ${max} characters`;
+    }
+    return "";
+  },
+  maxArrayLength: (max, message) => (value) => {
+    if (!Array.isArray(value)) return "";
+    if (value.length > max) {
+      return message || `Select no more than ${max} items`;
+    }
+    return "";
+  }
 };
 
 export default useForm;

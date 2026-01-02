@@ -13,6 +13,8 @@ import useProfileStore from "../store/profile.store";
 import EditProfile from "../headless/edit_profile/EditProfile";
 import EventCard from "../components/EventCard";
 
+import CreateEventForm from "../layout/CreateEventForm/CreateEventForm";
+
 const Dashboard = () => {
   const {
     profile: companyData,
@@ -120,9 +122,10 @@ const Dashboard = () => {
           <GridTable
             CardComponent={QuickStatsCard}
             fetchItemAPI={profileService.getQuickActionStats}
-            className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="gap-6"
           />
 
+          <CreateEventForm />
           {/* Profile Section */}
           {loading ? (
             <div className="flex items-center justify-center w-full h-full">
@@ -284,7 +287,7 @@ const Dashboard = () => {
           <GridTable
             CardComponent={EventCard}
             fetchItemAPI={profileService.getCompanyEvents}
-            className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6"
+            className="gap-6 mt-6"
           />
         </div>
       </main>
