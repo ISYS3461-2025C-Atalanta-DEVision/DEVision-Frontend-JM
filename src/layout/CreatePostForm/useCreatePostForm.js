@@ -77,6 +77,8 @@ function useCreatePostForm(
       ...(values.additionalEmploymentType || []),
     ].filter(Boolean);
 
+    const today = new Date().toISOString().slice(0, 10);
+
     const payload = {
       title: values.title,
       description: values.description,
@@ -85,6 +87,7 @@ function useCreatePostForm(
       employmentTypes,
       salaryType: values.salaryType,
       skills: values.skills,
+      postedDate: today,
       expireDate: values.expireDate,
       salaryCurrency: values.salaryCurrency,
     };

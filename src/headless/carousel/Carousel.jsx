@@ -26,12 +26,29 @@ export default function Carousel({
   currentIndex: externalIndex,
   onIndexChange,
 }) {
-    
-  const { currentIndex, direction, goToPrevious, goToNext, goToIndex, totalImages } =
-    useCarousel(images, externalIndex, onIndexChange);
+  const {
+    currentIndex,
+    direction,
+    goToPrevious,
+    goToNext,
+    goToIndex,
+    totalImages,
+  } = useCarousel(images, externalIndex, onIndexChange);
 
   return (
-    <div className={`relative overflow-hidden rounded-[16px] ${className}`}>
+    <div
+      className={`
+    relative
+    aspect-square
+    bg-neutral2
+    overflow-hidden
+    rounded-[16px]
+    flex items-center justify-center
+    w-full
+    p-2
+    ${className}
+  `}
+    >
       {/* Image container */}
       <AnimatePresence initial={false} custom={direction} mode="wait">
         <motion.img
@@ -44,7 +61,7 @@ export default function Carousel({
           animate="center"
           exit="exit"
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className={`w-full h-full object-cover ${imageClassName}`}
+          className={`inset-0 m-auto max-w-[100%] max-h-[100%] object-contain ${imageClassName}`}
         />
       </AnimatePresence>
 

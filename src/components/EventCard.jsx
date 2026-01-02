@@ -61,21 +61,19 @@ export default function EventCard({ item }) {
               className="relative z-10 max-w-5xl w-full mx-6 bg-white rounded-3xl shadow-xl overflow-hidden"
             >
               <Carousel
-                images={item.images}
+                images={item.imageUrls}
                 showArrows={true}
                 showDots={true}
                 currentIndex={selectedThumbnail}
                 onIndexChange={setSelectedThumbnail}
-                className="w-full max-h-[70vh] object-cover"
+                className="h-[70vh] aspect-square object-cover"
               />
 
               <div className="p-6 space-y-3">
                 <h2 className="text-2xl font-bold">{item.title}</h2>
-                <p className="text-gray-600 text-sm">{item.date}</p>
+                <p className="text-neutral6 text-sm">{item.date}</p>
 
-                <p className="text-gray-800 leading-relaxed">
-                  {item.description}
-                </p>
+                <p className="text-blacktxt leading-relaxed">{item.caption}</p>
               </div>
 
               {/* CLOSE BUTTON */}
@@ -84,9 +82,9 @@ export default function EventCard({ item }) {
                   setOpen(false);
                   setSelectedThumbnail(0);
                 }}
-                className="absolute top-4 right-4 bg-white/80 hover:bg-white text-black rounded-full w-9 h-9 flex items-center justify-center shadow"
+                className="absolute top-4 right-4 bg-white text-blacktxt hover:bg-primary hover:text-white rounded-full w-9 h-9 flex items-center justify-center shadow"
               >
-                ✕
+                <i className="ri-close-large-line" />
               </button>
             </motion.div>
           </motion.div>

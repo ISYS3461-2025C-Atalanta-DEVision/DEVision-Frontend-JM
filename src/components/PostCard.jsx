@@ -125,7 +125,7 @@ export default function PostCard({ item }) {
       {/* Company */}
       <div className="flex items-center gap-2 mb-2">
         <span className="text-sm font-semibold text-primary2 uppercase tracking-wide">
-          Devision
+          {item.companyName}
         </span>
         <span className="text-xs px-2 py-0.5 bg-primary2/10 text-primary2 rounded-full">
           Verified Company

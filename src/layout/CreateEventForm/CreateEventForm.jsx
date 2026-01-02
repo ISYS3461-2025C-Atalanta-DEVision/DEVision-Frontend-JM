@@ -6,11 +6,11 @@ import ImageHolder from "../../components/ImageHolder";
 import useForm from "../../hooks/useForm";
 import { postValidators } from "../../hooks/useForm";
 import useCreateEventForm from "./useCreateEventForm";
-import profileService from "../../services/profileService";
+import eventService from "../../services/eventService";
 import GridTable from "../../headless/grid_table/GridTable";
 import Alert from "../../components/Alert";
 
-export default function CreateEventForm({}) {
+export default function CreateEventForm({setSearchParams}) {
   const {
     values,
     errors,
@@ -19,12 +19,13 @@ export default function CreateEventForm({}) {
     handleListChange,
     validateAll,
     handleFileChange,
+    handleRemoveImage,
     reset,
   } = useForm(
     {
       title: "",
       caption: "",
-      coverImage: "",
+      coverImage: null,
       images: [],
     },
     {
@@ -49,23 +50,15 @@ export default function CreateEventForm({}) {
           "Cover image URL must not exceed 500 characters"
         ),
       ],
-      imageUrls: [
-        postValidators.maxArrayLength(10, "Maximum 10 images allowed"),
-        // Optionally add individual URL length check
-      ],
-      videoUrl: [
-        postValidators.maxLength(
-          500,
-          "Video URL must not exceed 500 characters"
-        ),
-      ],
+      images: [postValidators.maxArrayLength(10, "Maximum 10 images allowed")],
     }
   );
 
   const { handleSubmit, isCreating, setFormOpen, isFormOpen, message } =
-    useCreateEventForm(values, profileService.createEvent, validateAll, reset);
+    useCreateEventForm(values, eventService.createEvent, validateAll, reset);
 
   return (
+
     <form
       className="w-full mx-auto p-6 bg-bgComponent rounded-lg shadow space-y-6 mt-6"
       onSubmit={handleSubmit}
@@ -106,7 +99,10 @@ export default function CreateEventForm({}) {
       <div className="flex flex-col w-full items-center md:items-start gap-6">
         <div className="w-full flex flex-col gap-2">
           <label className="block text-sm font-medium text-neutral8">
-            Cover Image
+            Cover Image{" "}
+            {errors.coverImage && (
+              <span className="text-error"> - {errors.coverImage}</span>
+            )}
           </label>
           <div
             className={`
@@ -167,28 +163,48 @@ export default function CreateEventForm({}) {
 
         <div className="h-full w-full flex flex-col gap-2">
           <label className="block text-sm font-medium text-neutral8">
-            Addtional Images
+            Addtional Images{" "}
+            {errors.images && (
+              <span className="text-error"> - {errors.images}</span>
+            )}
           </label>
           <div className="grid h-full grid-cols-4 gap-3">
-            {Array.from({ length: 3 }).map((_, i) => (
-                <div
-                key={i}
-                className="
-                  aspect-square
-                  bg-error rounded-lg
-                  flex items-center justify-center
-                  text-neutral7 text-2xl font-medium
-                  cursor-pointer
-                  hover:bg-neutral6 transition
-                "
-                title="Add image"
-              >
-                +
-              </div>
-            ))}
+            {Array.isArray(values.images) &&
+              values.images.map((_, i) => (
+                <div className="relative group bg-neutral2 rounded-lg flex justify-center items-center" key={i}>
+                  <ImageHolder
+                    src={
+                      values.imagePreviews && values.imagePreviews[i]
+                        ? values.imagePreviews[i]
+                        : typeof values.images[i] === "string"
+                        ? values.images[i]
+                        : ""
+                    }
+                    className={"w-full"}
+                    alt="Additional images"
+                  />
 
-             <div
-                className="
+                  <button
+                    type="button"
+                    className="
+                    absolute top-2 right-2
+                    w-8 h-8
+                    bg-neutral7 text-white
+                    rounded-full
+                    flex items-center justify-center
+                    opacity-0 group-hover:opacity-100
+                    transition-opacity hover:bg-error transition
+                  "
+                    title="Remove image"
+                    onClick={() => handleRemoveImage(i)}
+                  >
+                    <i className="ri-close-large-line" />
+                  </button>
+                </div>
+              ))}
+
+            <div
+              className="
                   aspect-square
                   bg-neutral4 rounded-lg
                   flex items-center justify-center
@@ -196,10 +212,13 @@ export default function CreateEventForm({}) {
                   cursor-pointer
                   hover:bg-neutral6 transition
                 "
-                title="Add image"
-              >
-                +
-              </div>
+              title="Add image"
+              onClick={() =>
+                document.getElementById("additionals-upload").click()
+              }
+            >
+              +
+            </div>
           </div>
         </div>
 
@@ -213,6 +232,24 @@ export default function CreateEventForm({}) {
               fileField: "coverImage",
               previewField: "coverImagePreview",
               createPreview: true,
+              multiple: false,
+            });
+            e.target.value = "";
+          }}
+        />
+
+        <input
+          id="additionals-upload"
+          type="file"
+          accept="image/*"
+          multiple
+          className="hidden"
+          onChange={(e) => {
+            handleFileChange(e, {
+              fileField: "images",
+              previewField: "imagePreviews",
+              createPreview: true,
+              multiple: true,
             });
             e.target.value = "";
           }}
@@ -233,5 +270,7 @@ export default function CreateEventForm({}) {
         </div>
       )}
     </form>
+
+
   );
 }

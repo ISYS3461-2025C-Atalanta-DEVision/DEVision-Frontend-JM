@@ -13,7 +13,6 @@ function useCategoryInput(options, onBlur, value, nameFromList) {
 
   const handleBlur = useCallback(() => {
     if (isTouched && value.length === 0) {
-      console.log("Category input blurred with no selection");
       onBlur({ target: { name: nameFromList, value: [] } });
     }
   });

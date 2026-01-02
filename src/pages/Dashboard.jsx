@@ -8,6 +8,7 @@ import ImageHolder from "../components/ImageHolder";
 import React, { useEffect, useRef } from "react";
 import TalentSearchAds from "../components/TalentSearchAds";
 import { formatDateYear, countDaysFromDate } from "../utils/DateTime";
+import eventService from "../services/eventService";
 import profileService from "../services/profileService";
 import useProfileStore from "../store/profile.store";
 import EditProfile from "../headless/edit_profile/EditProfile";
@@ -286,7 +287,7 @@ const Dashboard = () => {
 
           <GridTable
             CardComponent={EventCard}
-            fetchItemAPI={profileService.getCompanyEvents}
+            fetchItemAPI={eventService.getCompanyEvents}
             className="gap-6 mt-6"
           />
         </div>

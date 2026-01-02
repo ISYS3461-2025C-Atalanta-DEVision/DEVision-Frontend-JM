@@ -1,6 +1,6 @@
 import api from "../http_call/HttpRequest";
 import CreateEventForm from "../layout/CreateEventForm/CreateEventForm";
-import { PROFILE_URL, EVENT_URL } from "../service_url/ProfileUrlConfig";
+import { PROFILE_URL } from "../service_url/ProfileUrlConfig";
 
 export const profileService = {
   getQuickActionStats: async (companyId) => {
@@ -36,15 +36,6 @@ export const profileService = {
     });
 
     return response.data;
-  },
-
-  getCompanyEvents: async (companyId) => {
-    const response = await api.get(`${EVENT_URL}/me`);
-    return response.data;
-  },
-
-  createEvent: async (eventData) => {
-    console.log("Creating event with data:", eventData);
   },
 };
 

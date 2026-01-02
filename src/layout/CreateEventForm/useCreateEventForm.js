@@ -16,18 +16,19 @@ function useCreateEventForm(values, createEventApi, validateAll, reset) {
     setMessage(null);
 
     try {
-      // const isValid = validateAll();
+      const isValid = validateAll();
 
-      // if (!isValid) {
-      //   setMessage({
-      //     type: "error",
-      //     msg: "Please fill all the fields correctly.",
-      //   });
-      //   return;
-      // }
-
+      if (!isValid) {
+        setMessage({
+          type: "error",
+          msg: "Please fill all the fields correctly.",
+        });
+        return;
+      }
+      
+      const { coverImagePreview, imagePreviews, ...rest } = values;
       setIsCreating(true);
-      await createEventApi(values);
+      await createEventApi(rest);
 
       await new Promise((resolve) => setTimeout(resolve, 800));
       setIsCreating(false);
@@ -55,7 +56,7 @@ function useCreateEventForm(values, createEventApi, validateAll, reset) {
     isCreating,
     setFormOpen,
     isFormOpen,
-    message
+    message,
   };
 }
 

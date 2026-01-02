@@ -29,7 +29,7 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
       } else {
         newValue = type === "checkbox" ? checked : value;
       }
-      
+
       setValues((prev) => ({ ...prev, [name]: newValue }));
       if (touched[name]) {
         setErrors((prev) => ({
@@ -73,15 +73,41 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
   );
 
   const handleFileChange = useCallback(
-    (e, { fileField = "file", previewField, createPreview = true } = {}) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
+    (
+      e,
+      {
+        fileField = "file",
+        previewField,
+        createPreview = true,
+        multiple = false,
+      } = {}
+    ) => {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
 
       setValues((prev) => {
-        const next = { ...prev, [fileField]: file };
+        const next = { ...prev };
 
+        // ========= FILE HANDLING =========
+        if (multiple) {
+          next[fileField] = [
+            ...(Array.isArray(prev[fileField]) ? prev[fileField] : []),
+            ...files,
+          ];
+        } else {
+          next[fileField] = files[0];
+        }
+
+        // ========= PREVIEW HANDLING =========
         if (createPreview && previewField) {
-          next[previewField] = URL.createObjectURL(file);
+          if (multiple) {
+            next[previewField] = [
+              ...(Array.isArray(prev[previewField]) ? prev[previewField] : []),
+              ...files.map((f) => URL.createObjectURL(f)),
+            ];
+          } else {
+            next[previewField] = URL.createObjectURL(files[0]);
+          }
         }
 
         return next;
@@ -100,7 +126,27 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
         [name]: updatedArr,
       };
     });
-  }, []);
+  },[]);
+
+  const handleRemoveImage = useCallback((index) => {
+    setValues((prev) => {
+      const images = Array.isArray(prev.images) ? prev.images : [];
+      const previews = Array.isArray(prev.imagePreviews)
+        ? prev.imagePreviews
+        : [];
+
+      // Prevent memory leaks (only revoke if it's an object URL)
+      if (previews[index]?.startsWith("blob:")) {
+        URL.revokeObjectURL(previews[index]);
+      }
+
+      return {
+        ...prev,
+        images: images.filter((_, i) => i !== index),
+        imagePreviews: previews.filter((_, i) => i !== index),
+      };
+    });
+  },[]);
 
   const handleBlur = useCallback(
     (e) => {
@@ -142,7 +188,7 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
 
   const setValue = useCallback((name, value) => {
     setValues((prev) => ({ ...prev, [name]: value }));
-  }, []);
+  },[]);
 
   return {
     values,
@@ -158,6 +204,7 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
     setValues,
     setErrors,
     handleFileChange,
+    handleRemoveImage,
   };
 };
 
@@ -291,7 +338,7 @@ export const postValidators = {
       return message || `Select no more than ${max} items`;
     }
     return "";
-  }
+  },
 };
 
 export default useForm;

@@ -26,7 +26,6 @@ export const authService = {
       email,
       password,
     });
-    console.log("Login response:", response);
     return response.data;
   },
 

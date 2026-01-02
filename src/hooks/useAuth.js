@@ -123,7 +123,6 @@ export const useAuth = () => {
 
       return { success: true };
     } catch (err) {
-      console.log("Login error:", err);
       const message = err.response?.data?.message || "Login failed";
       setError(message);
       return { success: false, error: message };

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import useJobPostStore from "../../store/jobpost.store";
 
-function usePostList(fetchItemAPI, company_Id) {
+function usePostList(fetchItemAPI) {
   const {
     items,
     setItems,
@@ -26,7 +26,7 @@ function usePostList(fetchItemAPI, company_Id) {
     } finally {
       setLoading(false);
     }
-  }, [fetchItemAPI, company_Id, setItems, setLoading, setError]);
+  }, [fetchItemAPI, setItems, setLoading, setError]);
 
   // Filter only PUBLIC posts
   const filterPublic = useCallback(() => {

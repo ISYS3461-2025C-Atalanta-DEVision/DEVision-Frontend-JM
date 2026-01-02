@@ -21,7 +21,7 @@ import Alert from "../../components/Alert";
 
 export default function EditProfile({
   currentData,
-  setSearchParams,
+  setSearcckhParams,
   setNewProfile,
 }) {
   const companyData = currentData;
