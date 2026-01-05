@@ -48,7 +48,6 @@ export default function CreateJobPost({onPostCreated}) {
       salaryEstimationType: "",
 
       skills: [],
-      images: [""],
 
       salaryCurrency: "AUD",
 
@@ -437,7 +436,7 @@ export default function CreateJobPost({onPostCreated}) {
               </div>
 
               {/* Media Section */}
-              <div>
+              {/* <div>
                 <h2 className="text-xl font-semibold text-textBlack mb-4 border-b pb-2">
                   Media (Optional)
                 </h2>
@@ -459,7 +458,7 @@ export default function CreateJobPost({onPostCreated}) {
 
                 <div className="flex gap-3 overflow-x-auto p-2">
                   {/* Preview uploaded images */}
-                  <div className="relative group flex-shrink-0">
+                  {/* <div className="relative group flex-shrink-0">
                     <img
                       src="https://via.placeholder.com/150"
                       alt="Preview"
@@ -468,7 +467,7 @@ export default function CreateJobPost({onPostCreated}) {
                     <button className="absolute -top-2 -right-2 w-6 h-6 bg-error text-white rounded-full text-sm opacity-0 group-hover:opacity-100 transition-opacity"></button>
                   </div>
                 </div>
-              </div>
+              </div> */} */}
 
               {/* Publishing Options */}
               <div>
