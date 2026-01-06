@@ -46,7 +46,7 @@ export default function RegistrationForm({ registerApi, getCountryApi }) {
   } = useRegistrationForm(validateAll, values, registerApi, getCountryApi);
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6 bg-bgComponent rounded-xl">
+    <div className="w-full max-w-2xl mx-auto p-6 bg-bgComponent rounded-xl" style={{ backgroundColor: "#98A9BB" }}>
       <h2 className="text-2xl font-semibold text-textBlack mb-6">
         Create Account
       </h2>
@@ -117,7 +117,7 @@ export default function RegistrationForm({ registerApi, getCountryApi }) {
           />
         </div>
 
-        <div className="text-xs text-neutral6 mb-4 -mt-2">
+        <div className="text-xs text-black mb-4 -mt-2">
           Password must be at least 8 characters with 1 uppercase, 1 number, and
           1 special character.
         </div>

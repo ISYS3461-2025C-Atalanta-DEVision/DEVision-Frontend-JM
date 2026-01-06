@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import LoginForm from "../headless/login_form/LoginForm";
 import AuthService from "../services/authService";
-import BgImage from "../assets/photo/bg-login.jpg";
+import BgImage from "../assets/photo/bg-login.png";
 import { floatingShapes } from "../frame-motion/FlyingShape";
 import useAuth from "../hooks/useAuth";
 import Snowfall from "react-snowfall";
@@ -50,21 +50,21 @@ export default function LoginPage() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-md bg-bgComponent rounded-2xl shadow-xl p-8 space-y-6 z-10"
+        className="w-full max-w-md bg-bgComponent rounded-2xl shadow-xl p-8 space-y-6 z-10 " style={{ backgroundColor: "#98A9BB" }}
       >
-        <div className="text-center space-y-1">
-          <p className="text-sm uppercase tracking-[0.3em] text-primary">
+        <div className="text-center space-y-1"  style={{ backgroundColor: "#98A9BB" }}>
+          <p className="text-sm uppercase tracking-[0.3em] text-black">
             DEVision
           </p>
-          <h1 className="text-3xl font-bold text-textBlack">
+          <h1 className="text-3xl font-bold text-[#002959] ">
             Welcome to DEVision
           </h1>
-          <p className="text-sm text-neutral6">
+          <p className="text-sm text-black">
             Sign in to continue to your dashboard
           </p>
         </div>
 
-        <div className="border-t border-gray-100 pt-6">
+        <div className="border-t border-[#002959] pt-6">
           <LoginForm loginApi={login} />
         </div>
       </motion.div>

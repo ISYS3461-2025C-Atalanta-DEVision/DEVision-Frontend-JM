@@ -52,7 +52,7 @@ const Dashboard = () => {
   }, [isEditMode]);
 
   return (
-    <div className="min-h-screen bg-backGround pb-5">
+    <div className="min-h-screen bg-backGround pb-5" style={{ backgroundColor: "#D9D9D9" }}>
       <NavBar activepage={"dashboard"} />
 
       {/* Main Content */}
