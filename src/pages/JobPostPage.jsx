@@ -1,6 +1,6 @@
 import React from "react";
 import PostList from "../headless/post_list/PostList";
-import postService from "../services/postService";
+import jobPostService from "../services/jobPostService";
 import PostCard from "../components/PostCard";
 import NavBar from "../layout/NavBar/NavBar";
 import CreateJobPost from "../layout/CreatePostForm/CreateJobPost";
@@ -30,7 +30,7 @@ export default function JobPostPage() {
           <section className="flex-1">
             <PostList
               PostCardComponent={PostCard}
-              fetchPostAPI={postService.getPostList}
+              fetchPostAPI={jobPostService.getPostList}
               className="flex flex-col gap-6 my-5"
               CreatePostComponent={CreateJobPost}
             />

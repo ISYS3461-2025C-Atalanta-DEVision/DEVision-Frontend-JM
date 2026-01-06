@@ -15,7 +15,7 @@ import {
 } from "../../static/PostCreate";
 import useCreatePostForm from "./useCreatePostForm";
 import { motion, AnimatePresence } from "framer-motion";
-import postService from "../../services/postService";
+import jobPostService from "../../services/jobPostService";
 import ImageHolder from "../../components/ImageHolder";
 import ConfirmBox from "../../components/ConfirmBox";
 
@@ -121,7 +121,7 @@ export default function CreateJobPost({onPostCreated}) {
     setFormOpen,
     confirmBoxOpen,
     setConfirmBoxOpen,
-  } = useCreatePostForm(values, postService.createPost, validateAll, reset, onPostCreated);
+  } = useCreatePostForm(values, jobPostService.createPost, validateAll, reset, onPostCreated);
 
   const formVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -434,40 +434,6 @@ export default function CreateJobPost({onPostCreated}) {
                   />
                 </div>
               </div>
-
-              {/* Media Section */}
-              {/* <div>
-                <h2 className="text-xl font-semibold text-textBlack mb-4 border-b pb-2">
-                  Media (Optional)
-                </h2>
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-neutral8 mb-2">
-                    Upload Images
-                  </label>
-                  <div className="border-2 border-dashed border-neutral3 rounded-lg p-6 text-center hover:border-primary transition-colors cursor-pointer">
-                    <i className="ri-upload-cloud-2-line text-4xl text-neutral6 mb-2"></i>
-                    <p className="text-neutral7">
-                      Click to upload or drag and drop
-                    </p>
-                    <p className="text-sm text-neutral6 mt-1">
-                      PNG, JPG up to 5MB each
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-3 overflow-x-auto p-2">
-                  {/* Preview uploaded images */}
-                  {/* <div className="relative group flex-shrink-0">
-                    <img
-                      src="https://via.placeholder.com/150"
-                      alt="Preview"
-                      className="w-24 h-24 rounded-md object-cover border"
-                    />
-                    <button className="absolute -top-2 -right-2 w-6 h-6 bg-error text-white rounded-full text-sm opacity-0 group-hover:opacity-100 transition-opacity"></button>
-                  </div>
-                </div>
-              </div> */} */}
 
               {/* Publishing Options */}
               <div>

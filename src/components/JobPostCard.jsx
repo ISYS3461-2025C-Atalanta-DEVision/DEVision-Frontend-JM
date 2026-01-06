@@ -1,15 +1,20 @@
-import React from "react";
-import ImageHolder from "../components/ImageHolder";
-import Button from "../components/Button";
+import React, { useState, useRef, useEffect } from "react";
 import SkillTag from "../components/SkillTag";
-import { useState, useRef, useEffect } from "react";
+import jobPostService from "../services/jobPostService";
 
-export default function JobPostCard({ item }) {
+export default function JobPostCard({ item, removeItem }) {
+  console.log(item.status);
   const [open, setOpen] = useState(false);
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
 
-  // Close dropdown on click outside
+  const statusLabel =
+    item.status === "PUBLIC"
+      ? "Unpublish"
+      : item.status === "PRIVATE"
+      ? "Publish"
+      : item.status || "Unknown";
+
   useEffect(() => {
     function handleClick(event) {
       if (
@@ -27,9 +32,19 @@ export default function JobPostCard({ item }) {
 
   if (!item) return null;
 
+  const handleDelete = async () => {
+    setOpen(false);
+    try {
+      await jobPostService.deleteJobPost(item.jobId);   // ensure deleteJobPost(jobId) is fixed
+      removeItem?.(item.jobId);                      // update GridTable state
+    } catch (err) {
+      console.error("Failed to delete job post", err);
+      // optionally show an Alert/toast here
+    }
+  };
+
   return (
-    <article className="bg-white border rounded-xl p-8 shadow-sm hover:shadow-md transition w-full relative">
-      {/* Headless ellipsis menu */}
+    <article className="bg-[#F9F7EB] border rounded-xl p-8 shadow-sm hover:shadow-md transition w-full relative">
       <div className="absolute top-4 right-4 flex flex-col items-end">
         <button
           ref={buttonRef}
@@ -38,35 +53,41 @@ export default function JobPostCard({ item }) {
           className="text-2xl p-1 rounded focus:outline-none focus:ring"
           type="button"
         >
-          {/* Headless ellipsis as plain text */}
           <span aria-hidden="true">⋮</span>
         </button>
         {open && (
           <div
             ref={menuRef}
-            className="absolute mt-2 right-0 w-36 bg-white border rounded shadow z-10"
+            className="absolute mt-2 right-0 w-36 bg-[#F9F7EB] border rounded shadow z-10"
             role="menu"
             tabIndex={-1}
           >
-            {/* This dropdown is fully headless—customise options/actions below */}
             <button
-              className="block w-full text-left px-4 py-2 text-sm hover:bg-neutral-100"
+              className="block w-full text-left px-4 py-2 text-sm hover:bg-[#002959]/70 hover:text-white"
               type="button"
               onClick={() => {
                 setOpen(false);
-                // Add Edit logic here
+                // publish/unpublish logic here
               }}
               role="menuitem"
             >
-              Edit
+              {statusLabel}
             </button>
             <button
-              className="block w-full text-left px-4 py-2 text-sm hover:bg-neutral-100"
+              className="block w-full text-left px-4 py-2 text-sm hover:bg-[#002959]/70 hover:text-white"
               type="button"
               onClick={() => {
                 setOpen(false);
-                // Add Delete logic here
+                // update logic
               }}
+              role="menuitem"
+            >
+              Update
+            </button>
+            <button
+              className="block w-full text-left px-4 py-2 text-sm hover:bg-[#002959]/70 hover:text-white"
+              type="button"
+              onClick={handleDelete}
               role="menuitem"
             >
               Delete
@@ -75,10 +96,16 @@ export default function JobPostCard({ item }) {
         )}
       </div>
 
-      {/* The rest of your card... */}
-      <h1 className="text-3xl font-semibold text-blacktxt leading-tight">
-        {item.title}
-      </h1>
+      <div className="flex items-center gap-3">
+        <h1 className="text-3xl font-semibold text-blacktxt leading-tight">
+          {item.title}
+        </h1>
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#98A9BB] text-[#002959] border border-[#002959]/30">
+          {item.status}
+        </span>
+      </div>
+
+      {/* rest of your card unchanged */}
       <p className="text-sm text-neutral6 mt-2">
         {item.location} &nbsp;•&nbsp; {item.employmentType}
       </p>
