@@ -1,14 +1,19 @@
 import NavBar from "../layout/NavBar/NavBar";
-import GridTable from "../headless/grid_table/GridTable";
-import jobPostService from "../services/jobPostService";
-import JobPostCard from "../components/JobPostCard";
-import useJobPost from "../hooks/useJobPost";
+import JobPostCard from "../headless/manageJobPost/JobPostCard";
+import useJobPostList from "../hooks/useJobPostList";
+import useJobPostActions from "../headless/manageJobPost/useJobPostActions";
 
 export default function ManageJobPostPage() {
-  const { posts, loading, error, deletePost } = useJobPost();
+  const { posts, setPosts, loading, error, setError } = useJobPostList();
+  const {
+    handleDeletePost,
+    handlePublishPost,
+    handleUnpublishPost,
+  } = useJobPostActions({ setPosts, setError });
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
+
   return (
     <div
       className="min-h-screen w-full"
@@ -27,13 +32,16 @@ export default function ManageJobPostPage() {
         </header>
 
         {/* Cards grid */}
-        <section>
-          <GridTable
-            CardComponent={JobPostCard}
-            fetchItemAPI={jobPostService.getJobPostsByCompany}
-            className="gap-6 md:grid-cols-2 xl:grid-cols-2"
-            itemKey="id"
-          />
+        <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-2">
+          {posts.map((item) => (
+            <JobPostCard
+              key={item.jobId}
+              item={item}
+              onDelete={handleDeletePost}
+              onPublish={handlePublishPost}
+              onUnpublish={handleUnpublishPost}
+            />
+          ))}
         </section>
       </div>
     </div>

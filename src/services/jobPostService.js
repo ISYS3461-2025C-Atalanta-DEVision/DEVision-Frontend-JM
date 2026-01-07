@@ -31,7 +31,7 @@ export const jobPostService = {
   },
 
   unpublishJobPost: async (jobId) => {
-    const response = await api.post(JOBPOST_DETAIL_URL(jobId));
+    const response = await api.post(JOBPOST_UNPUBLISH_URL(jobId));
     return response.data;
   },
 };

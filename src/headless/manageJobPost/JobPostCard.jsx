@@ -1,19 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
-import SkillTag from "../components/SkillTag";
-import jobPostService from "../services/jobPostService";
+import SkillTag from "../../components/SkillTag";
 
-export default function JobPostCard({ item, removeItem }) {
-  console.log(item.status);
+export default function JobPostCard({
+  item,
+  onDelete,
+  onPublish,
+  onUnpublish,
+}) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
 
-  const statusLabel =
-    item.status === "PUBLIC"
-      ? "Unpublish"
-      : item.status === "PRIVATE"
-      ? "Publish"
-      : item.status || "Unknown";
+  const isPublic = item.status === "PUBLIC";
+  const statusLabel = isPublic ? "Unpublish" : "Publish";
 
   useEffect(() => {
     function handleClick(event) {
@@ -32,19 +31,23 @@ export default function JobPostCard({ item, removeItem }) {
 
   if (!item) return null;
 
+  const handleTogglePublish = async () => {
+    setOpen(false);
+    if (isPublic) {
+      await onUnpublish?.(item.jobId);
+    } else {
+      await onPublish?.(item.jobId);
+    }
+  };
+
   const handleDelete = async () => {
     setOpen(false);
-    try {
-      await jobPostService.deleteJobPost(item.jobId);   // ensure deleteJobPost(jobId) is fixed
-      removeItem?.(item.jobId);                      // update GridTable state
-    } catch (err) {
-      console.error("Failed to delete job post", err);
-      // optionally show an Alert/toast here
-    }
+    await onDelete?.(item.jobId);
   };
 
   return (
     <article className="bg-[#F9F7EB] border rounded-xl p-8 shadow-sm hover:shadow-md transition w-full relative">
+      {/* Ellipsis menu */}
       <div className="absolute top-4 right-4 flex flex-col items-end">
         <button
           ref={buttonRef}
@@ -65,10 +68,7 @@ export default function JobPostCard({ item, removeItem }) {
             <button
               className="block w-full text-left px-4 py-2 text-sm hover:bg-[#002959]/70 hover:text-white"
               type="button"
-              onClick={() => {
-                setOpen(false);
-                // publish/unpublish logic here
-              }}
+              onClick={handleTogglePublish}
               role="menuitem"
             >
               {statusLabel}
@@ -78,7 +78,7 @@ export default function JobPostCard({ item, removeItem }) {
               type="button"
               onClick={() => {
                 setOpen(false);
-                // update logic
+                // TODO: add update logic (e.g. navigate to edit form)
               }}
               role="menuitem"
             >
@@ -96,6 +96,7 @@ export default function JobPostCard({ item, removeItem }) {
         )}
       </div>
 
+      {/* Header: title + status pill */}
       <div className="flex items-center gap-3">
         <h1 className="text-3xl font-semibold text-blacktxt leading-tight">
           {item.title}
@@ -105,13 +106,17 @@ export default function JobPostCard({ item, removeItem }) {
         </span>
       </div>
 
-      {/* rest of your card unchanged */}
+      {/* Meta */}
       <p className="text-sm text-neutral6 mt-2">
         {item.location} &nbsp;•&nbsp; {item.employmentType}
       </p>
+
+      {/* Description */}
       <p className="mt-6 text-base text-blacktxt leading-relaxed">
         {item.description}
       </p>
+
+      {/* Skills */}
       {item.skills?.length > 0 && (
         <section className="mt-6">
           <h3 className="text-sm font-semibold text-neutral7 mb-3 uppercase">
@@ -124,6 +129,8 @@ export default function JobPostCard({ item, removeItem }) {
           </div>
         </section>
       )}
+
+      {/* Offer */}
       <section className="mt-8 border-t pt-6">
         <h3 className="text-sm font-semibold text-neutral7 mb-4 uppercase">
           What we offer
