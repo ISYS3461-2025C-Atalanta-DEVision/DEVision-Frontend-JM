@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import SkillTag from "../../components/SkillTag";
 
 export default function JobPostCard({
@@ -7,6 +8,7 @@ export default function JobPostCard({
   onPublish,
   onUnpublish,
 }) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
@@ -78,7 +80,7 @@ export default function JobPostCard({
               type="button"
               onClick={() => {
                 setOpen(false);
-                // TODO: add update logic (e.g. navigate to edit form)
+                setSearchParams({ edit: item.jobId });
               }}
               role="menuitem"
             >

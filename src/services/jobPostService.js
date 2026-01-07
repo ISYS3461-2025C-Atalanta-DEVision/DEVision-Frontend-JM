@@ -3,6 +3,7 @@ import {
   JOBPOST_SEARCH_URL,
   JOBPOST_COMPANY_URL,
   JOBPOST_DETAIL_URL,
+  JOBPOST_UPDATE_URL,
   JOBPOST_PUBLISH_URL,
   JOBPOST_UNPUBLISH_URL,
 } from "../service_url/JobPostUrlConfig";
@@ -37,6 +38,13 @@ export const jobPostService = {
 
   unpublishJobPost: async (jobId) => {
     const response = await api.post(JOBPOST_UNPUBLISH_URL(jobId));
+    return response.data;
+  },
+
+  // Update job post
+  updateJobPost: async (jobId, updateData) => {
+    // TODO: Implement the actual API call
+    const response = await api.put(JOBPOST_UPDATE_URL(jobId), updateData);
     return response.data;
   },
 };

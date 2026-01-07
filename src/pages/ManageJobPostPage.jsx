@@ -1,7 +1,9 @@
+import { useSearchParams } from "react-router-dom";
 import NavBar from "../layout/NavBar/NavBar";
 import JobPostCard from "../headless/manageJobPost/JobPostCard";
+import EditJobPostForm from "../headless/manageJobPost/childComponent/EditJobPostForm";
 import useJobPostList from "../hooks/useJobPostList";
-import useJobPostActions from "../headless/manageJobPost/useJobPostActions";
+import useJobPostActions from "../headless/manageJobPost/hooks/useJobPostActions";
 
 export default function ManageJobPostPage() {
   const { posts, setPosts, loading, error, setError } = useJobPostList();
@@ -10,6 +12,14 @@ export default function ManageJobPostPage() {
     handlePublishPost,
     handleUnpublishPost,
   } = useJobPostActions({ setPosts, setError });
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const editJobId = searchParams.get("edit");
+
+  // Find the job post being edited
+  const currentJobPost = editJobId
+    ? posts.find((post) => post.jobId === editJobId)
+    : null;
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
@@ -33,15 +43,27 @@ export default function ManageJobPostPage() {
 
         {/* Cards grid */}
         <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-2">
-          {posts.map((item) => (
-            <JobPostCard
-              key={item.jobId}
-              item={item}
-              onDelete={handleDeletePost}
-              onPublish={handlePublishPost}
-              onUnpublish={handleUnpublishPost}
-            />
-          ))}
+          {posts.map((item) =>
+            editJobId === item.jobId ? (
+              // Show edit form for the selected job post
+              <div key={item.jobId} className="md:col-span-2">
+                <EditJobPostForm
+                  currentData={currentJobPost}
+                  setSearchParams={setSearchParams}
+                  setPosts={setPosts}
+                />
+              </div>
+            ) : (
+              // Show regular card for other job posts
+              <JobPostCard
+                key={item.jobId}
+                item={item}
+                onDelete={handleDeletePost}
+                onPublish={handlePublishPost}
+                onUnpublish={handleUnpublishPost}
+              />
+            )
+          )}
         </section>
       </div>
     </div>

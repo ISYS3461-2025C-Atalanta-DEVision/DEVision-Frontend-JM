@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import jobPostService from "../../services/jobPostService";
+import jobPostService from "../../../services/jobPostService";
 
 export default function useJobPostActions({ setPosts, setError }) {
   const handleDeletePost = useCallback(
