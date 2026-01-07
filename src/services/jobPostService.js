@@ -30,6 +30,11 @@ export const jobPostService = {
     return response.data;
   },
 
+  publishJobPost: async (jobId) => {
+    const response = await api.post(JOBPOST_PUBLISH_URL(jobId));
+    return response.data;
+  },
+
   unpublishJobPost: async (jobId) => {
     const response = await api.post(JOBPOST_UNPUBLISH_URL(jobId));
     return response.data;
