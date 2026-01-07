@@ -140,7 +140,11 @@ export default function SubscriptionPayment() {
             className="flex items-center justify-center"
           >
             <motion.div variants={fadeIn} className="w-full max-w-md">
-              <StripePayment className="shadow-lg" />
+              <StripePayment
+                className="shadow-lg"
+                planType="PREMIUM"
+                currency="usd"
+              />
             </motion.div>
           </motion.div>
         </motion.div>
