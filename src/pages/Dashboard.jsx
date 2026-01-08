@@ -5,12 +5,13 @@ import NavBar from "../layout/NavBar/NavBar";
 import QuickStatsCard from "../components/QuickStatsCard";
 import GridTable from "../headless/grid_table/GridTable";
 import ImageHolder from "../components/ImageHolder";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TalentSearchAds from "../components/TalentSearchAds";
 import { formatDateYear, countDaysFromDate } from "../utils/DateTime";
 import eventService from "../services/eventService";
 import profileService from "../services/profileService";
 import useProfileStore from "../store/profile.store";
+import useProfile from "../hooks/useProfile";
 import EditProfile from "../headless/edit_profile/EditProfile";
 import EventCard from "../components/EventCard";
 
@@ -23,11 +24,46 @@ const Dashboard = () => {
     error,
     setProfile,
   } = useProfileStore();
+  const { fetchCompanyProfile } = useProfile();
 
   const editProfileRef = useRef(null);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const isEditMode = searchParams.get("edit") === "true";
+  const paymentSuccess = searchParams.get("payment") === "success";
+  const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
+  const [paymentProcessing, setPaymentProcessing] = useState(paymentSuccess);
+
+  // Handle payment success - wait for Kafka then fetch profile
+  useEffect(() => {
+    if (paymentSuccess) {
+      setPaymentProcessing(true);
+
+      // Clear the query param
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete("payment");
+        return next;
+      });
+
+      // Wait 1.5 seconds for Kafka to process, then fetch profile
+      const timer = setTimeout(async () => {
+        await fetchCompanyProfile();
+        setPaymentProcessing(false);
+        setShowPaymentSuccess(true);
+      }, 1500);
+
+      // Hide success message after 5 seconds
+      const hideTimer = setTimeout(() => {
+        setShowPaymentSuccess(false);
+      }, 6500); // 1.5s wait + 5s display
+
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(hideTimer);
+      };
+    }
+  }, [paymentSuccess]);
 
   useEffect(() => {
     setSearchParams((prev) => {
@@ -58,9 +94,33 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-2 sm:px-6 lg:px-8">
         <div className="px-4 sm:px-0">
+          {/* Payment Processing Message */}
+          {paymentProcessing && (
+            <motion.div
+              className="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg flex items-center gap-2"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <span className="animate-spin">&#9696;</span>
+              Processing payment... Please wait.
+            </motion.div>
+          )}
+
+          {/* Payment Success Message */}
+          {showPaymentSuccess && (
+            <motion.div
+              className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+            >
+              Payment successful! Your subscription has been upgraded to PREMIUM.
+            </motion.div>
+          )}
+
           {/* Welcome Section */}
-          {loading ? (
-            <div className="flex items-center justify-center w-full h-full">
+          {loading || paymentProcessing ? (
+            <div className="flex items-center justify-center w-full h-full mt-6">
               <p className="text-neutral7 text-lg">Loading dashboard...</p>
             </div>
           ) : error ? (

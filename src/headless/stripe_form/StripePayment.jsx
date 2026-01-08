@@ -44,7 +44,7 @@ function CheckoutForm({ planType = "PREMIUM", currency = "usd" }) {
     const cardElement = elements.getElement(CardNumberElement);
 
     const planData = {
-      companyId: profile?.id,
+      companyId: profile?.userId,
       payerEmail: profile?.email,
       planType,
       currency,
