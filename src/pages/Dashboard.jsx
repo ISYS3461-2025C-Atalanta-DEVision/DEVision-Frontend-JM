@@ -12,6 +12,7 @@ import eventService from "../services/eventService";
 import profileService from "../services/profileService";
 import useProfileStore from "../store/profile.store";
 import useProfile from "../hooks/useProfile";
+import usePayment from "../hooks/usePayment";
 import EditProfile from "../headless/edit_profile/EditProfile";
 import EventCard from "../components/EventCard";
 
@@ -25,14 +26,29 @@ const Dashboard = () => {
     setProfile,
   } = useProfileStore();
   const { fetchCompanyProfile } = useProfile();
+  const { cancelSubscription, loading: cancelLoading } = usePayment();
 
   const editProfileRef = useRef(null);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const isEditMode = searchParams.get("edit") === "true";
   const paymentSuccess = searchParams.get("payment") === "success";
-  const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   const [paymentProcessing, setPaymentProcessing] = useState(paymentSuccess);
+
+  const handleCancelSubscription = async () => {
+    if (!window.confirm("Are you sure you want to cancel your Premium subscription?")) {
+      return;
+    }
+    try {
+      await cancelSubscription(companyData?.userId, true);
+      // Wait 1.5 seconds for Kafka to process before refreshing profile
+      setTimeout(async () => {
+        await fetchCompanyProfile();
+      }, 1500);
+    } catch (err) {
+      // Error handled by hook
+    }
+  };
 
   // Handle payment success - wait for Kafka then fetch profile
   useEffect(() => {
@@ -50,17 +66,10 @@ const Dashboard = () => {
       const timer = setTimeout(async () => {
         await fetchCompanyProfile();
         setPaymentProcessing(false);
-        setShowPaymentSuccess(true);
       }, 1500);
-
-      // Hide success message after 5 seconds
-      const hideTimer = setTimeout(() => {
-        setShowPaymentSuccess(false);
-      }, 6500); // 1.5s wait + 5s display
 
       return () => {
         clearTimeout(timer);
-        clearTimeout(hideTimer);
       };
     }
   }, [paymentSuccess]);
@@ -103,18 +112,6 @@ const Dashboard = () => {
             >
               <span className="animate-spin">&#9696;</span>
               Processing payment... Please wait.
-            </motion.div>
-          )}
-
-          {/* Payment Success Message */}
-          {showPaymentSuccess && (
-            <motion.div
-              className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-            >
-              Payment successful! Your subscription has been upgraded to PREMIUM.
             </motion.div>
           )}
 
@@ -167,14 +164,26 @@ const Dashboard = () => {
                   {companyData?.subscriptionType || "Company"}
                 </h1>
 
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="self-start"
-                  onClick={() => navigate("/payment")}
-                >
-                  Upgrade Plan
-                </Button>
+{companyData?.subscriptionType === "PREMIUM" ? (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="self-start text-red-600 border-red-600 hover:bg-red-50"
+                    onClick={handleCancelSubscription}
+                    disabled={cancelLoading}
+                  >
+                    {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="self-start"
+                    onClick={() => navigate("/payment")}
+                  >
+                    Upgrade Plan
+                  </Button>
+                )}
               </div>
             </motion.div>
           )}
@@ -330,19 +339,22 @@ const Dashboard = () => {
             </div>
           )}
 
-          {loading ? (
-            <div className="flex items-center justify-center w-full h-full">
-              <p className="text-gray-600 text-lg">Loading advertisements...</p>
-            </div>
-          ) : (
-            <motion.div
-              className="mt-6 bg-bgComponent rounded-lg shadow"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <TalentSearchAds price={30} />
-            </motion.div>
+          {/* only show TalentSearchAds for FREE user */}
+          {companyData?.subscriptionType !== "PREMIUM" && (
+            loading ? (
+              <div className="flex items-center justify-center w-full h-full">
+                <p className="text-gray-600 text-lg">Loading advertisements...</p>
+              </div>
+            ) : (
+              <motion.div
+                className="mt-6 bg-bgComponent rounded-lg shadow"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              >
+                <TalentSearchAds price={30} />
+              </motion.div>
+            )
           )}
 
           <GridTable

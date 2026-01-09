@@ -1,7 +1,5 @@
 import React from "react";
 import StripePayment from "../headless/stripe_form/StripePayment";
-import TalentSearchAds from "../components/TalentSearchAds";
-import BgImage from "../assets/photo/talent.png";
 import NavBar from "../layout/NavBar/NavBar";
 import { motion } from "framer-motion";
 
