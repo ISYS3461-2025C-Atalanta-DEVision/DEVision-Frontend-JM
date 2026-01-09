@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Dashboard from "./pages/Dashboard";
+import Applicants from "./pages/Applicants";
 import JobPostPage from "./pages/JobPostPage";
 import OAuthCallback from "./pages/OAuthCallback";
 import ActivateAccount from "./pages/ActivateAccount";
@@ -33,6 +34,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/applicants"
+          element={
+            <ProtectedRoute>
+              <Applicants />
             </ProtectedRoute>
           }
         />

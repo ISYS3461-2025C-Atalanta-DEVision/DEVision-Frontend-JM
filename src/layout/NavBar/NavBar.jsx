@@ -34,6 +34,18 @@ export default function NavBar({ activepage }) {
               Dashboard
             </a>
 
+            {/* Applicants */}
+            <a
+              className={`cursor-pointer transition-colors 
+              ${isActive("applicants")
+                  ? "text-[#11254A] font-semibold"
+                  : "hover:text-[#11254A]"
+                }`}
+              onClick={() => handleNavigate("/applicants")}
+            >
+              Applicants
+            </a>
+
             {/* Jobs */}
             <a
               className={`cursor-pointer transition-colors 
