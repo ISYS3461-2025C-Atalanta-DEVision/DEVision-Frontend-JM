@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import SkillTag from "../../components/SkillTag";
+import skillStore from "../../store/skill.store";
 
 export default function JobPostCard({
   item,
@@ -12,6 +13,11 @@ export default function JobPostCard({
   const [open, setOpen] = useState(false);
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
+
+  // Fetch skills on mount to ensure skill names are available
+  useEffect(() => {
+    skillStore.getState().fetchSkills();
+  }, []);
 
   const isPublic = item.status === "PUBLIC";
   const statusLabel = isPublic ? "Unpublish" : "Publish";
@@ -98,14 +104,20 @@ export default function JobPostCard({
         )}
       </div>
 
-      {/* Header: title + status pill */}
-      <div className="flex items-center gap-3">
+      {/* Header: title + status pill + fresher friendly badge */}
+      <div className="flex items-center gap-3 flex-wrap">
         <h1 className="text-3xl font-semibold text-blacktxt leading-tight">
           {item.title}
         </h1>
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#98A9BB] text-[#002959] border border-[#002959]/30">
           {item.status}
         </span>
+        {item.isFresherFriendly && (
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-300">
+            <i className="ri-seedling-line mr-1"></i>
+            Fresher Friendly
+          </span>
+        )}
       </div>
 
       {/* Meta */}
@@ -125,8 +137,8 @@ export default function JobPostCard({
             What you will work with
           </h3>
           <div className="flex flex-wrap gap-2">
-            {item.skills.map((skill, idx) => (
-              <SkillTag key={idx} skillName={skill} />
+            {item.skills.map((skillId, idx) => (
+              <SkillTag key={idx} skillId={skillId} />
             ))}
           </div>
         </section>

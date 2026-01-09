@@ -112,12 +112,18 @@
 //   );
 // }
 
-import React from "react";
+import React, { useEffect } from "react";
 import ImageHolder from "../components/ImageHolder";
 import Button from "../components/Button";
 import SkillTag from "../components/SkillTag";
+import skillStore from "../store/skill.store";
 
 export default function PostCard({ item }) {
+  // Fetch skills on mount to ensure skill names are available
+  useEffect(() => {
+    skillStore.getState().fetchSkills();
+  }, []);
+
   if (!item) return null;
 
   return (
@@ -132,10 +138,18 @@ export default function PostCard({ item }) {
         </span>
       </div>
 
-      {/* Role */}
-      <h1 className="text-3xl font-semibold text-blacktxt leading-tight">
-        {item.title}
-      </h1>
+      {/* Role + Fresher Friendly badge */}
+      <div className="flex items-center gap-3 flex-wrap">
+        <h1 className="text-3xl font-semibold text-blacktxt leading-tight">
+          {item.title}
+        </h1>
+        {item.isFresherFriendly && (
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-300">
+            <i className="ri-seedling-line mr-1"></i>
+            Fresher Friendly
+          </span>
+        )}
+      </div>
 
       {/* Meta */}
       <p className="text-sm text-neutral6 mt-2">
@@ -154,8 +168,8 @@ export default function PostCard({ item }) {
             What you will work with
           </h3>
           <div className="flex flex-wrap gap-2">
-            {item.skills.map((skill, idx) => (
-              <SkillTag key={idx} skillName={skill} />
+            {item.skills.map((skillId, idx) => (
+              <SkillTag key={idx} skillId={skillId} />
             ))}
           </div>
         </section>
@@ -188,14 +202,14 @@ export default function PostCard({ item }) {
         </div>
       </section>
 
-      {/* Image (Employer branding) */}
+      {/* Image (Employer branding)
       <section className="mt-8">
         <ImageHolder
           src="https://i.pinimg.com/736x/3e/2b/8d/3e2b8da38a188f336338709aa95e2c50.jpg"
           alt="Company workplace"
           className="w-full full rounded-lg object-cover border"
         />
-      </section>
+      </section> */}
 
       {/* CTA */}
       <div className="mt-8 flex justify-end">
