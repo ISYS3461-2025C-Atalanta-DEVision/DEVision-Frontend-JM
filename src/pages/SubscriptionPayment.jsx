@@ -1,7 +1,5 @@
 import React from "react";
 import StripePayment from "../headless/stripe_form/StripePayment";
-import TalentSearchAds from "../components/TalentSearchAds";
-import BgImage from "../assets/photo/talent.png";
 import NavBar from "../layout/NavBar/NavBar";
 import { motion } from "framer-motion";
 
@@ -140,7 +138,11 @@ export default function SubscriptionPayment() {
             className="flex items-center justify-center"
           >
             <motion.div variants={fadeIn} className="w-full max-w-md">
-              <StripePayment className="shadow-lg" />
+              <StripePayment
+                className="shadow-lg"
+                planType="PREMIUM"
+                currency="usd"
+              />
             </motion.div>
           </motion.div>
         </motion.div>
