@@ -13,21 +13,21 @@ export default function NavBar({ activepage }) {
     useNavbar(activepage);
 
   return (
-    <nav className="sticky top-0 z-50 bg-bgComponent shadow-sm">
+    <nav className="sticky top-0 z-50 bg-bgComponent shadow-sm" style={{ backgroundColor: "#98A9BB" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <h1 className="text-xl font-bold text-primary">DEVision</h1>
-            <span className="ml-2 text-sm text-neutral6">Job Manager</span>
+            <h1 className="text-xl font-bold text-primary" style={{ color: "#11254A" }}>DEVision</h1>
+            <span className="ml-2 text-sm text-black">Job Manager</span>
           </div>
 
-          <nav className="flex flex-1 items-center justify-center gap-12 text-xl font-medium text-gray-800">
+          <nav className="flex flex-1 items-center justify-center gap-12 text-xl font-medium text-white">
             {/* Dashboard */}
             <a
               className={`cursor-pointer transition-colors 
               ${isActive("dashboard")
-                  ? "text-primary font-semibold"
-                  : "hover:text-primary"
+                  ? "text-[#11254A] font-semibold"
+                  : "hover:text-[#11254A]"
                 }`}
               onClick={() => handleNavigate("/dashboard")}
             >
@@ -38,8 +38,8 @@ export default function NavBar({ activepage }) {
             <a
               className={`cursor-pointer transition-colors 
               ${isActive("jobs")
-                  ? "text-primary font-semibold"
-                  : "hover:text-primary"
+                  ? "text-[#11254A] font-semibold"
+                  : "hover:text-[#11254A]"
                 }`}
               onClick={() => handleNavigate("/jobpost")}
             >
@@ -50,8 +50,8 @@ export default function NavBar({ activepage }) {
             <a
               className={`cursor-pointer transition-colors 
               ${isActive("event")
-                  ? "text-primary font-semibold"
-                  : "hover:text-primary"
+                  ? "text-[#11254A] font-semibold"
+                  : "hover:text-[#11254A]"
                 }`}
               onClick={() => handleNavigate("/event")}
 
@@ -64,9 +64,21 @@ export default function NavBar({ activepage }) {
             {loading ? (
               <span className="text-neutral7">Loading...</span>
             ) : (
-              <span className="text-neutral7">{profile?.companyName}</span>
+              <span className="text-black">{profile?.companyName}</span>
             )}
-            <Button variant="outline" size="sm" onClick={handleLogout}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLogout}
+              className="
+                        bg-transparent
+                        text-[#11254A]
+                        border border-[#11254A]
+                        hover:bg-[#11254A]
+                        hover:text-white
+                        hover:border-[#11254A]
+                        transition-colors
+                      ">
               Logout
             </Button>
           </div>
