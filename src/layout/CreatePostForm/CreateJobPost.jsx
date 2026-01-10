@@ -140,9 +140,9 @@ export default function CreateJobPost({ onPostCreated }) {
               type="button"
               onClick={() => setFormOpen(true)}
               className="flex items-center justify-center gap-3 w-full
-                         bg-white hover:bg-[#002959] hover:text-white
-                         border border-[#002959]/40 rounded-lg shadow-md px-5 py-4
-                         text-2xl font-semibold text-[#002959] transition-colors"
+                         bg-white hover:bg-primary hover:text-white
+                         border border-neutral4 rounded-lg shadow-sm px-5 py-4
+                         text-2xl font-semibold text-blacktxt transition-colors"
             >
               <span>Create New Job Post</span>
               <i className="ri-add-circle-line text-3xl" />

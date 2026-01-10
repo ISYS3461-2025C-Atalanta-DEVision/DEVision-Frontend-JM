@@ -50,7 +50,7 @@ export default function LoginForm({ loginApi }) {
           error={errors.email}
           placeholder="Enter your email"
           required
-          className="mb-4 "
+          className="mb-4"
         />
 
         <Input
@@ -72,7 +72,7 @@ export default function LoginForm({ loginApi }) {
               type="checkbox"
               className="h-4 w-4 text-primary focus:ring-blue-500 border-gray-300 rounded"
             />
-            <span className="ml-2 text-sm text-black">Remember me</span>
+            <span className="ml-2 text-sm text-neutral7">Remember me</span>
           </label>
         </div>
 
@@ -100,12 +100,10 @@ export default function LoginForm({ loginApi }) {
       {/* Divider */}
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-black" />
+          <div className="w-full border-t border-neutral3" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-[#98A9BB] text-black">
-            Or continue with
-          </span>
+          <span className="px-2 bg-bgComponent text-neutral5">Or continue with</span>
         </div>
       </div>
 

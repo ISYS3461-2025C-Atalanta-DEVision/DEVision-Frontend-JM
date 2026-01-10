@@ -36,7 +36,11 @@ const Dashboard = () => {
   const [paymentProcessing, setPaymentProcessing] = useState(paymentSuccess);
 
   const handleCancelSubscription = async () => {
-    if (!window.confirm("Are you sure you want to cancel your Premium subscription?")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to cancel your Premium subscription?"
+      )
+    ) {
       return;
     }
     try {
@@ -97,7 +101,7 @@ const Dashboard = () => {
   }, [isEditMode]);
 
   return (
-    <div className="min-h-screen bg-backGround pb-5" style={{ backgroundColor: "#D9D9D9" }}>
+    <div className="min-h-screen bg-backGround pb-5">
       <NavBar activepage={"dashboard"} />
 
       {/* Main Content */}
@@ -164,7 +168,7 @@ const Dashboard = () => {
                   {companyData?.subscriptionType || "Company"}
                 </h1>
 
-{companyData?.subscriptionType === "PREMIUM" ? (
+                {companyData?.subscriptionType === "PREMIUM" ? (
                   <Button
                     variant="outline"
                     size="sm"
@@ -340,10 +344,12 @@ const Dashboard = () => {
           )}
 
           {/* only show TalentSearchAds for FREE user */}
-          {companyData?.subscriptionType !== "PREMIUM" && (
-            loading ? (
+          {companyData?.subscriptionType !== "PREMIUM" &&
+            (loading ? (
               <div className="flex items-center justify-center w-full h-full">
-                <p className="text-gray-600 text-lg">Loading advertisements...</p>
+                <p className="text-gray-600 text-lg">
+                  Loading advertisements...
+                </p>
               </div>
             ) : (
               <motion.div
@@ -354,8 +360,7 @@ const Dashboard = () => {
               >
                 <TalentSearchAds price={30} />
               </motion.div>
-            )
-          )}
+            ))}
 
           <GridTable
             CardComponent={EventCard}
