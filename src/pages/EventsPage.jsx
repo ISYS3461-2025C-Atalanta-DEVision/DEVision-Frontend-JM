@@ -1,12 +1,12 @@
 // src/pages/EventPage.jsx
 import React from "react";
 import PostList from "../headless/post_list/PostList";
-import eventService from "../services/eventService";   // you need to implement this
-import EventCard from "../components/EventCard";        // the EventCard you showed
+import eventService from "../services/eventService";
+import EventCard from "../components/EventCard";
 import NavBar from "../layout/NavBar/NavBar";
 import useProfileStore from "../store/profile.store";
-import CompanyCard from "../components/CompanyCard";    // reuse if you still want company sidebar
-// import CreateEventPost from "../layout/CreatePostForm/CreateEventPost"; // optional
+import CompanyCard from "../components/CompanyCard";
+import CreateEventForm from "../layout/CreateEventForm/CreateEventForm";
 
 export default function EventPage() {
   const { profile, loading, error } = useProfileStore();
@@ -30,11 +30,10 @@ export default function EventPage() {
           {/* MAIN EVENTS LIST */}
           <section className="flex-1">
             <PostList
-              PostCardComponent={EventCard}               // use EventCard here
-              fetchPostAPI={eventService.getEventList}     // your events fetcher
-              company={profile}                            // pass profile if your API needs it
+              PostCardComponent={EventCard}
+              fetchPostAPI={eventService.getEventList}
               className="flex flex-col gap-6 mt-5"
-              // CreatePostComponent={CreateEventPost}     // uncomment when you have this
+              CreatePostComponent={CreateEventForm}
             />
           </section>
         </div>
