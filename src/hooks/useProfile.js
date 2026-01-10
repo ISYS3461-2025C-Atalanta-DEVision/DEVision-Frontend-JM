@@ -24,6 +24,7 @@ export const useProfile = () => {
     profile,
     loading,
     error,
+    setProfile,
     fetchCompanyProfile,
   };
 };

@@ -9,7 +9,8 @@ export default function PostList({
   CreatePostComponent,
   createPostAPI,
 }) {
-  const { publicItems,items, loading, error, refetch } = usePostList(fetchPostAPI);
+  const { publicItems, items, loading, error, refetch } =
+    usePostList(fetchPostAPI);
 
   return (
     <>
@@ -24,7 +25,7 @@ export default function PostList({
       )}
       {loading ? (
         <div className="flex items-center justify-center w-full h-full">
-          <p className="text-gray-600 text-lg">Loading post.</p>
+          <p className="text-neutral6 text-lg">Loading post.</p>
         </div>
       ) : error ? (
         <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6">

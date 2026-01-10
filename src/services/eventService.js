@@ -10,6 +10,7 @@ const eventService = {
   getCompanyEvents: async (companyId) => {
     // GET /api/events/company/{companyId} - get another company's events
     const response = await api.get(`${EVENT_URL}/company/${companyId}`);
+    console.log("Fetched company events:", response.data);
     return response.data;
   },
 

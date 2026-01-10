@@ -70,7 +70,7 @@ export default function LoginForm({ loginApi }) {
           <label className="flex items-center">
             <input
               type="checkbox"
-              className="h-4 w-4 text-primary focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-primary focus:ring-blue-500 border-neutral3 rounded"
             />
             <span className="ml-2 text-sm text-neutral7">Remember me</span>
           </label>
@@ -103,7 +103,9 @@ export default function LoginForm({ loginApi }) {
           <div className="w-full border-t border-neutral3" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-bgComponent text-neutral5">Or continue with</span>
+          <span className="px-2 bg-bgComponent text-neutral5">
+            Or continue with
+          </span>
         </div>
       </div>
 

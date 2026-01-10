@@ -10,7 +10,6 @@ export const profileService = {
       { key: "applicationsCount" },
       { key: "searchCount" },
     ];
-    await new Promise((resolve) => setTimeout(resolve, 800));
     // throw new Error("Failed to load quick stats");
 
     return quickStats;

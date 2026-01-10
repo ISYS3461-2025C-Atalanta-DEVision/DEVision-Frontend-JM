@@ -41,13 +41,13 @@ const ActivateAccount = () => {
         <div className="bg-bgComponent rounded-2xl shadow-xl p-8 text-center">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-textBlack">DEVision</h1>
-            <p className="text-gray-600 mt-2">Account Activation</p>
+            <p className="text-neutral6 mt-2">Account Activation</p>
           </div>
 
           {status === "loading" && (
             <div className="py-8">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-              <p className="mt-4 text-gray-600">Activating your account...</p>
+              <p className="mt-4 text-neutral6">Activating your account...</p>
             </div>
           )}
 

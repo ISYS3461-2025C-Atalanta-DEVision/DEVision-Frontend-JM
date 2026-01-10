@@ -452,7 +452,7 @@ export default function CreateJobPost({ onPostCreated }) {
                         name="isFresherFriendly"
                         checked={values.isFresherFriendly}
                         onChange={handleChange}
-                        className="h-4 w-4 text-blacktxt focus:ring-blacktxt border-gray-300 rounded"
+                        className="h-4 w-4 text-blacktxt focus:ring-blacktxt border-neutral3 rounded"
                       />
                       <span className="ml-2 text-sm text-black font-medium">
                         Fresher Friendly
@@ -472,7 +472,7 @@ export default function CreateJobPost({ onPostCreated }) {
                         name="status"
                         checked={values.status === "PUBLIC"}
                         onChange={handleChange}
-                        className="h-4 w-4 text-blacktxt focus:ring-blacktxt border-gray-300 rounded"
+                        className="h-4 w-4 text-blacktxt focus:ring-blacktxt border-neutral3 rounded"
                       />
                       <span className="ml-2 text-sm text-black font-medium">
                         Publish immediately
@@ -496,14 +496,12 @@ export default function CreateJobPost({ onPostCreated }) {
                     setFormOpen(false);
                     reset();
                   }}
-                  className="border-blacktxt text-blacktxt hover:bg-blacktxt hover:text-white"
                 >
                   Cancel
                 </Button>
                 <Button
                   variant="secondary"
                   size="lg"
-                  className="bg-white border border-blacktxt text-blacktxt hover:bg-blacktxt hover:text-white"
                   onClick={() => setConfirmBoxOpen(true)}
                 >
                   Save as Draft
@@ -513,7 +511,6 @@ export default function CreateJobPost({ onPostCreated }) {
                   size="lg"
                   onClick={handleSubmit}
                   loading={isCreating}
-                  className="bg-blacktxt text-white hover:bg-[#001a3d]"
                 >
                   Create Job Post
                 </Button>

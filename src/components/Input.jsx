@@ -42,7 +42,7 @@ const Input = ({
               ? "border-error focus:ring-error focus:border-error"
               : "border-neutral3"
           }
-          ${disabled ? "bg-gray-100 cursor-not-allowed" : "bg-bgComponent"}
+          ${disabled ? "bg-neutral2 cursor-not-allowed" : "bg-bgComponent"}
         `}
         {...props}
       />

@@ -13,7 +13,7 @@ const Select = ({
   ...props
 }) => {
   const isPlaceholder = value === "" || value == null;
-  
+
   return (
     <div className={`mb-4 ${className}`}>
       {label && (
@@ -36,9 +36,9 @@ const Select = ({
           ${
             error
               ? "border-error focus:ring-error focus:border-error"
-              : "border-gray-300"
+              : "border-neutral3"
           }
-          ${disabled ? "bg-gray-100 cursor-not-allowed" : ""}
+          ${disabled ? "bg-neutral2 cursor-not-allowed" : ""}
           ${isPlaceholder ? "text-neutral6" : "text-blacktxt"}
         `}
         {...props}

@@ -18,7 +18,7 @@ const TextArea = ({
       {label && (
         <label
           htmlFor={name}
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-neutral7 mb-1"
         >
           {label}
           {required && <span className="text-error ml-1">*</span>}
@@ -38,9 +38,9 @@ const TextArea = ({
           ${
             error
               ? "border-error focus:ring-error focus:border-error"
-              : "border-gray-300"
+              : "border-neutral3"
           }
-          ${disabled ? "bg-gray-100 cursor-not-allowed" : "bg-bgComponent"}
+          ${disabled ? "bg-neutral2 cursor-not-allowed" : "bg-bgComponent"}
         `}
         {...props}
       />

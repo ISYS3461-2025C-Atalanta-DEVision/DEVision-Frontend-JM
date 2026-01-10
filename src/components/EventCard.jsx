@@ -29,7 +29,7 @@ export default function EventCard({ item }) {
 
         <div className="p-4 space-y-1">
           <h3 className="font-semibold text-lg">{item.title}</h3>
-          <p className="text-sm text-gray-500">{item.date}</p>
+          <p className="text-sm text-neutral5">{item.date}</p>
         </div>
       </div>
 

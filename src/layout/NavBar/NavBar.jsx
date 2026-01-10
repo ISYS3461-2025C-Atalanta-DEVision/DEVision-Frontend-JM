@@ -21,7 +21,7 @@ export default function NavBar({ activepage }) {
             <span className="ml-2 text-sm text-neutral6">Job Manager</span>
           </div>
 
-          <nav className="flex flex-1 items-center justify-center gap-12 text-xl font-medium text-gray-800">
+          <nav className="flex flex-1 items-center justify-center gap-12 text-xl font-medium text-neutral8">
             {/* Dashboard */}
             <a
               className={`cursor-pointer transition-colors 

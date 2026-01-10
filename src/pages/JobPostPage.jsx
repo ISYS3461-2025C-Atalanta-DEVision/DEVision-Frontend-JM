@@ -16,7 +16,7 @@ export default function JobPostPage() {
       <NavBar activepage={"jobs"} />
 
       <main className="w-full flex justify-center pt-5">
-        <div className="w-full max-w-7xl flex gap-6 px-6">
+        <div className="w-full  max-w-[80%] flex gap-6 px-6">
           {loading ? (
             <div>Loading profile...</div>
           ) : (

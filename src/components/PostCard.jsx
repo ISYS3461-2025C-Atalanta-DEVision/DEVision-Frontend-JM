@@ -44,7 +44,7 @@ export default function PostCard({ item }) {
 
       {/* Pitch */}
       <p className="mt-6 text-base text-blacktxt leading-relaxed">
-        {item.description}
+        {item.desiption}
       </p>
 
       {/* Skills */}
@@ -87,15 +87,6 @@ export default function PostCard({ item }) {
           </p>
         </div>
       </section>
-
-      {/* Image (Employer branding)
-      <section className="mt-8">
-        <ImageHolder
-          src="https://i.pinimg.com/736x/3e/2b/8d/3e2b8da38a188f336338709aa95e2c50.jpg"
-          alt="Company workplace"
-          className="w-full full rounded-lg object-cover border"
-        />
-      </section> */}
 
       {/* CTA */}
       <div className="mt-8 flex justify-end">
