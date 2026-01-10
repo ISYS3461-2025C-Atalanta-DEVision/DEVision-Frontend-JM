@@ -1,20 +1,35 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import skillStore from '../store/skill.store'
 
 export default function SkillTag({ skillName, skillId, icon }) {
-  const { getSkillById } = skillStore();
+  // Subscribe to skills and skillsMap so component re-renders when skills are loaded
+  const { skills, skillsMap, fetchSkills } = skillStore();
 
-  // If skillId is provided, look up the skill from store
+  // Ensure skills are fetched
+  useEffect(() => {
+    fetchSkills();
+  }, [fetchSkills]);
+
+  // Determine display name and icon
   let displayName = skillName;
   let displayIcon = icon;
 
   if (skillId && !skillName) {
-    const skill = getSkillById(skillId);
+    // First try to find by ID in skillsMap
+    let skill = skillsMap[skillId];
+
+    // If not found by ID, skillId might actually be a skill name (from backend)
+    // Try to find by name in the skills array
+    if (!skill) {
+      skill = skills.find(s => s.name === skillId || s.id === skillId);
+    }
+
     if (skill) {
       displayName = skill.name;
       displayIcon = skill.icon;
     } else {
-      displayName = skillId; // Fallback to ID if not found
+      // Fallback: just display the skillId as the name (it might be a skill name string)
+      displayName = skillId;
     }
   }
 

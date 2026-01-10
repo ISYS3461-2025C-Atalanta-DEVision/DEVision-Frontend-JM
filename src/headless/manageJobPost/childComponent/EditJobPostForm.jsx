@@ -8,7 +8,7 @@ import TextArea from "../../../components/TextArea";
 import Alert from "../../../components/Alert";
 import SkillTag from "../../../components/SkillTag";
 import CategoryInput from "../../../components/CategoryInput/CategoryInput";
-import { SKILL_LIST } from "../../../static/SkillList";
+import SkillCategoryInput from "../../../components/SkillCategoryInput/SkillCategoryInput";
 import {
   salaryTypes,
   salaryEstimationTypes,
@@ -338,31 +338,31 @@ export default function EditJobPostForm({
               Selected Skills
             </label>
             <div className="flex flex-wrap gap-2 mb-3">
-              {values.skills.map((skill, idx) => (
+              {values.skills.map((skillId, idx) => (
                 <div key={idx} className="relative group">
-                  <SkillTag skillName={skill} />
+                  <SkillTag skillId={skillId} />
                   <button
-                    className="absolute -top-2 -right-2 w-5 h-5 bg-error text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                    type="button"
+                    className="absolute -top-2 -right-2 w-5 h-5 bg-error text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
                     title="Remove skill"
-                    onClick={() => handlerRemoveListItem("skills", skill)}
-                  ></button>
+                    onClick={() => handlerRemoveListItem("skills", skillId)}
+                  >
+                    ×
+                  </button>
                 </div>
               ))}
             </div>
-            <div className="flex gap-2">
-              <CategoryInput
-                label="Required Skills"
-                name="skills"
-                value={values.skills}
-                onChange={handleListChange}
-                onBlur={handleBlur}
-                error={errors.skills}
-                options={SKILL_LIST}
-                placeholder="Type to find skills"
-                className="w-full"
-                required
-              />
-            </div>
+            <SkillCategoryInput
+              label="Required Skills"
+              name="skills"
+              value={values.skills}
+              onChange={handleListChange}
+              onBlur={handleBlur}
+              error={errors.skills}
+              placeholder="Type to find skills"
+              className="w-full"
+              required
+            />
           </div>
         </div>
 
