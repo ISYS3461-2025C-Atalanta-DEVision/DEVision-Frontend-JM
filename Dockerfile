@@ -42,36 +42,35 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy built assets from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy custom nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 # Render uses PORT environment variable (defaults to 10000)
-# We'll use envsubst to dynamically set the port
 ENV PORT=80
 
-# Create nginx config template that uses $PORT
-RUN echo 'server { \
-    listen ${PORT}; \
-    server_name localhost; \
-    root /usr/share/nginx/html; \
-    index index.html; \
-    gzip on; \
-    gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml; \
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ { \
-        expires 1y; \
-        add_header Cache-Control "public, immutable"; \
-    } \
-    location / { \
-        try_files $uri $uri/ /index.html; \
-    } \
-    location /health { \
-        return 200 "healthy"; \
-        add_header Content-Type text/plain; \
-    } \
-}' > /etc/nginx/templates/default.conf.template
+# Create nginx config template directory and file
+RUN mkdir -p /etc/nginx/templates
 
-# Expose the port (Render will use PORT env var)
-EXPOSE ${PORT}
+# Create nginx config template that uses $PORT
+RUN printf 'server {\n\
+    listen %s;\n\
+    server_name localhost;\n\
+    root /usr/share/nginx/html;\n\
+    index index.html;\n\
+    gzip on;\n\
+    gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml;\n\
+    location ~* \\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {\n\
+        expires 1y;\n\
+        add_header Cache-Control "public, immutable";\n\
+    }\n\
+    location / {\n\
+        try_files $uri $uri/ /index.html;\n\
+    }\n\
+    location /health {\n\
+        return 200 "healthy";\n\
+        add_header Content-Type text/plain;\n\
+    }\n\
+}\n' '${PORT}' > /etc/nginx/templates/default.conf.template
+
+# Expose the port
+EXPOSE 80
 
 # Start nginx with envsubst for dynamic port
 CMD sh -c "envsubst '\$PORT' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
