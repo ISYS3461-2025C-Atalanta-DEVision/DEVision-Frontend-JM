@@ -28,9 +28,9 @@ function usePostList(fetchItemAPI) {
     }
   }, [fetchItemAPI, setItems, setLoading, setError]);
 
-  // Filter only PUBLIC posts
+  // Filter only ACTIVE/PUBLIC posts
   const filterPublic = useCallback(() => {
-    return items?.filter((item) => item.status === "PUBLIC") || [];
+    return items?.filter((item) => item.status === "PUBLIC" || item.status === "ACTIVE") || [];
   }, [items]);
 
   useEffect(() => {
