@@ -2,8 +2,9 @@ import React from "react";
 import { motion } from "framer-motion";
 import useGridTable from "./useGridTable";
 
-export default function GridTable({ customItems=[],CardComponent, fetchItemAPI = null, className }) {
-  const { items, loading, error } = useGridTable(fetchItemAPI);
+export default function GridTable({ customItems = [], CardComponent, fetchItemAPI = null, className, itemKey = "id",       // field to use as key
+  cardProps = {} }) {
+  const { items, loading, error, removeItem } = useGridTable(fetchItemAPI);
   return (
     <>
       {loading ? (
@@ -23,7 +24,11 @@ export default function GridTable({ customItems=[],CardComponent, fetchItemAPI =
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <CardComponent item={item} />
+              <CardComponent
+                item={item}
+                removeItem={removeItem}   // pass down so card can call it
+                {...cardProps}
+               />
             </motion.div>
           ))}
         </div>

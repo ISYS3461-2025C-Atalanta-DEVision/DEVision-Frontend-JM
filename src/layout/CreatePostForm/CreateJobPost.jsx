@@ -6,8 +6,8 @@ import Select from "../../components/Select";
 import Alert from "../../components/Alert";
 import SkillTag from "../../components/SkillTag";
 import { useForm, postValidators } from "../../hooks/useForm";
-import { SKILL_LIST } from "../../static/SkillList";
 import CategoryInput from "../../components/CategoryInput/CategoryInput";
+import SkillCategoryInput from "../../components/SkillCategoryInput/SkillCategoryInput";
 import {
   salaryTypes,
   salaryEstimationTypes,
@@ -15,12 +15,10 @@ import {
 } from "../../static/PostCreate";
 import useCreatePostForm from "./useCreatePostForm";
 import { motion, AnimatePresence } from "framer-motion";
-import postService from "../../services/postService";
-import ImageHolder from "../../components/ImageHolder";
+import jobPostService from "../../services/jobPostService";
 import ConfirmBox from "../../components/ConfirmBox";
 
-export default function CreateJobPost({onPostCreated}) {
-
+export default function CreateJobPost({ onPostCreated }) {
   const {
     values,
     errors,
@@ -34,37 +32,27 @@ export default function CreateJobPost({onPostCreated}) {
     {
       title: "",
       description: "",
-
       employmentTypes: "",
       additionalEmploymentType: [],
       location: "",
-
       salaryType: "",
-
       salaryMin: "",
       salaryMax: "",
-
       salaryAmount: "",
       salaryEstimationType: "",
-
       skills: [],
-
       salaryCurrency: "AUD",
-
       expireDate: "",
-
       status: "PRIVATE",
+      isFresherFriendly: false,
     },
     {
       title: [postValidators.required("Job title is required")],
       description: [postValidators.required("Job description is required")],
       employmentTypes: [postValidators.required("Employment type is required")],
       location: [postValidators.required("Location is required")],
-
       salaryType: [postValidators.required("Salary type is required")],
-
       salaryCurrency: [postValidators.required("Salary currency is required")],
-
       salaryMin: [
         (value, values) => {
           if (values.salaryType !== "RANGE") return "";
@@ -121,7 +109,13 @@ export default function CreateJobPost({onPostCreated}) {
     setFormOpen,
     confirmBoxOpen,
     setConfirmBoxOpen,
-  } = useCreatePostForm(values, postService.createPost, validateAll, reset, onPostCreated);
+  } = useCreatePostForm(
+    values,
+    jobPostService.createPost,
+    validateAll,
+    reset,
+    onPostCreated
+  );
 
   const formVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -131,7 +125,7 @@ export default function CreateJobPost({onPostCreated}) {
 
   return (
     <AnimatePresence mode="wait">
-      <div className=" w-content h-content bg-backGround">
+      <div className="w-full mb-6">
         {!isFormOpen ? (
           <motion.div
             key="create-button"
@@ -140,21 +134,19 @@ export default function CreateJobPost({onPostCreated}) {
             animate="visible"
             exit="exit"
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="w-full flex flex-row items-center justify-center gap-6"
+            className="w-full"
           >
-            {!isFormOpen ? (
-              <>
-                <div
-                  className="flex-1 text-2xl text-neutral8 flex flex-row items-center justify-center bg-bgComponent hover:bg-primary hover:text-neutral1 rounded-lg shadow p-2 gap-3"
-                  onClick={() => setFormOpen(true)}
-                >
-                  <h1 className="font-bold">Create New Job Post</h1>
-                  <i className="ri-add-circle-line"></i>
-                </div>
-              </>
-            ) : (
-              <></>
-            )}
+            <button
+              type="button"
+              onClick={() => setFormOpen(true)}
+              className="flex items-center justify-center gap-3 w-full
+                         bg-white hover:bg-[#002959] hover:text-white
+                         border border-[#002959]/40 rounded-lg shadow-md px-5 py-4
+                         text-2xl font-semibold text-[#002959] transition-colors"
+            >
+              <span>Create New Job Post</span>
+              <i className="ri-add-circle-line text-3xl" />
+            </button>
           </motion.div>
         ) : (
           <motion.div
@@ -164,33 +156,32 @@ export default function CreateJobPost({onPostCreated}) {
             animate="visible"
             exit="exit"
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="max-full mx-auto"
+            className="w-full"
           >
             {/* Header */}
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-textBlack">
+              <h1 className="text-3xl font-bold text-[#002959]">
                 Create New Job Post
               </h1>
-              <p className="text-neutral6 mt-2">
-                Fill in the details to create a new job posting
+              <p className="text-sm text-black mt-2">
+                Fill in the details to create a new job posting.
               </p>
             </div>
 
-            {/* Alert Example */}
+            {/* Info Alert */}
             <Alert
               type="info"
               message="Make sure all required fields are filled before publishing."
               className="mb-6"
             />
 
-            {/* Form */}
-            <div className="bg-bgComponent rounded-lg shadow p-6 space-y-6">
-              {/* Basic Information Section */}
+            {/* Form container */}
+            <div className="bg-white rounded-lg shadow-md p-6 space-y-6 border border-[#98A9BB]/60">
+              {/* Basic Information */}
               <div>
-                <h2 className="text-xl font-semibold text-textBlack mb-4 border-b pb-2">
+                <h2 className="text-xl font-semibold text-[#002959] mb-4 border-b border-[#98A9BB]/60 pb-2">
                   Basic Information
                 </h2>
-
                 <Input
                   label="Job Title"
                   name="title"
@@ -203,12 +194,10 @@ export default function CreateJobPost({onPostCreated}) {
                   required
                   className="mb-4"
                 />
-
                 <div className="mb-4">
                   <TextArea
                     label="Description"
                     name="description"
-                    type="text"
                     rows={5}
                     value={values.description}
                     onChange={handleChange}
@@ -216,9 +205,8 @@ export default function CreateJobPost({onPostCreated}) {
                     error={errors.description}
                     placeholder="Describe the role, responsibilities, and requirements..."
                     required
-                  ></TextArea>
+                  />
                 </div>
-
                 <Select
                   label="Employment Type"
                   name="employmentTypes"
@@ -229,28 +217,35 @@ export default function CreateJobPost({onPostCreated}) {
                   options={["Full-time", "Part-time"]}
                   placeholder="Select employment type"
                   required
+                  className="mb-4"
                 />
 
+                {/* Additional employment deals */}
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-neutral8 mb-2">
+                  <label className="block text-sm font-medium text-[#002959] mb-2">
                     Selected deals
                   </label>
                   <div className="flex flex-wrap gap-2 mb-3">
                     {values.additionalEmploymentType.map((deal, idx) => (
                       <div key={idx} className="relative group">
-                        <div className="flex items-center justify-center w-content h-content px-3 py-2 gap-2 bg-neutral1 rounded-lg">
-                          <p className="text-blacktxt font-medium">{deal}</p>
+                        <div className="flex items-center justify-center px-3 py-1.5 gap-2 bg-[#98A9BB]/20 border border-[#002959]/30 rounded-lg">
+                          <p className="text-sm text-black font-medium">
+                            {deal}
+                          </p>
                         </div>
                         <button
-                          className="absolute -top-2 -right-2 w-5 h-5 bg-error text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-                          title="Remove deals"
+                          type="button"
+                          className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                          title="Remove deal"
                           onClick={() =>
                             handlerRemoveListItem(
                               "additionalEmploymentType",
                               deal
                             )
                           }
-                        ></button>
+                        >
+                          ×
+                        </button>
                       </div>
                     ))}
                   </div>
@@ -267,7 +262,8 @@ export default function CreateJobPost({onPostCreated}) {
                     required
                   />
                 </div>
-                {/* Location Section */}
+
+                {/* Location */}
                 <Input
                   label="Location"
                   name="location"
@@ -280,13 +276,14 @@ export default function CreateJobPost({onPostCreated}) {
                   required
                 />
               </div>
-              {/* Salary Section */}
+
+              {/* Compensation */}
               <div>
-                <h2 className="text-xl font-semibold text-textBlack mb-4 border-b pb-2">
+                <h2 className="text-xl font-semibold text-[#002959] mb-4 border-b border-[#98A9BB]/60 pb-2">
                   Compensation
                 </h2>
-                <div className="flex flex-col">
-                  <div className="flex flex-row gap-4">
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col md:flex-row gap-4">
                     <Select
                       label="Salary Type"
                       name="salaryType"
@@ -299,7 +296,6 @@ export default function CreateJobPost({onPostCreated}) {
                       required
                       className="flex-1"
                     />
-
                     <Select
                       label="Currency"
                       name="salaryCurrency"
@@ -313,8 +309,9 @@ export default function CreateJobPost({onPostCreated}) {
                       className="flex-1"
                     />
                   </div>
-                  <div className="flex flex-row gap-4">
-                    {values.salaryType === "RANGE" ? (
+
+                  <div className="flex flex-col md:flex-row gap-4">
+                    {values.salaryType === "RANGE" && (
                       <>
                         <Input
                           label="Min Salary Value"
@@ -324,7 +321,7 @@ export default function CreateJobPost({onPostCreated}) {
                           onBlur={handleBlur}
                           error={errors.salaryMin}
                           type="text"
-                          placeholder="e.g., 0 USD"
+                          placeholder="e.g., 0"
                           className="flex-1"
                           required
                         />
@@ -336,12 +333,13 @@ export default function CreateJobPost({onPostCreated}) {
                           onBlur={handleBlur}
                           error={errors.salaryMax}
                           type="text"
-                          placeholder="e.g., 1200 USD"
+                          placeholder="e.g., 1200"
                           className="flex-1"
                           required
                         />
                       </>
-                    ) : values.salaryType === "ESTIMATION" ? (
+                    )}
+                    {values.salaryType === "ESTIMATION" && (
                       <>
                         <Select
                           label="Salary Estimation Type"
@@ -363,64 +361,60 @@ export default function CreateJobPost({onPostCreated}) {
                           onBlur={handleBlur}
                           error={errors.salaryAmount}
                           type="text"
-                          placeholder="e.g., 1200 USD"
+                          placeholder="e.g., 1200"
                           className="flex-1"
                         />
                       </>
-                    ) : values.salaryType === "NEGOTIABLE" ? (
-                      <></>
-                    ) : (
-                      <></>
                     )}
                   </div>
                 </div>
               </div>
 
-              {/* Skills Section */}
+              {/* Skills */}
               <div>
-                <h2 className="text-xl font-semibold text-textBlack mb-4 border-b pb-2">
+                <h2 className="text-xl font-semibold text-[#002959] mb-4 border-b border-[#98A9BB]/60 pb-2">
                   Required Skills
                 </h2>
-
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-neutral8 mb-2">
+                  <label className="block text-sm font-medium text-[#002959] mb-2">
                     Selected Skills
                   </label>
                   <div className="flex flex-wrap gap-2 mb-3">
-                    {values.skills.map((skill, idx) => (
+                    {values.skills.map((skillId, idx) => (
                       <div key={idx} className="relative group">
-                        <SkillTag skillName={skill} />
+                        <SkillTag skillId={skillId} />
                         <button
-                          className="absolute -top-2 -right-2 w-5 h-5 bg-error text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                          type="button"
+                          className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
                           title="Remove skill"
-                          onClick={() => handlerRemoveListItem("skills", skill)}
-                        ></button>
+                          onClick={() =>
+                            handlerRemoveListItem("skills", skillId)
+                          }
+                        >
+                          ×
+                        </button>
                       </div>
                     ))}
                   </div>
-                  <div className="flex gap-2">
-                    <CategoryInput
-                      label="Required Skills"
-                      name="skills"
-                      value={values.skills}
-                      onChange={handleListChange}
-                      onBlur={handleBlur}
-                      error={errors.skills}
-                      options={SKILL_LIST}
-                      placeholder="Type to find skills"
-                      className="w-full"
-                      required
-                    />
-                  </div>
+                  <SkillCategoryInput
+                    label="Required Skills"
+                    name="skills"
+                    value={values.skills}
+                    onChange={handleListChange}
+                    onBlur={handleBlur}
+                    error={errors.skills}
+                    placeholder="Type to find skills"
+                    className="w-full"
+                    required
+                  />
                 </div>
               </div>
 
-              {/* Dates Section */}
+              {/* Timeline */}
               <div>
-                <h2 className="text-xl font-semibold text-textBlack mb-4 border-b pb-2">
+                <h2 className="text-xl font-semibold text-[#002959] mb-4 border-b border-[#98A9BB]/60 pb-2">
                   Timeline
                 </h2>
-
                 <div className="md:grid-cols-2 gap-4">
                   <Input
                     label="Expiry Date"
@@ -435,81 +429,75 @@ export default function CreateJobPost({onPostCreated}) {
                 </div>
               </div>
 
-              {/* Media Section */}
-              {/* <div>
-                <h2 className="text-xl font-semibold text-textBlack mb-4 border-b pb-2">
-                  Media (Optional)
-                </h2>
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-neutral8 mb-2">
-                    Upload Images
-                  </label>
-                  <div className="border-2 border-dashed border-neutral3 rounded-lg p-6 text-center hover:border-primary transition-colors cursor-pointer">
-                    <i className="ri-upload-cloud-2-line text-4xl text-neutral6 mb-2"></i>
-                    <p className="text-neutral7">
-                      Click to upload or drag and drop
-                    </p>
-                    <p className="text-sm text-neutral6 mt-1">
-                      PNG, JPG up to 5MB each
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-3 overflow-x-auto p-2">
-                  {/* Preview uploaded images */}
-                  {/* <div className="relative group flex-shrink-0">
-                    <img
-                      src="https://via.placeholder.com/150"
-                      alt="Preview"
-                      className="w-24 h-24 rounded-md object-cover border"
-                    />
-                    <button className="absolute -top-2 -right-2 w-6 h-6 bg-error text-white rounded-full text-sm opacity-0 group-hover:opacity-100 transition-opacity"></button>
-                  </div>
-                </div>
-              </div> */} */}
-
-              {/* Publishing Options */}
+              {/* Additional Options - Highlighted boxes for checkboxes */}
               <div>
-                <h2 className="text-xl font-semibold text-textBlack mb-4 border-b pb-2">
-                  Publishing Options
+                <h2 className="text-xl font-semibold text-[#002959] mb-4 border-b border-[#98A9BB]/60 pb-2">
+                  Additional Options
                 </h2>
 
-                <div className="flex items-center gap-3">
-                  <label className="flex flex-row items-center justify-center cursor-pointer">
-                    <Input
-                      type="checkbox"
-                      name="status"
-                      checked={values.status === "PUBLIC"}
-                      value={values.status}
-                      onChange={handleChange}
-                      className="text-primary focus:ring-blue-500 border-gray-300 rounded"
-                    />
-                    <span className="ml-2 text-sm text-neutral8">
-                      Publish immediately
-                    </span>
-                  </label>
+                <div className="grid gap-4 md:grid-cols-2">
+                  {/* Fresher friendly */}
+                  <div className="bg-[#98A9BB]/20 border border-[#98A9BB]/60 rounded-lg p-4">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="isFresherFriendly"
+                        checked={values.isFresherFriendly}
+                        onChange={handleChange}
+                        className="h-4 w-4 text-[#002959] focus:ring-[#002959] border-gray-300 rounded"
+                      />
+                      <span className="ml-2 text-sm text-black font-medium">
+                        Fresher Friendly
+                      </span>
+                    </label>
+                    <p className="text-xs text-black mt-2">
+                      Tick this if this position is suitable for entry-level
+                      candidates or fresh graduates.
+                    </p>
+                  </div>
+
+                  {/* Publish immediately */}
+                  <div className="bg-[#98A9BB]/20 border border-[#98A9BB]/60 rounded-lg p-4">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="status"
+                        checked={values.status === "PUBLIC"}
+                        onChange={handleChange}
+                        className="h-4 w-4 text-[#002959] focus:ring-[#002959] border-gray-300 rounded"
+                      />
+                      <span className="ml-2 text-sm text-black font-medium">
+                        Publish immediately
+                      </span>
+                    </label>
+                    <p className="text-xs text-black mt-2">
+                      Uncheck to save as draft. You can publish it later from
+                      your job posts list.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-sm text-neutral6 mt-2">
-                  Uncheck to save as draft. You can publish it later from your
-                  job posts list.
-                </p>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex justify-end gap-3 pt-4 border-t">
+              <div className="flex justify-end gap-3 pt-4 border-t border-[#98A9BB]/60">
                 <Button
                   variant="outline"
                   size="lg"
-                  onClick={async () => {
+                  onClick={() => {
                     window.scrollTo({ top: 0, behavior: "smooth" });
                     setFormOpen(false);
                     reset();
                   }}
+                  className="border-[#002959] text-[#002959] hover:bg-[#002959] hover:text-white"
                 >
                   Cancel
                 </Button>
-                <Button variant="secondary" size="lg">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="bg-white border border-[#002959] text-[#002959] hover:bg-[#002959] hover:text-white"
+                  onClick={() => setConfirmBoxOpen(true)}
+                >
                   Save as Draft
                 </Button>
                 <Button
@@ -517,6 +505,7 @@ export default function CreateJobPost({onPostCreated}) {
                   size="lg"
                   onClick={handleSubmit}
                   loading={isCreating}
+                  className="bg-[#002959] text-white hover:bg-[#001a3d]"
                 >
                   Create Job Post
                 </Button>
@@ -527,7 +516,6 @@ export default function CreateJobPost({onPostCreated}) {
                   <Alert type="error" message={error} />
                 </div>
               )}
-
               {success && (
                 <div className="mt-4">
                   <Alert type="success" message={success} />

@@ -90,6 +90,7 @@ function useCreatePostForm(
       postedDate: today,
       expireDate: values.expireDate,
       salaryCurrency: values.salaryCurrency,
+      isFresherFriendly: values.isFresherFriendly || false,
     };
 
     switch (values.salaryType) {

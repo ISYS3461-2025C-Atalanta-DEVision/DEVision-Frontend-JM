@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { QUICK_STATS_CARD_CONFIG } from "../static/QuickStats";
-
+import { Link } from "react-router-dom";
 
 export default function QuickStatsCard({ item, key }) {
   const config = QUICK_STATS_CARD_CONFIG[item.key];
@@ -20,9 +20,12 @@ export default function QuickStatsCard({ item, key }) {
 
       <h3 className="text-lg font-semibold text-textBlack">{config.title}</h3>
       <p className="text-sm text-neutral6 mb-4">{config.description}</p>
-      <button className="text-primary hover:text-primary2 text-sm font-medium">
+      <Link
+        to={config.to}
+        className="text-primary hover:text-primary2 text-sm font-medium"
+      >
         {config.linkText} →
-      </button>
+      </Link>
     </div>
   );
 }

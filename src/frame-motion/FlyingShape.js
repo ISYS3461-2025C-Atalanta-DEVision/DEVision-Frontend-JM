@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-
+import pencile from "../assets/photo/pencile.png";
 const floatingShapes = [
   {
     id: "circle-top-left",
-    className: "w-16 h-16 rounded-full bg-indigo-400/50 border border-white/10",
+    className: "w-16 h-16 rounded-full bg-[#98A9BB] border border-[#002959]",
     style: { top: "8%", left: "12%" },
     animation: { y: [0, -25, 0], x: [0, 8, 0], rotate: [0, 12, -6, 0] },
     duration: 3.4,
@@ -11,7 +11,7 @@ const floatingShapes = [
   },
   {
     id: "diamond-top-right",
-    className: "w-10 h-10 rotate-45 bg-emerald-400/60 border border-white/20",
+    className: "w-10 h-10 rotate-45 bg-[#002959] border border-[#98A9BB]",
     style: { top: "18%", right: "10%" },
     animation: { y: [0, 20, 0], x: [0, -12, 0] },
     duration: 4.3,
@@ -19,7 +19,7 @@ const floatingShapes = [
   },
   {
     id: "ring-bottom-left",
-    className: "w-20 h-20 rounded-full border border-indigo-300/60",
+    className: "w-20 h-20 rounded-full border border-[#002959]",
     style: { bottom: "18%", left: "6%" },
     animation: { y: [0, -18, 0], rotate: [0, 18, 0, -12, 0] },
     duration: 1.4,
@@ -27,7 +27,7 @@ const floatingShapes = [
   },
   {
     id: "pill-mid",
-    className: "w-24 h-8 rounded-full bg-emerald-500/50",
+    className: "w-24 h-8 rounded-full bg-[#98A9BB] border border-[#002959]",
     style: { top: "58%", right: "28%" },
     animation: { y: [0, -14, 0], x: [0, 10, 0], rotate: [0, -10, 0] },
     duration: 2.5,
@@ -43,7 +43,7 @@ const floatingShapes = [
   },
   {
     id: "square-mid-left",
-    className: "w-8 h-8 bg-indigo-300/70 border border-indigo-600/30",
+    className: "w-8 h-8 bg-[#002959]/70 border border-[#98A9BB]/30",
     style: { top: "45%", left: "18%" },
     animation: { y: [0, 18, 0], x: [0, -8, 0], rotate: [0, 8, -8, 0] },
     duration: 2.1,
@@ -60,7 +60,7 @@ const floatingShapes = [
   },
   {
     id: "rectangle-bottom-center",
-    className: "w-12 h-4 bg-cyan-400/70 rounded-sm",
+    className: "w-12 h-4 bg-[#98A9BB]/70 rounded-sm",
     style: { bottom: "15%", left: "26%" },
     animation: { y: [0, -12, 0], x: [0, 24, 0] },
     duration: 2.8,

@@ -21,6 +21,11 @@ function useGridTable(fetchItemAPI) {
     }
   }
 
+    // Remove from local state by id
+  function removeItem(id) {
+    setItems((prev) => prev.filter((item) => item.id !== id));
+  }
+
   useEffect(() => {
     fetchItems();
   }, []);
