@@ -25,7 +25,7 @@ export const QUICK_STATS_CARD_CONFIG = {
     description: "Find potential candidates",
     icon: <i className="ri-search-eye-line text-[40px] text-purple-500"></i>,
     linkText: "Search now",
-    to: "/dashboard/search",
+    to: "/dashboard/search_applicants",
   },
 };
 

@@ -5,10 +5,10 @@ import { PROFILE_URL } from "../service_url/ProfileUrlConfig";
 export const profileService = {
   getQuickActionStats: async (companyId) => {
     const quickStats = [
-      { key: "jobPostsCount", value: 12 },
-      { key: "eventPostCount", value: 5 },
-      { key: "applicationsCount", value: 45 },
-      { key: "searchCount", value: 8 },
+      { key: "jobPostsCount" },
+      { key: "eventPostCount" },
+      { key: "applicationsCount" },
+      { key: "searchCount" },
     ];
     await new Promise((resolve) => setTimeout(resolve, 800));
     // throw new Error("Failed to load quick stats");

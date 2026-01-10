@@ -16,6 +16,8 @@ import ActivateAccount from "./pages/ActivateAccount";
 import SubscriptionPayment from "./pages/SubscriptionPayment";
 import EventPage from "./pages/EventsPage";
 import ManageJobPostPage from "./pages/ManageJobPostPage";
+import SearchApplicants from "./pages/SearchApplicants";
+import NavBar from "./layout/NavBar/NavBar";
 
 function App() {
   return (
@@ -38,6 +40,14 @@ function App() {
         />
 
         <Route
+          path="/dashboard/search_applicants"
+          element={
+            <ProtectedRoute>
+              <SearchApplicants />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/jobpost"
           element={
             <ProtectedRoute>
@@ -57,12 +67,12 @@ function App() {
           path="/event"
           element={
             <ProtectedRoute>
-              <EventPage/>
+              <EventPage />
             </ProtectedRoute>
           }
         />
 
-         <Route
+        <Route
           path="/payment"
           element={
             <ProtectedRoute>

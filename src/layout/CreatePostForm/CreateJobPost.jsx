@@ -60,6 +60,10 @@ export default function CreateJobPost({ onPostCreated }) {
         },
         postValidators.isNumber(),
         postValidators.salaryPositive(),
+        postValidators.mustSmallerThan(
+          "salaryMax",
+          "Min salary must be less than Max salary"
+        ),
       ],
       salaryMax: [
         (value, values) => {
@@ -68,6 +72,10 @@ export default function CreateJobPost({ onPostCreated }) {
         },
         postValidators.isNumber(),
         postValidators.salaryPositive(),
+        postValidators.mustLargerThan(
+          "salaryMin",
+          "Max salary must be greater than Min salary"
+        ),
       ],
       salaryAmount: [
         (value, values) => {
@@ -160,7 +168,7 @@ export default function CreateJobPost({ onPostCreated }) {
           >
             {/* Header */}
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-[#002959]">
+              <h1 className="text-3xl font-bold text-primary">
                 Create New Job Post
               </h1>
               <p className="text-sm text-black mt-2">
@@ -176,10 +184,10 @@ export default function CreateJobPost({ onPostCreated }) {
             />
 
             {/* Form container */}
-            <div className="bg-white rounded-lg shadow-md p-6 space-y-6 border border-[#98A9BB]/60">
+            <div className="bg-white rounded-lg shadow-md p-6 space-y-6 border border-neutral2">
               {/* Basic Information */}
               <div>
-                <h2 className="text-xl font-semibold text-[#002959] mb-4 border-b border-[#98A9BB]/60 pb-2">
+                <h2 className="text-xl font-semibold text-blacktxt mb-4 border-b border-neutral2 pb-2">
                   Basic Information
                 </h2>
                 <Input
@@ -222,13 +230,13 @@ export default function CreateJobPost({ onPostCreated }) {
 
                 {/* Additional employment deals */}
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-[#002959] mb-2">
+                  <label className="block text-sm font-medium text-blacktxt mb-2">
                     Selected deals
                   </label>
                   <div className="flex flex-wrap gap-2 mb-3">
                     {values.additionalEmploymentType.map((deal, idx) => (
                       <div key={idx} className="relative group">
-                        <div className="flex items-center justify-center px-3 py-1.5 gap-2 bg-[#98A9BB]/20 border border-[#002959]/30 rounded-lg">
+                        <div className="flex items-center justify-center px-3 py-1.5 gap-2 bg-neutral3 border border-blacktxt/30 rounded-lg">
                           <p className="text-sm text-black font-medium">
                             {deal}
                           </p>
@@ -279,7 +287,7 @@ export default function CreateJobPost({ onPostCreated }) {
 
               {/* Compensation */}
               <div>
-                <h2 className="text-xl font-semibold text-[#002959] mb-4 border-b border-[#98A9BB]/60 pb-2">
+                <h2 className="text-xl font-semibold text-blacktxt mb-4 border-b border-neutral5 pb-2">
                   Compensation
                 </h2>
                 <div className="flex flex-col gap-4">
@@ -372,11 +380,11 @@ export default function CreateJobPost({ onPostCreated }) {
 
               {/* Skills */}
               <div>
-                <h2 className="text-xl font-semibold text-[#002959] mb-4 border-b border-[#98A9BB]/60 pb-2">
+                <h2 className="text-xl font-semibold text-blacktxt mb-4 border-b border-neutral5 pb-2">
                   Required Skills
                 </h2>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-[#002959] mb-2">
+                  <label className="block text-sm font-medium text-blacktxt mb-2">
                     Selected Skills
                   </label>
                   <div className="flex flex-wrap gap-2 mb-3">
@@ -412,7 +420,7 @@ export default function CreateJobPost({ onPostCreated }) {
 
               {/* Timeline */}
               <div>
-                <h2 className="text-xl font-semibold text-[#002959] mb-4 border-b border-[#98A9BB]/60 pb-2">
+                <h2 className="text-xl font-semibold text-blacktxt mb-4 border-b border-neutral5 pb-2">
                   Timeline
                 </h2>
                 <div className="md:grid-cols-2 gap-4">
@@ -431,20 +439,20 @@ export default function CreateJobPost({ onPostCreated }) {
 
               {/* Additional Options - Highlighted boxes for checkboxes */}
               <div>
-                <h2 className="text-xl font-semibold text-[#002959] mb-4 border-b border-[#98A9BB]/60 pb-2">
+                <h2 className="text-xl font-semibold text-blacktxt mb-4 border-b border-neutral5 pb-2">
                   Additional Options
                 </h2>
 
                 <div className="grid gap-4 md:grid-cols-2">
                   {/* Fresher friendly */}
-                  <div className="bg-[#98A9BB]/20 border border-[#98A9BB]/60 rounded-lg p-4">
+                  <div className="bg-neutral3 border border-neutral5 rounded-lg p-4">
                     <label className="flex items-center cursor-pointer">
                       <input
                         type="checkbox"
                         name="isFresherFriendly"
                         checked={values.isFresherFriendly}
                         onChange={handleChange}
-                        className="h-4 w-4 text-[#002959] focus:ring-[#002959] border-gray-300 rounded"
+                        className="h-4 w-4 text-blacktxt focus:ring-blacktxt border-gray-300 rounded"
                       />
                       <span className="ml-2 text-sm text-black font-medium">
                         Fresher Friendly
@@ -457,14 +465,14 @@ export default function CreateJobPost({ onPostCreated }) {
                   </div>
 
                   {/* Publish immediately */}
-                  <div className="bg-[#98A9BB]/20 border border-[#98A9BB]/60 rounded-lg p-4">
+                  <div className="bg-neutral3 border border-neutral5 rounded-lg p-4">
                     <label className="flex items-center cursor-pointer">
                       <input
                         type="checkbox"
                         name="status"
                         checked={values.status === "PUBLIC"}
                         onChange={handleChange}
-                        className="h-4 w-4 text-[#002959] focus:ring-[#002959] border-gray-300 rounded"
+                        className="h-4 w-4 text-blacktxt focus:ring-blacktxt border-gray-300 rounded"
                       />
                       <span className="ml-2 text-sm text-black font-medium">
                         Publish immediately
@@ -479,7 +487,7 @@ export default function CreateJobPost({ onPostCreated }) {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex justify-end gap-3 pt-4 border-t border-[#98A9BB]/60">
+              <div className="flex justify-end gap-3 pt-4 border-t border-neutral5">
                 <Button
                   variant="outline"
                   size="lg"
@@ -488,14 +496,14 @@ export default function CreateJobPost({ onPostCreated }) {
                     setFormOpen(false);
                     reset();
                   }}
-                  className="border-[#002959] text-[#002959] hover:bg-[#002959] hover:text-white"
+                  className="border-blacktxt text-blacktxt hover:bg-blacktxt hover:text-white"
                 >
                   Cancel
                 </Button>
                 <Button
                   variant="secondary"
                   size="lg"
-                  className="bg-white border border-[#002959] text-[#002959] hover:bg-[#002959] hover:text-white"
+                  className="bg-white border border-blacktxt text-blacktxt hover:bg-blacktxt hover:text-white"
                   onClick={() => setConfirmBoxOpen(true)}
                 >
                   Save as Draft
@@ -505,7 +513,7 @@ export default function CreateJobPost({ onPostCreated }) {
                   size="lg"
                   onClick={handleSubmit}
                   loading={isCreating}
-                  className="bg-[#002959] text-white hover:bg-[#001a3d]"
+                  className="bg-blacktxt text-white hover:bg-[#001a3d]"
                 >
                   Create Job Post
                 </Button>

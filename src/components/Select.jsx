@@ -12,6 +12,8 @@ const Select = ({
   className = "",
   ...props
 }) => {
+  const isPlaceholder = value === "" || value == null;
+  
   return (
     <div className={`mb-4 ${className}`}>
       {label && (
@@ -37,12 +39,19 @@ const Select = ({
               : "border-gray-300"
           }
           ${disabled ? "bg-gray-100 cursor-not-allowed" : ""}
+          ${isPlaceholder ? "text-neutral6" : "text-blacktxt"}
         `}
         {...props}
       >
-        <option value="">{placeholder}</option>
+        <option value="" className="text-neutral6">
+          {placeholder}
+        </option>
         {options.map((option) => (
-          <option key={option.value || option} value={option.value || option}>
+          <option
+            key={option.value || option}
+            value={option.value || option}
+            className="text-black"
+          >
             {option.label || option}
           </option>
         ))}
