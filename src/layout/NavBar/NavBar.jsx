@@ -3,6 +3,7 @@ import { React, useState } from "react";
 import Button from "../../components/Button";
 import { useNavbar } from "./useNavBar";
 import SkillTag from "../../components/SkillTag";
+import NotificationBell from "../../headless/notification/notificationBell";
 
 import useProfileStore from "../../store/profile.store";
 
@@ -63,6 +64,7 @@ export default function NavBar({ activepage }) {
           </nav>
 
           <div className="flex items-center space-x-4">
+            <NotificationBell />  
             {loading ? (
               <span className="text-neutral7">Loading...</span>
             ) : (
