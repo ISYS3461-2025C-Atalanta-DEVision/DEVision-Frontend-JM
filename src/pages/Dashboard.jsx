@@ -278,7 +278,7 @@ const Dashboard = () => {
                   </label>
                   {companyData?.country ? (
                     <p className="text-textBlack">
-                      {formatDateYear(companyData.createdAt)}
+                      {companyData?.country}
                     </p>
                   ) : (
                     <p className="text-neutral6 font-semibold">Not set</p>
