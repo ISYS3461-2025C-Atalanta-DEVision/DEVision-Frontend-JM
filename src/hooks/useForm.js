@@ -373,7 +373,7 @@ export const postValidators = {
     (value) => {
       if (!value) return "";
       // allow letters, numbers, spaces, and semicolons
-      const allowed = /^[A-Za-z0-9\s;]+$/;
+      const allowed = /^[A-Za-z0-9\s;-]+$/;
       if (!allowed.test(value)) return message;
       // ensure at least one non-empty role when splitting by comma/semicolon
       const parts = value

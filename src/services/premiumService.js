@@ -1,7 +1,6 @@
 import api from "../http_call/HttpRequest";
 import {
   SEARCH_CRITERIA_URL,
-  EDIT_SEARCH_CRITERIA_URL,
 } from "../service_url/PremiumUrlConfig";
 
 export const premiumService = {
@@ -11,7 +10,7 @@ export const premiumService = {
   },
 
   editSearchProfile: async (payload) => {
-    const response = await api.put(EDIT_SEARCH_CRITERIA_URL, payload);
+    const response = await api.put(SEARCH_CRITERIA_URL, payload);
     return response.data;
   },
 

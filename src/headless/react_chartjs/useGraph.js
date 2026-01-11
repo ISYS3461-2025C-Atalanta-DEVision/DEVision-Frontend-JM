@@ -1,11 +1,34 @@
-function useGraph() {
-  //Skill Match Radar Chart Data and Options
+import skillStore from "../../store/skill.store";
+import { useState, useEffect, useCallback } from "react";
+
+function useGraph(data) {
+  const { skillsMap } = skillStore();
+
+  console.log(skillsMap);
+
+  const [skillList, setSkillList] = useState([]);
+
+  useEffect(() => {
+    getRadarField();
+  }, [data]);
+
+  const getRadarField = useCallback(() => {
+    if (!data?.technicalSkills || !skillsMap) return [];
+
+    const skillNames = data.technicalSkills
+      .map((id) => skillsMap[id]?.name)
+      .filter(Boolean);
+
+    setSkillList([...skillNames]);
+    return skillNames;
+  }, [data, skillsMap]);
+
   const RadarData = {
-    labels: ["React", "SpringBoot", "NextJs", "Colort Theory", "Python"],
+    labels: [...skillList],
     datasets: [
       {
         label: "Number of fields",
-        data: [70, 90, 65, 88, 60],
+        data: [70, 90, 65, 88, 60, 20,10],
         backgroundColor: "rgba(59,130,246,0.12)",
         borderColor: "rgba(59,130,246,1)",
         pointBackgroundColor: "rgba(59,130,246,1)",

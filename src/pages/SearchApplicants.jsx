@@ -1,12 +1,12 @@
 import React from "react";
 import NavBar from "../layout/NavBar/NavBar";
-import SearchApplicantForm from "../layout/SearchApplicantForm/SearchApplicantForm";
+import SearchApplicantView from "../layout/SearchApplicantForm/SearchApplicantView";
 function SearchApplicants() {
   return (
     <div className="min-h-screen bg-backGround">
       <NavBar />
       <div className="max-w-[90%] h-full mx-auto py-2 mt-2">
-        <SearchApplicantForm />
+        <SearchApplicantView />
       </div>
     </div>
   );

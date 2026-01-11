@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../../components/Button";
 import SkillTag from "../../components/SkillTag";
-
+import ConfirmBox from "../../components/ConfirmBox";
 
 export default function SearchApplicantCard({ profile, onEdit, onDelete }) {
   if (!profile) return null;
@@ -25,6 +25,7 @@ export default function SearchApplicantCard({ profile, onEdit, onDelete }) {
         }`
       : "Not set";
 
+  const [cf, setCf] = useState(null);
   return (
     <article className="bg-bgComponent rounded-lg shadow p-6 border border-neutral2 w-full h-full">
       <header className="flex items-start justify-between gap-4">
@@ -134,11 +135,38 @@ export default function SearchApplicantCard({ profile, onEdit, onDelete }) {
           variant="outline"
           size="md"
           className="text-red-600 border-red-600 hover:bg-red-50"
-          onClick={onDelete}
+          onClick={() => {
+            setCf({
+              title: "This will delete your Talent Profile and all statistics",
+              buttons: [
+                {
+                  type: "return",
+                  content: "Return",
+                  onClick: () => setCf(null),
+                },
+                {
+                  type: "danger",
+                  content: "Yes, I understand.",
+                  onClick: () => {
+                    setCf(null);
+                    onDelete();
+                  },
+                },
+              ],
+            });
+          }}
         >
           Delete
         </Button>
       </footer>
+
+      {cf !== null && (
+        <ConfirmBox
+          buttons={cf.buttons}
+          title={cf.title}
+          subTitle={cf.subTitle}
+        />
+      )}
     </article>
   );
 }
