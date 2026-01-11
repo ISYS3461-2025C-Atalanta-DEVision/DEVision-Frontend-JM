@@ -5,6 +5,14 @@ import notificationService from "../services/notificationService";
 const DEFAULT_POLL_INTERVAL = 15000; // 15 seconds as per backend docs
 
 /**
+ * Format date for backend LocalDateTime (no milliseconds, no Z suffix)
+ * Backend expects: 2024-01-07T10:30:00
+ */
+const formatDateForBackend = (date) => {
+  return date.toISOString().split(".")[0];
+};
+
+/**
  * Hook for notification polling mechanism
  *
  * Features:
@@ -84,7 +92,7 @@ export const useNotificationPolling = ({
       // First poll - fetch all
       await fetchNotifications();
       await fetchUnreadCount();
-      setLastPolledAt(new Date().toISOString());
+      setLastPolledAt(formatDateForBackend(new Date()));
       return;
     }
 
@@ -99,7 +107,7 @@ export const useNotificationPolling = ({
       }
 
       await fetchUnreadCount();
-      setLastPolledAt(new Date().toISOString());
+      setLastPolledAt(formatDateForBackend(new Date()));
       errorCountRef.current = 0;
     } catch (error) {
       console.error("Failed to poll notifications:", error);

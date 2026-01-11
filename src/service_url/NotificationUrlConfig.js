@@ -6,7 +6,7 @@
  * by the API Gateway after JWT validation.
  */
 
-const NOTIFICATION_SERVICE_BASE = "/notification-service/api/notifications";
+const NOTIFICATION_SERVICE_BASE = `/notification-service/api/notifications`;
 
 // GET - Get all notifications (paginated)
 // Query params: page, size
