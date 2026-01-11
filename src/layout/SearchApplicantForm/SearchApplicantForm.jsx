@@ -1,14 +1,11 @@
 import React from "react";
 import { useForm, postValidators } from "../../hooks/useForm";
 import { motion, AnimatePresence } from "framer-motion";
-import Alert from "../../components/Alert";
-import Input from "../../components/Input";
-import Select from "../../components/Select";
-import CategoryInput from "../../components/CategoryInput/CategoryInput";
-import SkillCategoryInput from "../../components/SkillCategoryInput/SkillCategoryInput";
-import SkillTag from "../../components/SkillTag";
-import Button from "../../components/Button";
 import useSearchApplicantForm from "./useSearchApplicantForm";
+import premiumService from "../../services/premiumService";
+import SearchApplicantCard from "./SearchApplicantCard";
+import Graphs from "../../headless/react_chartjs/Graphs";
+import Form from "./Form";
 
 function SearchApplicantForm() {
   const {
@@ -20,18 +17,23 @@ function SearchApplicantForm() {
     handleListChange,
     handlerRemoveListItem,
     reset,
+    setValues,
   } = useForm(
     {
-      name: "Java Developers",
-      technicalSkills: ["Java", "Spring Boot"],
-      country: "Germany",
+      name: "",
+      technicalSkills: [],
+      country: "",
 
-      salaryMin: "9000", //map to "expectedSalary"
-      salaryMax: "191000",
-      currency: "USD",
+      salaryMin: "", //map to "expectedSalary"
+      salaryMax: "",
+      currency: "",
+
+      isFresherFriendly: false,
 
       additionalEmploymentType: [], //map to employmentStatus
       employmentTypes: "",
+
+      desiredRoles: "",
     },
     {
       name: [postValidators.required("Name is required")],
@@ -46,6 +48,12 @@ function SearchApplicantForm() {
         postValidators.mustSmallerThan(
           "salaryMax",
           "Minimum salary must be less than maximum salary"
+        ),
+      ],
+      desiredRoles: [
+        postValidators.required("Desired roles is required"),
+        postValidators.desiredRolesFormat(
+          "Desired roles must be semicolons separated"
         ),
       ],
       salaryMax: [
@@ -71,12 +79,21 @@ function SearchApplicantForm() {
     }
   );
 
-  const { handleSubmit } = useSearchApplicantForm(
+  const {
+    handleSubmit,
+    isLoading,
+    msg,
+    setIsFormOpen,
+    isFormOpen,
+    currentCriteria,
+    openEditMode,
+  } = useSearchApplicantForm(
     values,
-    null,
+    premiumService,
     validateAll,
     reset,
-    null
+    null,
+    setValues
   );
 
   const formVariants = {
@@ -85,195 +102,77 @@ function SearchApplicantForm() {
     exit: { opacity: 0, y: -20 },
   };
 
-  return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key="create-button"
-        variants={formVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        transition={{ duration: 0.3, ease: "easeOut" }}
-        className="w-full"
-      >
-        <div className="bg-white rounded-lg shadow-md p-6 space-y-6 border border-neutral2">
-          {/* <div className="mb-6">
-            <h1 className="text-3xl font-bold text-primary">
-              Create Search Applicant
-            </h1>
-            <p className="text-sm text-black mt-2">
-              Fill in the details to create your first search applicant profile.
-            </p>
-          </div> */}
+  if (currentCriteria === null) {
+    return (
+      <AnimatePresence mode="wait">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-primary">
+            Create Search Applicant
+          </h1>
+          <p className="text-sm text-black mt-2">
+            Fill in the details to create your first search applicant profile.
+          </p>
 
-          <div>
-            <h2 className="text-xl font-semibold text-blacktxt mb-4 border-b border-neutral2 pb-2">
-              Name Your Profile
-            </h2>
-            <Input
-              label="Name"
-              name="name"
-              type="text"
-              value={values.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={errors.name}
-              placeholder="e.g., Frontend Developer"
-              required
-              className="mb-4"
-            />
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold text-blacktxt mb-4 border-b border-neutral2 pb-2">
-              Location & Preferences
-            </h2>
-            <Select
-              label="Country"
-              name="country"
-              value={values.country}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={errors.country}
-              options={["Germany", "United States", "Canada", "Australia"]}
-              placeholder={
-                false ? "Loading countries..." : "Select your country"
-              }
-              //   disabled={loadingCountries}
-              required
-            />
-          </div>
+          <Form
+            values={values}
+            errors={errors}
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+            handleListChange={handleListChange}
+            handlerRemoveListItem={handlerRemoveListItem}
+            isLoading={isLoading}
 
-          <div>
-            <h2 className="text-xl font-semibold text-blacktxt mb-4 border-b border-neutral2 pb-2">
-              Applicant Preferences
-            </h2>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-neutral8 mb-2">
-                Selected Skills
-              </label>
-              <div className="flex flex-wrap gap-2 mb-3">
-                {values.technicalSkills.map((skillId, idx) => (
-                  <div key={idx} className="relative group">
-                    <SkillTag skillId={skillId} />
-                    <button
-                      type="button"
-                      className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
-                      title="Remove skill"
-                      onClick={() =>
-                        handlerRemoveListItem("technicalSkills", skillId)
-                      }
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <SkillCategoryInput
-                label="Required Skills"
-                name="technicalSkills"
-                value={values.technicalSkills}
-                onChange={handleListChange}
-                onBlur={handleBlur}
-                error={errors.technicalSkills}
-                placeholder="Type to find skills"
-                className="w-full"
-                required
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-neutral8 mb-2">
-                Selected deals
-              </label>
-              <div className="flex flex-wrap gap-2 mb-3">
-                {values.additionalEmploymentType.map((deal, idx) => (
-                  <div key={idx} className="relative group">
-                    <div className="flex items-center justify-center px-3 py-1.5 gap-2 bg-neutral4/20 border border-blacktxt/30 rounded-lg">
-                      <p className="text-sm text-black font-medium">{deal}</p>
-                    </div>
-                    <button
-                      type="button"
-                      className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
-                      title="Remove deal"
-                      onClick={() =>
-                        handlerRemoveListItem("additionalEmploymentType", deal)
-                      }
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <CategoryInput
-                label="Employment Deal"
-                name="additionalEmploymentType"
-                value={values.additionalEmploymentType}
-                onChange={handleListChange}
-                onBlur={handleBlur}
-                error={errors.additionalEmploymentType}
-                options={["Internship", "Contract"]}
-                placeholder="Employment deal"
-                className="w-full"
-                required
-              />
-            </div>
-
-            <Select
-              label="Employment Type"
-              name="employmentTypes"
-              value={values.employmentTypes}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={errors.employmentTypes}
-              options={["Full-time", "Part-time"]}
-              placeholder="Select employment type"
-              required
-              className="mb-4"
-            />
-          </div>
-
-          <div>
-            <div className="flex flex-col md:flex-row gap-4">
-              <Input
-                label="Min Salary Value"
-                name="salaryMin"
-                value={values.salaryMin}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.salaryMin}
-                type="text"
-                placeholder="e.g., 0"
-                className="flex-1"
-                required
-              />
-              <Input
-                label="Max Salary Value"
-                name="salaryMax"
-                value={values.salaryMax}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.salaryMax}
-                type="text"
-                placeholder="e.g., 1200"
-                className="flex-1"
-                required
-              />
-            </div>
-          </div>
-          <div className="flex justify-end gap-3 pt-4">
-            <Button
-              variant="primary"
-              size="lg"
-              className="bg-blacktxt text-white hover:bg-primary-2"
-              onClick={() => handleSubmit()}
-            >
-              Save Profile
-            </Button>
-          </div>
+          />
         </div>
-      </motion.div>
-    </AnimatePresence>
-  );
+      </AnimatePresence>
+    );
+  } else {
+    return (
+      <AnimatePresence mode="wait">
+        {isFormOpen ? (
+          <>
+            <motion.div
+              key="create-button"
+              variants={formVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="w-full flex gap-6 px-6"
+            >
+              <Form
+                values={values}
+                errors={errors}
+                handleSubmit={handleSubmit}
+              />
+              <Graphs />
+            </motion.div>
+          </>
+        ) : (
+          <>
+            <motion.div
+              key="create-button"
+              variants={formVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="w-full flex gap-6 px-6"
+            >
+              <SearchApplicantCard
+                profile={currentCriteria}
+                onEdit={openEditMode}
+                onDelete={null}
+              />
+
+              <Graphs />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    );
+  }
 }
 
 export default SearchApplicantForm;

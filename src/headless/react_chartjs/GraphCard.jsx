@@ -6,7 +6,7 @@ export function GraphCard({ title, children, bgColor = "bg-white" }) {
         {title}
       </h2>
 
-      <div className="flex-1 relative">
+      <div className="flex-1">
         {children}
       </div>
     </div>

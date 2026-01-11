@@ -445,7 +445,11 @@ export default function CreateJobPost({ onPostCreated }) {
 
                 <div className="grid gap-4 md:grid-cols-2">
                   {/* Fresher friendly */}
-                  <div className="bg-neutral3 border border-neutral5 rounded-lg p-4">
+                  <div
+                    className={`${
+                      values.isFresherFriendly ? "bg-green-200" : "bg-neutral3"
+                    } border border-neutral5 rounded-lg p-4`}
+                  >
                     <label className="flex items-center cursor-pointer">
                       <input
                         type="checkbox"

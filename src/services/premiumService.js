@@ -16,12 +16,20 @@ export const premiumService = {
   },
 
   getCompanySearchProfile: async () => {
-    const response = await api.get(SEARCH_CRITERIA_URL);
-    return response.data;
+    try {
+      const response = await api.get(SEARCH_CRITERIA_URL);
+      return response.data;
+    } catch (err) {
+      if (err.response?.status === 404) {
+        return null; // or []
+      }
+    }
   },
 
   deleteSearchProfile: async () => {
     const response = await api.delete(SEARCH_CRITERIA_URL);
     return response.data;
-  }
+  },
 };
+
+export default premiumService;

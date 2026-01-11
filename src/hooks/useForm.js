@@ -366,6 +366,23 @@ export const postValidators = {
       }
       return "";
     },
+  desiredRolesFormat:
+    (
+      message = "Only letters, numbers, spaces, commas and semicolons are allowed"
+    ) =>
+    (value) => {
+      if (!value) return "";
+      // allow letters, numbers, spaces, and semicolons
+      const allowed = /^[A-Za-z0-9\s;]+$/;
+      if (!allowed.test(value)) return message;
+      // ensure at least one non-empty role when splitting by comma/semicolon
+      const parts = value
+        .split(/[;]/)
+        .map((p) => p.trim())
+        .filter(Boolean);
+      if (parts.length === 0) return "At least one role is required";
+      return "";
+    },
 };
 
 export default useForm;
