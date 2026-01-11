@@ -109,7 +109,7 @@ export default function JobPostCard({
         <h1 className="text-3xl font-semibold text-blacktxt leading-tight">
           {item.title}
         </h1>
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#98A9BB] text-[#002959] border border-[#002959]/30">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-neutral4 text-[#002959] border border-[#002959]/30">
           {item.status}
         </span>
         {item.isFresherFriendly && (

@@ -33,10 +33,10 @@ export default function ManageJobPostPage() {
       <div className="max-w-6xl mx-auto px-4 py-10">
         {/* Header */}
         <header className="mb-8">
-          <h1 className="text-3xl font-semibold text-gray-900">
+          <h1 className="text-3xl font-semibold text-neutral8">
             Manage Job Posts
           </h1>
-          <p className="mt-2 text-sm text-gray-700">
+          <p className="mt-2 text-sm text-neutral7">
             View and manage all job posts created by your company.
           </p>
         </header>

@@ -38,7 +38,10 @@ const OAuthCallback = () => {
           }
           if (refreshExpiresIn) {
             const refreshExpiresAt = now + parseInt(refreshExpiresIn) * 1000;
-            localStorage.setItem("refreshExpiresAt", refreshExpiresAt.toString());
+            localStorage.setItem(
+              "refreshExpiresAt",
+              refreshExpiresAt.toString()
+            );
           }
 
           setAccessToken(accessToken);
@@ -75,18 +78,18 @@ const OAuthCallback = () => {
         <div className="bg-bgComponent rounded-2xl shadow-xl p-8 text-center">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-textBlack">DEVision</h1>
-            <p className="text-gray-600 mt-2">Processing Authentication</p>
+            <p className="text-neutral6 mt-2">Processing Authentication</p>
           </div>
 
           {error ? (
             <div className="py-4">
               <Alert type="error" message={error} className="mb-4" />
-              <p className="text-gray-600 text-sm">Redirecting to login...</p>
+              <p className="text-neutral6 text-sm">Redirecting to login...</p>
             </div>
           ) : (
             <div className="py-8">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-              <p className="mt-4 text-gray-600">Completing sign in...</p>
+              <p className="mt-4 text-neutral6">Completing sign in...</p>
             </div>
           )}
         </div>

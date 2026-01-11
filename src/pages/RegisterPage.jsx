@@ -43,21 +43,21 @@ export default function RegisterPage() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-fit w-fit bg-bgComponent rounded-2xl shadow-xl p-8 space-y-6 z-10" style={{ backgroundColor: "#98A9BB" }}
+        className="w-fit w-fit bg-bgComponent rounded-2xl shadow-xl p-8 space-y-6 z-10"
       >
-        <div className="text-center space-y-1" style={{ backgroundColor: "#98A9BB" }}>
-          <p className="text-sm uppercase tracking-[0.3em] text-[#002959]">
+         <div className="text-center space-y-1">
+          <p className="text-sm uppercase tracking-[0.3em] text-primary">
             DEVision
           </p>
           <h1 className="text-3xl font-bold text-textBlack">
             Create your account
           </h1>
-          <p className="text-sm text-[#002959]">
+          <p className="text-sm text-neutral6">
             Fill in the details to get started
           </p>
         </div>
 
-        <div className="border-t-2 border-[#002959] pt-6" >
+        <div className="border-t-2 border-neutral6 pt-6">
           <RegistrationForm
             registerApi={register}
             getCountryApi={authService.getCountries}

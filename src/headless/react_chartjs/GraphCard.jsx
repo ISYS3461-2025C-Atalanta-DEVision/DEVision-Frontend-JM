@@ -1,0 +1,14 @@
+export function GraphCard({ title, children, bgColor = "bg-white" }) {
+  return (
+    <div className={`${bgColor} rounded-lg shadow-md border border-neutral2
+                    p-4 flex flex-col h-full`}>
+      <h2 className="text-base font-semibold text-blacktxt mb-3">
+        {title}
+      </h2>
+
+      <div className="flex-1 relative">
+        {children}
+      </div>
+    </div>
+  );
+}

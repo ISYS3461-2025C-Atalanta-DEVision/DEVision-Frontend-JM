@@ -12,12 +12,14 @@ const Select = ({
   className = "",
   ...props
 }) => {
+  const isPlaceholder = value === "" || value == null;
+
   return (
     <div className={`mb-4 ${className}`}>
       {label && (
         <label
           htmlFor={name}
-          className="block text-sm font-medium text-[#002959] mb-1"
+          className="block text-sm font-medium text-neutral7 mb-1"
         >
           {label}
           {required && <span className="text-error ml-1">*</span>}
@@ -34,15 +36,22 @@ const Select = ({
           ${
             error
               ? "border-error focus:ring-error focus:border-error"
-              : "border-gray-300"
+              : "border-neutral3"
           }
-          ${disabled ? "bg-gray-100 cursor-not-allowed" : ""}
+          ${disabled ? "bg-neutral2 cursor-not-allowed" : ""}
+          ${isPlaceholder ? "text-neutral6" : "text-blacktxt"}
         `}
         {...props}
       >
-        <option value="">{placeholder}</option>
+        <option value="" className="text-neutral6">
+          {placeholder}
+        </option>
         {options.map((option) => (
-          <option key={option.value || option} value={option.value || option}>
+          <option
+            key={option.value || option}
+            value={option.value || option}
+            className="text-black"
+          >
             {option.label || option}
           </option>
         ))}

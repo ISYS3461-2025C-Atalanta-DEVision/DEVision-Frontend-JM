@@ -55,15 +55,15 @@ const CategoryInput = ({
           ${
             error
               ? "border-error focus:ring-error"
-              : "border-gray-300 focus:ring-blue-500"
+              : "border-neutral3 focus:ring-blue-500"
           } 
-          ${disabled ? "bg-gray-100 cursor-not-allowed" : "bg-bgComponent"}
+          ${disabled ? "bg-neutral2 cursor-not-allowed" : "bg-bgComponent"}
         `}
       />
 
       {/* Dropdown list */}
       {showList && !disabled && (
-        <ul className="absolute left-0 right-0 z-20 bg-bgComponent border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto mt-1">
+        <ul className="absolute left-0 right-0 z-20 bg-bgComponent border border-neutral3 rounded-lg shadow-lg max-h-60 overflow-auto mt-1">
           {filteredOptions.length > 0 ? (
             filteredOptions.map((opt) => (
               <li

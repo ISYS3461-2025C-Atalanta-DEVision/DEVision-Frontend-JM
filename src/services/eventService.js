@@ -3,11 +3,14 @@ import { EVENT_URL } from "../service_url/ProfileUrlConfig";
 
 const eventService = {
   getEventList: async (params) => {
-    const res = await api.get(`${EVENT_BASE_URL}`, { params });
-    return res.data; // shape should match what PostList expects
+    // GET /api/events/me - returns current company's events
+    const res = await api.get(`${EVENT_URL}/me`, { params });
+    return res.data;
   },
   getCompanyEvents: async (companyId) => {
-    const response = await api.get(`${EVENT_URL}/me`);
+    // GET /api/events/company/{companyId} - get another company's events
+    const response = await api.get(`${EVENT_URL}/company/${companyId}`);
+    console.log("Fetched company events:", response.data);
     return response.data;
   },
 

@@ -20,10 +20,10 @@ RUN npm ci --silent
 # Copy source code
 COPY . .
 
-# Build arguments for environment variables (passed at build time)
-# On Render: Set these in the dashboard under Environment
-ARG VITE_API_URL
-ARG VITE_STRIPE_PUBLISHABLE_KEY
+# Build arguments for environment variables
+# Hardcode production defaults since Render doesn't pass build args easily
+ARG VITE_API_URL=https://api-gateway-khhr.onrender.com
+ARG VITE_STRIPE_PUBLISHABLE_KEY=pk_test_51Sfc81EPPTtsttuBeP94ZJWPFbL2IDVSclymMZs1yQ5bbwbzO8UtVW3m5i0pfbZ5j5HM9COFGkL4Q2AvgD1gNrx8006UeBb2Sn
 
 ENV VITE_API_URL=$VITE_API_URL
 ENV VITE_STRIPE_PUBLISHABLE_KEY=$VITE_STRIPE_PUBLISHABLE_KEY

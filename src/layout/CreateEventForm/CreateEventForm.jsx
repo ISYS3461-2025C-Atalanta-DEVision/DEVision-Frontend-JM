@@ -60,7 +60,7 @@ export default function CreateEventForm({setSearchParams}) {
   return (
 
     <form
-      className="w-full mx-auto p-6 bg-bgComponent rounded-lg shadow space-y-6 mt-6"
+      className="w-full mx-auto p-6 bg-bgComponent rounded-lg shadow space-y-6"
       onSubmit={handleSubmit}
     >
       <h1 className="text-3xl font-bold mb-4">Create New Event</h1>
@@ -108,11 +108,11 @@ export default function CreateEventForm({setSearchParams}) {
             className={`
             relative group
             w-full ${values.coverImage ? "h-content" : "h-80"}
-            bg-neutral4 rounded-lg shadow
+            bg-neutral2 rounded-lg shadow
             flex justify-center items-center
             text-neutral7 text-2xl font-medium
             cursor-pointer
-            hover:bg-neutral6 transition
+            hover:bg-neutral3 transition
           `}
             onClick={() =>
               values.coverImage
@@ -206,11 +206,11 @@ export default function CreateEventForm({setSearchParams}) {
             <div
               className="
                   aspect-square
-                  bg-neutral4 rounded-lg
+                  bg-neutral2 rounded-lg
                   flex items-center justify-center
                   text-neutral7 text-2xl font-medium
                   cursor-pointer
-                  hover:bg-neutral6 transition
+                  hover:bg-neutral3 transition
                 "
               title="Add image"
               onClick={() =>
@@ -256,7 +256,7 @@ export default function CreateEventForm({setSearchParams}) {
         />
       </div>
 
-      <div className="flex gap-4 pt-4 border-t">
+      <div className="flex gap-4 pt-4 border-t justify-end">
         <Button variant="outline" size="lg" type="button" onClick={reset}>
           Cancel
         </Button>

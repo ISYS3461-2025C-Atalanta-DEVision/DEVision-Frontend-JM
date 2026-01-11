@@ -19,7 +19,7 @@ const Input = ({
       {label && (
         <label
           htmlFor={name}
-          className="block text-sm font-medium text-[#002959] mb-1"
+          className="block text-sm font-medium text-neutral8 mb-1"
         >
           {label}
           {required && <span className="text-error ml-1">*</span>}
@@ -36,13 +36,13 @@ const Input = ({
         placeholder={!isCheckbox ? placeholder : undefined}
         disabled={disabled}
         rows={type === "textarea" ? 5 : undefined}
-        className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#002959] focus:border-primary transition-colors
+        className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors
           ${
             error
               ? "border-error focus:ring-error focus:border-error"
-              : "border-white"
+              : "border-neutral3"
           }
-          ${disabled ? "bg-gray-100 cursor-not-allowed" : "bg-bgComponent"}
+          ${disabled ? "bg-neutral2 cursor-not-allowed" : "bg-bgComponent"}
         `}
         {...props}
       />

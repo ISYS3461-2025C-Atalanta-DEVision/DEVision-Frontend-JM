@@ -126,7 +126,7 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
         [name]: updatedArr,
       };
     });
-  },[]);
+  }, []);
 
   const handleRemoveImage = useCallback((index) => {
     setValues((prev) => {
@@ -146,7 +146,7 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
         imagePreviews: previews.filter((_, i) => i !== index),
       };
     });
-  },[]);
+  }, []);
 
   const handleBlur = useCallback(
     (e) => {
@@ -188,7 +188,7 @@ export const useForm = (initialValues = {}, validationRules = {}) => {
 
   const setValue = useCallback((name, value) => {
     setValues((prev) => ({ ...prev, [name]: value }));
-  },[]);
+  }, []);
 
   return {
     values,
@@ -339,6 +339,33 @@ export const postValidators = {
     }
     return "";
   },
+  mustLargerThan:
+    (otherField, message = "This field must be larger") =>
+    (value, values) => {
+      if (value === undefined || value === null || value === "") return "";
+      const otherVal = values?.[otherField];
+      if (otherVal === undefined || otherVal === null || otherVal === "")
+        return "";
+      if (isNaN(value) || isNaN(otherVal)) return "";
+      if (Number(value) <= Number(otherVal)) {
+        return message;
+      }
+      return "";
+    },
+
+  mustSmallerThan:
+    (otherField, message = "This field must be larger") =>
+    (value, values) => {
+      if (value === undefined || value === null || value === "") return "";
+      const otherVal = values?.[otherField];
+      if (otherVal === undefined || otherVal === null || otherVal === "")
+        return "";
+      if (isNaN(value) || isNaN(otherVal)) return "";
+      if (Number(value) >= Number(otherVal)) {
+        return message;
+      }
+      return "";
+    },
 };
 
 export default useForm;

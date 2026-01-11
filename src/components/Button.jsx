@@ -13,9 +13,12 @@ const Button = ({
     "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2";
 
   const variants = {
-    primary: "bg-[#002959] text-white hover:bg-[#002959]/70",
-    secondary: "bg-white text-[#11254A] border border-[#11254A] hover:bg-[#002959]/70 hover:text-white",
-    outline: "bg-transparent text-[#11254A] border border-[#11254A] hover:bg-[#002959]/70 hover:text-white",
+    primary:
+      "bg-primary text-white hover:bg-blue-700 focus:ring-blue-500 disabled:bg-blue-400",
+    secondary:
+      "bg-neutral2 text-neutral8 hover:bg-neutral3 focus:ring-neutral6 disabled:bg-neutral2",
+    outline:
+      "border-2 border-primary text-primary hover:bg-blue-50 focus:ring-blue-500 disabled:border-blue-300 disabled:text-blue-300",
     danger:
       "bg-error text-white hover:bg-red-700 focus:ring-error disabled:bg-red-400",
     success:

@@ -22,6 +22,11 @@ function useCreatePostForm(
     setConfirmBoxOpen,
   } = jobPostCreateStore();
 
+
+  useEffect(() => {
+      setFormOpen(false);
+  }, []);
+
   useEffect(() => {
     if (!isFormOpen) {
       reset();

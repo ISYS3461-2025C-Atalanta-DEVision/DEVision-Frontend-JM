@@ -35,7 +35,10 @@ const SkillCategoryInput = ({
   // Handle click outside
   useEffect(() => {
     function handleClickOutside(event) {
-      if (containerRef.current && !containerRef.current.contains(event.target)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
         if (isTouched && value.length === 0) {
           onBlur?.({ target: { name, value: [] } });
         }
@@ -96,15 +99,15 @@ const SkillCategoryInput = ({
           ${
             error
               ? "border-error focus:ring-error"
-              : "border-gray-300 focus:ring-blue-500"
+              : "border-neutral3 focus:ring-blue-500"
           }
-          ${disabled ? "bg-gray-100 cursor-not-allowed" : "bg-bgComponent"}
+          ${disabled ? "bg-neutral2 cursor-not-allowed" : "bg-bgComponent"}
         `}
       />
 
       {/* Dropdown list */}
       {showList && !disabled && !loading && (
-        <ul className="absolute left-0 right-0 z-20 bg-bgComponent border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto mt-1">
+        <ul className="absolute left-0 right-0 z-20 bg-bgComponent border border-neutral3 rounded-lg shadow-lg max-h-60 overflow-auto mt-1">
           {filteredSkills.length > 0 ? (
             filteredSkills.map((skill) => (
               <li

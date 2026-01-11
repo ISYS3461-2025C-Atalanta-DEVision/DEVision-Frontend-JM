@@ -10,7 +10,6 @@ import TalentSearchAds from "../components/TalentSearchAds";
 import { formatDateYear, countDaysFromDate } from "../utils/DateTime";
 import eventService from "../services/eventService";
 import profileService from "../services/profileService";
-import useProfileStore from "../store/profile.store";
 import useProfile from "../hooks/useProfile";
 import usePayment from "../hooks/usePayment";
 import EditProfile from "../headless/edit_profile/EditProfile";
@@ -24,8 +23,8 @@ const Dashboard = () => {
     loading,
     error,
     setProfile,
-  } = useProfileStore();
-  const { fetchCompanyProfile } = useProfile();
+    fetchCompanyProfile,
+  } = useProfile();
   const { cancelSubscription, loading: cancelLoading } = usePayment();
 
   const editProfileRef = useRef(null);
@@ -36,7 +35,11 @@ const Dashboard = () => {
   const [paymentProcessing, setPaymentProcessing] = useState(paymentSuccess);
 
   const handleCancelSubscription = async () => {
-    if (!window.confirm("Are you sure you want to cancel your Premium subscription?")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to cancel your Premium subscription?"
+      )
+    ) {
       return;
     }
     try {
@@ -97,7 +100,7 @@ const Dashboard = () => {
   }, [isEditMode]);
 
   return (
-    <div className="min-h-screen bg-backGround pb-5" style={{ backgroundColor: "#D9D9D9" }}>
+    <div className="min-h-screen bg-backGround pb-5">
       <NavBar activepage={"dashboard"} />
 
       {/* Main Content */}
@@ -129,7 +132,7 @@ const Dashboard = () => {
               className="flex flex-row gap-3"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <div className=" flex-1 mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6 flex flex-row gap-3">
                 <ImageHolder
@@ -142,7 +145,7 @@ const Dashboard = () => {
                   <h2 className="text-2xl font-bold text-textBlack mb-2">
                     Welcome, {companyData?.companyName || "Company"}!
                   </h2>
-                  <p className="text-gray-600">
+                  <p className="text-neutral6">
                     You are logged in as{" "}
                     <span className="font-medium">{companyData?.email}</span>
                   </p>
@@ -164,7 +167,7 @@ const Dashboard = () => {
                   {companyData?.subscriptionType || "Company"}
                 </h1>
 
-{companyData?.subscriptionType === "PREMIUM" ? (
+                {companyData?.subscriptionType === "PREMIUM" ? (
                   <Button
                     variant="outline"
                     size="sm"
@@ -195,11 +198,10 @@ const Dashboard = () => {
             className="gap-6"
           />
 
-          <CreateEventForm />
           {/* Profile Section */}
           {loading ? (
             <div className="flex items-center justify-center w-full h-full">
-              <p className="text-gray-600 text-lg">Loading profile...</p>
+              <p className="text-neutral6 text-lg">Loading profile...</p>
             </div>
           ) : error ? (
             <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6">
@@ -340,10 +342,12 @@ const Dashboard = () => {
           )}
 
           {/* only show TalentSearchAds for FREE user */}
-          {companyData?.subscriptionType !== "PREMIUM" && (
-            loading ? (
+          {companyData?.subscriptionType !== "PREMIUM" &&
+            (loading ? (
               <div className="flex items-center justify-center w-full h-full">
-                <p className="text-gray-600 text-lg">Loading advertisements...</p>
+                <p className="text-neutral6 text-lg">
+                  Loading advertisements...
+                </p>
               </div>
             ) : (
               <motion.div
@@ -354,8 +358,7 @@ const Dashboard = () => {
               >
                 <TalentSearchAds price={30} />
               </motion.div>
-            )
-          )}
+            ))}
 
           <GridTable
             CardComponent={EventCard}
