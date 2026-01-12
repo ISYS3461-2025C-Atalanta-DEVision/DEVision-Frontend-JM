@@ -18,7 +18,7 @@ export const QUICK_STATS_CARD_CONFIG = {
     description: "Manage your event listings",
     icon: <i className="ri-calendar-event-line text-[40px] text-cyan-500"></i>,
     linkText: "View all events",
-    to: "/dashboard/events",
+    to: "/events",
   },
   searchCount: {
     title: "Search Applicants",

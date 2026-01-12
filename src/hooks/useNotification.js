@@ -22,8 +22,6 @@ export const useNotification = ({
       lastFetchedAtRef.current = formatSinceParam(noti[0].createdAt);
     }
 
-    console.log("FIRST FETCH", lastFetchedAtRef.current, "-", noti);
-
     setNotification({
       notifications: [...noti],
       ...count,
@@ -35,7 +33,6 @@ export const useNotification = ({
     if (!lastFetchedAtRef.current) return;
 
     const res = await notificationService.pollFromNow(lastFetchedAtRef.current);
-    console.log("POLLING FROM :", lastFetchedAtRef.current, " - ", res);
 
     if (res.length > 0) {
       lastFetchedAtRef.current = formatSinceParam(res[0].createdAt);

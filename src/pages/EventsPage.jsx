@@ -12,8 +12,6 @@ import GridTable from "../headless/grid_table/GridTable";
 export default function EventPage() {
   const { profile, loading, error } = useProfileStore();
 
-  console.log("Profile in EventsPage:", profile);
-
   return (
     <div className="min-h-screen bg-backGround pb-5">
       <NavBar activepage={"event"} />

@@ -5,6 +5,7 @@ import useGridTable from "./useGridTable";
 export default function GridTable({
   customItems = [],
   CardComponent,
+  onPressCard = null,
   fetchItemAPI = null,
   className,
   itemKey = "id", // field to use as key
@@ -36,6 +37,7 @@ export default function GridTable({
                 item={item}
                 removeItem={removeItem} // pass down so card can call it
                 {...cardProps}
+                onPressCard={onPressCard?.()}
               />
             </motion.div>
           ))}

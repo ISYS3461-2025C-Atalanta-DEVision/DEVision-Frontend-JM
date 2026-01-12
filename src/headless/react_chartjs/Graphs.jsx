@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { GraphCard } from "./GraphCard";
 import useGraph from "./useGraph";
 import { Radar, Pie, Doughnut } from "react-chartjs-2";
+import { useNavigate } from "react-router-dom";
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -25,6 +26,7 @@ ChartJS.register(
 );
 
 export default function Graphs({ data }) {
+  const navigate = useNavigate();
   const {
     RadarData,
     PieData,
@@ -70,7 +72,7 @@ export default function Graphs({ data }) {
         )}
 
         <div className="grid grid-cols-2 gap-4 auto-rows-fr">
-          <GraphCard>
+          <GraphCard onClick={() => navigate("/search_applicants/talents")}>
             <div className="w-full flex flex-col justify-center items-start gap-2 p-10">
               <h1 className="text-8xl font-bold text-primary">
                 {data?.matchCount}

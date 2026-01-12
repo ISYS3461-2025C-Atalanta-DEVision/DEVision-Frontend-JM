@@ -26,8 +26,6 @@ export default function NavBar({ activepage }) {
     toggleNotificationDropdown,
   } = useNavbar(activepage);
 
-  console.log(notification)
-
   return (
     <nav className="sticky top-0 z-50 bg-bgComponent shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,18 +62,6 @@ export default function NavBar({ activepage }) {
               Recruitment
             </a>
 
-            {/* Event */}
-            <a
-              className={`cursor-pointer transition-colors 
-              ${
-                isActive("event")
-                  ? "text-primary font-semibold"
-                  : "hover:text-primary"
-              }`}
-              onClick={() => handleNavigate("/event")}
-            >
-              Events
-            </a>
           </nav>
 
           <div className="flex items-center space-x-4">

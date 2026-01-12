@@ -18,6 +18,7 @@ import EventPage from "./pages/EventsPage";
 import ManageJobPostPage from "./pages/ManageJobPostPage";
 import SearchApplicants from "./pages/SearchApplicants";
 import NavBar from "./layout/NavBar/NavBar";
+import TalentApplicantView from "./pages/TalentApplicantView";
 
 function App() {
   return (
@@ -47,6 +48,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/search_applicants/talents"
+          element={
+            <ProtectedRoute>
+              <TalentApplicantView />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/jobpost"
           element={
@@ -64,7 +74,7 @@ function App() {
           }
         />
         <Route
-          path="/event"
+          path="/events"
           element={
             <ProtectedRoute>
               <EventPage />
