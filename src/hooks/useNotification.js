@@ -43,7 +43,7 @@ export const useNotification = ({
       setNotification((prev) => ({
         ...prev,
         notifications: [...res, ...prev.notifications],
-        unreadCount: prev.unreadCount,
+        unreadCount: prev.unreadCount + res.length,
         newNoti: prev.newNoti + res.length,
       }));
     }

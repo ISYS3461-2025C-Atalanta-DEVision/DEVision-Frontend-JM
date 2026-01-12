@@ -279,7 +279,7 @@ export default function SearchApplicantForm({
                     },
                     {
                       type: "confirm",
-                      content: "Cancle",
+                      content: "Cancel",
                       onClick: () => {
                         setCf(null);
                         handleCancle();

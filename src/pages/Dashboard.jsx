@@ -11,11 +11,9 @@ import { formatDateYear, countDaysFromDate } from "../utils/DateTime";
 import eventService from "../services/eventService";
 import profileService from "../services/profileService";
 import useProfile from "../hooks/useProfile";
-import usePayment from "../hooks/usePayment";
 import EditProfile from "../headless/edit_profile/EditProfile";
 import EventCard from "../components/EventCard";
-
-import CreateEventForm from "../layout/CreateEventForm/CreateEventForm";
+import ConfirmBox from "../components/ConfirmBox";
 
 const Dashboard = () => {
   const {
@@ -24,64 +22,30 @@ const Dashboard = () => {
     error,
     setProfile,
     fetchCompanyProfile,
+    paymentProcessing,
+    handleCancelSubscription,
+    cancelLoading,
+    setCF,
+    cfCancel,
   } = useProfile();
-
-  const {
-    cancelSubscription,
-    loading: cancelLoading,
-    subscriptions,
-  } = usePayment();
 
   const editProfileRef = useRef(null);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-
   const isEditMode = searchParams.get("edit") === "true";
-  const paymentSuccess = searchParams.get("payment") === "success";
-  const [paymentProcessing, setPaymentProcessing] = useState(paymentSuccess);
+  const shouldRefresh = searchParams.get("refresh") === "true";
 
-  const handleCancelSubscription = async () => {
-    if (
-      !window.confirm(
-        "Are you sure you want to cancel your Premium subscription?"
-      )
-    ) {
-      return;
-    }
-    try {
-      await cancelSubscription(companyData?.userId, true);
-      // Wait 1.5 seconds for Kafka to process before refreshing profile
-      setTimeout(async () => {
-        await fetchCompanyProfile();
-      }, 1500);
-    } catch (err) {
-      // Error handled by hook
-    }
-  };
-
-  // Handle payment success - wait for Kafka then fetch profile
+  // Re-fetch profile when redirected from payment success
   useEffect(() => {
-    if (paymentSuccess) {
-      setPaymentProcessing(true);
-
-      // Clear the query param
+    if (shouldRefresh) {
+      fetchCompanyProfile();
       setSearchParams((prev) => {
         const next = new URLSearchParams(prev);
-        next.delete("payment");
+        next.delete("refresh");
         return next;
       });
-
-      // Wait 1.5 seconds for Kafka to process, then fetch profile
-      const timer = setTimeout(async () => {
-        await fetchCompanyProfile();
-        setPaymentProcessing(false);
-      }, 1500);
-
-      return () => {
-        clearTimeout(timer);
-      };
     }
-  }, [paymentSuccess]);
+  }, [shouldRefresh, fetchCompanyProfile, setSearchParams]);
 
   useEffect(() => {
     setSearchParams((prev) => {
@@ -94,7 +58,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (!isEditMode || !editProfileRef.current) return;
 
-    const navbarHeight = 72; // adjust if your NavBar height differs
+    const navbarHeight = 72;
 
     const elementTop =
       editProfileRef.current.getBoundingClientRect().top + window.pageYOffset;
@@ -174,15 +138,43 @@ const Dashboard = () => {
                 </h1>
 
                 {companyData?.subscriptionType === "PREMIUM" ? (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="self-start text-red-600 border-red-600 hover:bg-red-50"
-                    onClick={handleCancelSubscription}
-                    disabled={cancelLoading}
-                  >
-                    {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
-                  </Button>
+                  <>
+                    <h3 className="text-neutral6 text-lg">
+                      Available until:{" "}
+                      {formatDateYear(companyData?.subscriptionEndDate)}
+                    </h3>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="self-start text-red-600 border-red-600 hover:bg-red-50"
+                      onClick={() => {
+                        setCF({
+                          title: `Your subscriptions has ${countDaysFromDate(
+                            companyData?.subscriptionEndDate
+                          )} day left. Are you sure you want to cancel?`,
+                          subTitle: "Press Cancel to continue",
+                          buttons: [
+                            {
+                              type: "return",
+                              content: "Return",
+                              onClick: () => setCF(null),
+                            },
+                            {
+                              type: "danger",
+                              content: "Cancel",
+                              onClick: () => {
+                                setCF(null);
+                                handleCancelSubscription();
+                              },
+                            },
+                          ],
+                        });
+                      }}
+                      disabled={cancelLoading}
+                    >
+                      {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
+                    </Button>
+                  </>
                 ) : (
                   <Button
                     variant="outline"
@@ -371,6 +363,14 @@ const Dashboard = () => {
           />
         </div>
       </main>
+
+      {cfCancel !== null && (
+        <ConfirmBox
+          buttons={cfCancel.buttons}
+          title={cfCancel.title}
+          subTitle={cfCancel.subTitle}
+        />
+      )}
     </div>
   );
 };

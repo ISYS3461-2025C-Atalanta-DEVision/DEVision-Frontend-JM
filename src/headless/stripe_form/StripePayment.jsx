@@ -53,7 +53,10 @@ function CheckoutForm({ planType = "PREMIUM", currency = "usd" }) {
     const result = await processPayment(stripe, cardElement, planData);
 
     if (result.success) {
-      navigate("/dashboard?payment=success");
+      // Short delay to show success message, then navigate with refresh flag
+      setTimeout(() => {
+        navigate("/dashboard?refresh=true");
+      }, 1500);
     }
   };
 

@@ -6,6 +6,7 @@ export const usePayment = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [cfCancel, setCF] = useState(null);
 
   // Check company premium status
   const fetchPremiumStatus = async (companyId) => {
@@ -87,6 +88,8 @@ export const usePayment = () => {
     setPremiumStatus,
     setSubscriptions,
     setError,
+    cfCancel,
+    setCF
   };
 };
 
