@@ -34,6 +34,8 @@ export default function Graphs({ data }) {
     PieOptions,
     DouhnutData,
     DouhnutOptions,
+    talents,
+    countData,
   } = useGraph(data);
 
   const formVariants = {
@@ -42,6 +44,11 @@ export default function Graphs({ data }) {
     exit: { opacity: 0, y: -20 },
   };
 
+  console.log("DATA", data);
+
+  console.log("TALENT", talents)
+
+  console.log("Count", countData)
   return (
     <motion.div
       key="create-button"

@@ -1,10 +1,12 @@
 import React from "react";
 import ImageHolder from "./ImageHolder";
+import { useNavigate } from "react-router-dom";
 
-export default function TalentCard({ talent, onClick }) {
+export default function TalentCard({ talent }) {
   if (!talent) return null;
 
   const {
+    id,
     name,
     email,
     phone,
@@ -16,11 +18,10 @@ export default function TalentCard({ talent, onClick }) {
     avatarUrl,
   } = talent;
 
-  console.log(talent)
-
+  const navigate = useNavigate();
   return (
     <div
-      onClick={onClick}
+      onClick={() => navigate(`/applicants/${id}`)}
       className="w-full max-w-sm rounded-2xl bg-white border border-neutral2 shadow-sm overflow-hidden hover:shadow-md transition cursor-pointer"
     >
       {/* Header with premium badge */}

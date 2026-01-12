@@ -17,6 +17,7 @@ import SubscriptionPayment from "./pages/SubscriptionPayment";
 import EventPage from "./pages/EventsPage";
 import ManageJobPostPage from "./pages/ManageJobPostPage";
 import SearchApplicants from "./pages/SearchApplicants";
+import ApplicantProfilePage from "./pages/ApplicantProfilePage";
 import NavBar from "./layout/NavBar/NavBar";
 import TalentApplicantView from "./pages/TalentApplicantView";
 
@@ -87,6 +88,15 @@ function App() {
           element={
             <ProtectedRoute>
               <SubscriptionPayment />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/applicants/:applicantId"
+          element={
+            <ProtectedRoute>
+              <ApplicantProfilePage />
             </ProtectedRoute>
           }
         />

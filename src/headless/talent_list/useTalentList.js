@@ -24,7 +24,6 @@ const useTalentList = (list) => {
       const payload = list.map((notification) => notification.fromId);
 
       const res = await applicantService.getApplicantsByIds(payload);
-      console.log(res)
       setTalents(res);
     } catch (error) {
       setMsg({ type: "err", msg: error });

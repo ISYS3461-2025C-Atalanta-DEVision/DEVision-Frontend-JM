@@ -14,23 +14,6 @@ function TalentList({ list, onCardClick }) {
     );
   }
 
-  // if (msg?.type === "err") {
-  //   return (
-  //     <div className="mt-6 mb-6 bg-bgComponent rounded-lg shadow p-6">
-  //       <p className="text-error text-center w-full">
-  //         {msg.msg}
-  //       </p>
-  //     </div>
-  //   );
-  // }
-
-  // if (!talents || talents.length === 0) {
-  //   return (
-  //     <div className="flex items-center justify-center w-full h-40">
-  //       <p className="text-neutral6 text-lg">No talents found</p>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="grid w-full grid-cols-3 gap-4">

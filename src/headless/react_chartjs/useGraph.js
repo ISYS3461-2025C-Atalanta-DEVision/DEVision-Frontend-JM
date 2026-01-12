@@ -1,57 +1,81 @@
 import skillStore from "../../store/skill.store";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import useTalentList from "../talent_list/useTalentList";
+import useNotificationStore from "../../store/notification.store";
 
 function useGraph(data) {
   const { skillsMap } = skillStore();
 
   const [skillList, setSkillList] = useState([]);
 
+  const [countData, setCountData] = useState([]);
+  const { notification } = useNotificationStore();
+
+  const { talents } = useTalentList(notification?.notifications);
+
   useEffect(() => {
     getRadarField();
-  }, [data]);
+  }, [data, talents, skillsMap]);
 
   const getRadarField = useCallback(() => {
-    if (!data?.technicalSkills || !skillsMap) return [];
+    if (!data?.technicalSkills || !skillsMap || !talents) return [];
 
     const skillNames = data.technicalSkills
       .map((id) => skillsMap[id]?.name)
       .filter(Boolean);
 
-    setSkillList([...skillNames]);
-    return skillNames;
-  }, [data, skillsMap]);
+    const skillCounts = {};
+    talents.forEach((talent) => {
+      (talent.skillCategories || []).forEach((skillId) => {
+        skillCounts[skillId] = (skillCounts[skillId] || 0) + 1;
+      });
+    });
 
-  const RadarData = {
+    const countData = data.technicalSkills.map(
+      (skillId) => skillCounts[skillId] || 0
+    );
+
+    setSkillList([...skillNames]);
+    setCountData(countData);
+    return { skillNames, countData };
+  }, [data, skillsMap, talents]);
+
+  const RadarData = useMemo(() => ({
     labels: [...skillList],
     datasets: [
       {
         label: "Number of fields",
-        data: [70, 90, 65, 88, 60, 20,10],
+        data: countData,
         backgroundColor: "rgba(59,130,246,0.12)",
         borderColor: "rgba(59,130,246,1)",
         pointBackgroundColor: "rgba(59,130,246,1)",
         borderWidth: 2,
       },
     ],
-  };
+  }), [skillList, countData]);
 
-  const RadarOptions = {
-    responsive: true,
-    elements: { line: { tension: 0 } },
-    scales: {
-      r: {
-        beginAtZero: true,
-        suggestedMin: 0,
-        suggestedMax: 100,
-        ticks: { stepSize: 20 },
-        pointLabels: { font: { size: 12 } },
+  const RadarOptions = useMemo(() => {
+    const maxCount = Math.max(...countData, 1);
+    const stepSize = Math.floor(maxCount / 10) + 1;
+
+    return {
+      responsive: true,
+      elements: { line: { tension: 0 } },
+      scales: {
+        r: {
+          beginAtZero: true,
+          suggestedMin: 0,
+          suggestedMax: maxCount,
+          ticks: { stepSize },
+          pointLabels: { font: { size: 12 } },
+        },
       },
-    },
-    plugins: {
-      legend: { display: false },
-    },
-    maintainAspectRatio: false,
-  };
+      plugins: {
+        legend: { display: false },
+      },
+      maintainAspectRatio: false,
+    };
+  }, [countData]);
 
   //Education Pie Chart Data and Options
   const PieData = {
@@ -116,6 +140,8 @@ function useGraph(data) {
     PieOptions,
     DouhnutData,
     DouhnutOptions,
+    talents,
+    countData,
   };
 }
 
