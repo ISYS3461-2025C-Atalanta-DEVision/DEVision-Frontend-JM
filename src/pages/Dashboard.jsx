@@ -25,11 +25,17 @@ const Dashboard = () => {
     setProfile,
     fetchCompanyProfile,
   } = useProfile();
-  const { cancelSubscription, loading: cancelLoading } = usePayment();
+
+  const {
+    cancelSubscription,
+    loading: cancelLoading,
+    subscriptions,
+  } = usePayment();
 
   const editProfileRef = useRef(null);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
   const isEditMode = searchParams.get("edit") === "true";
   const paymentSuccess = searchParams.get("payment") === "success";
   const [paymentProcessing, setPaymentProcessing] = useState(paymentSuccess);
@@ -277,9 +283,7 @@ const Dashboard = () => {
                     Country
                   </label>
                   {companyData?.country ? (
-                    <p className="text-textBlack">
-                      {companyData?.country}
-                    </p>
+                    <p className="text-textBlack">{companyData?.country}</p>
                   ) : (
                     <p className="text-neutral6 font-semibold">Not set</p>
                   )}

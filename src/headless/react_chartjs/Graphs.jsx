@@ -34,7 +34,6 @@ export default function Graphs({ data }) {
     DouhnutOptions,
   } = useGraph(data);
 
-  console.log(data);
   const formVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: { opacity: 1, y: 0 },

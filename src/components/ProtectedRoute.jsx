@@ -1,11 +1,14 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import useNotification from "../hooks/useNotification";
 
 const ProtectedRoute = ({ children, requiredRole }) => {
   const { user, loading, isAuthenticated } = useAuth();
   const location = useLocation();
 
-  const devMode = true
+  const devMode = true;
+
+  useNotification({ autoStart: !!isAuthenticated });
 
   if (loading) {
     return (

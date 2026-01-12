@@ -4,8 +4,6 @@ import { useState, useEffect, useCallback } from "react";
 function useGraph(data) {
   const { skillsMap } = skillStore();
 
-  console.log(skillsMap);
-
   const [skillList, setSkillList] = useState([]);
 
   useEffect(() => {

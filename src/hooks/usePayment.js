@@ -1,7 +1,7 @@
 import { useState } from "react";
 import paymentService from "../services/paymentService";
 
-export default function usePayment() {
+export const usePayment = () => {
   const [premiumStatus, setPremiumStatus] = useState(null);
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -88,4 +88,6 @@ export default function usePayment() {
     setSubscriptions,
     setError,
   };
-}
+};
+
+export default usePayment;

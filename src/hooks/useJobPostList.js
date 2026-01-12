@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import jobPostService from "../services/jobPostService";
 
-export default function useJobPostList() {
+export const useJobPostList = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -32,4 +32,6 @@ export default function useJobPostList() {
     setError,
     fetchPosts,
   };
-}
+};
+
+export default useJobPostList;
