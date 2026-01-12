@@ -2,6 +2,35 @@ import React, { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import SkillTag from "../../components/SkillTag";
 import skillStore from "../../store/skill.store";
+import applicationService from "../../services/applicationService";
+import applicantService from "../../services/applicantService";
+
+// Component to display applicant name (fetches from API)
+function ApplicantName({ applicantId }) {
+  const [name, setName] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchName = async () => {
+      try {
+        const applicant = await applicantService.getApplicantById(applicantId);
+        setName(applicant?.name || applicantId);
+      } catch (error) {
+        console.error("Failed to fetch applicant:", error);
+        setName(applicantId); // Fallback to ID
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchName();
+  }, [applicantId]);
+
+  if (loading) {
+    return <span className="text-neutral6">Loading...</span>;
+  }
+
+  return <span>{name}</span>;
+}
 
 export default function JobPostCard({
   item,
@@ -11,6 +40,10 @@ export default function JobPostCard({
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("pending");
+  const [applications, setApplications] = useState({ pending: [], archived: [] });
+  const [loadingApps, setLoadingApps] = useState(false);
+  const [showApplications, setShowApplications] = useState(false);
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
 
@@ -37,6 +70,38 @@ export default function JobPostCard({
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  // Fetch applications when showApplications is toggled on
+  useEffect(() => {
+    if (showApplications && item?.jobId) {
+      fetchApplications();
+    }
+  }, [showApplications, item?.jobId]);
+
+  const fetchApplications = async () => {
+    if (!item?.jobId) return;
+    setLoadingApps(true);
+    try {
+      const [pending, archived] = await Promise.all([
+        applicationService.getApplicationsByJobIdAndStatus(item.jobId, "PENDING"),
+        applicationService.getApplicationsByJobIdAndStatus(item.jobId, "ARCHIVED"),
+      ]);
+      setApplications({ pending, archived });
+    } catch (error) {
+      console.error("Failed to fetch applications:", error);
+    } finally {
+      setLoadingApps(false);
+    }
+  };
+
+  const handleArchive = async (applicantId) => {
+    try {
+      await applicationService.archiveApplication(item.jobId, applicantId);
+      await fetchApplications();
+    } catch (error) {
+      console.error("Failed to archive application:", error);
+    }
+  };
+
   if (!item) return null;
 
   const handleTogglePublish = async () => {
@@ -53,6 +118,8 @@ export default function JobPostCard({
     await onDelete?.(item.jobId);
   };
 
+  const currentApplications = activeTab === "pending" ? applications.pending : applications.archived;
+
   return (
     <article className="bg-[#F9F7EB] border rounded-xl p-8 shadow-sm hover:shadow-md transition w-full relative">
       {/* Ellipsis menu */}
@@ -64,7 +131,7 @@ export default function JobPostCard({
           className="text-2xl p-1 rounded focus:outline-none focus:ring"
           type="button"
         >
-          <span aria-hidden="true">⋮</span>
+          <span aria-hidden="true">&#x22EE;</span>
         </button>
         {open && (
           <div
@@ -122,7 +189,7 @@ export default function JobPostCard({
 
       {/* Meta */}
       <p className="text-sm text-neutral6 mt-2">
-        {item.location} &nbsp;•&nbsp; {item.employmentType}
+        {item.location} &nbsp;&bull;&nbsp; {item.employmentType}
       </p>
 
       {/* Description */}
@@ -168,6 +235,119 @@ export default function JobPostCard({
             <span className="font-medium">Expires:</span> {item.expireDate}
           </p>
         </div>
+      </section>
+
+      {/* Applications Section */}
+      <section className="mt-8 border-t pt-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-semibold text-neutral7 uppercase">
+            Applications
+          </h3>
+          <button
+            type="button"
+            onClick={() => setShowApplications(!showApplications)}
+            className="text-sm text-[#002959] hover:underline flex items-center gap-1"
+          >
+            {showApplications ? (
+              <>
+                <i className="ri-arrow-up-s-line"></i>
+                Hide
+              </>
+            ) : (
+              <>
+                <i className="ri-arrow-down-s-line"></i>
+                Show Applications
+              </>
+            )}
+          </button>
+        </div>
+
+        {showApplications && (
+          <div className="bg-white rounded-lg border p-4">
+            {/* Tabs */}
+            <div className="flex gap-2 mb-4 border-b">
+              <button
+                type="button"
+                onClick={() => setActiveTab("pending")}
+                className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition ${
+                  activeTab === "pending"
+                    ? "border-[#002959] text-[#002959]"
+                    : "border-transparent text-neutral6 hover:text-[#002959]"
+                }`}
+              >
+                Pending ({applications.pending.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("archived")}
+                className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition ${
+                  activeTab === "archived"
+                    ? "border-[#002959] text-[#002959]"
+                    : "border-transparent text-neutral6 hover:text-[#002959]"
+                }`}
+              >
+                Archived ({applications.archived.length})
+              </button>
+            </div>
+
+            {/* Applications List */}
+            {loadingApps ? (
+              <div className="text-center py-8 text-neutral6">
+                <i className="ri-loader-4-line animate-spin text-2xl"></i>
+                <p className="mt-2">Loading applications...</p>
+              </div>
+            ) : currentApplications.length === 0 ? (
+              <div className="text-center py-8 text-neutral6">
+                <i className="ri-inbox-line text-3xl"></i>
+                <p className="mt-2">No {activeTab} applications</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {currentApplications.map((app) => (
+                  <div
+                    key={app.id}
+                    className="flex items-center justify-between p-3 bg-[#F9F7EB] rounded-lg border"
+                  >
+                    <div className="flex-1">
+                      <p className="font-medium text-sm text-blacktxt">
+                        <ApplicantName applicantId={app.applicantId} />
+                      </p>
+                      <p className="text-xs text-neutral6 mt-1">
+                        Applied: {app.appliedAt ? new Date(app.appliedAt).toLocaleDateString() : "N/A"}
+                      </p>
+                      {/* Media URLs (CV/Cover Letter) */}
+                      {app.mediaUrls?.length > 0 && (
+                        <div className="flex gap-2 mt-2">
+                          {app.mediaUrls.map((url, idx) => (
+                            <a
+                              key={idx}
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-[#002959] hover:underline flex items-center gap-1"
+                            >
+                              <i className="ri-file-pdf-line"></i>
+                              {url.includes("cv") ? "CV" : url.includes("cover") ? "Cover Letter" : `Document ${idx + 1}`}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    {activeTab === "pending" && (
+                      <button
+                        type="button"
+                        onClick={() => handleArchive(app.applicantId)}
+                        className="px-3 py-1.5 text-xs font-medium bg-[#002959] text-white rounded hover:bg-[#002959]/80 transition"
+                      >
+                        Archive
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </section>
     </article>
   );
