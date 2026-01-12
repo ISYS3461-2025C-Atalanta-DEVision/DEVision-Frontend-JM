@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import SkillTag from "../../components/SkillTag";
 import skillStore from "../../store/skill.store";
 import applicationService from "../../services/applicationService";
@@ -39,6 +39,7 @@ export default function JobPostCard({
   onUnpublish,
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("pending");
   const [applications, setApplications] = useState({ pending: [], archived: [] });
@@ -309,9 +310,22 @@ export default function JobPostCard({
                     className="flex items-center justify-between p-3 bg-[#F9F7EB] rounded-lg border"
                   >
                     <div className="flex-1">
-                      <p className="font-medium text-sm text-blacktxt">
+                      <button
+                        type="button"
+                        onClick={() => navigate(`/applicants/${app.applicantId}`, {
+                          state: {
+                            applicationContext: {
+                              jobTitle: item.title,
+                              jobId: item.jobId,
+                              appliedAt: app.appliedAt,
+                              mediaUrls: app.mediaUrls,
+                            }
+                          }
+                        })}
+                        className="font-medium text-sm text-[#002959] hover:underline text-left"
+                      >
                         <ApplicantName applicantId={app.applicantId} />
-                      </p>
+                      </button>
                       <p className="text-xs text-neutral6 mt-1">
                         Applied: {app.appliedAt ? new Date(app.appliedAt).toLocaleDateString() : "N/A"}
                       </p>
