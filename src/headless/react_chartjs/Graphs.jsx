@@ -44,10 +44,6 @@ export default function Graphs({ data }) {
     exit: { opacity: 0, y: -20 },
   };
 
-  console.log("DATA", data);
-
-  console.log("TALENT", talents)
-
   return (
     <motion.div
       key="create-button"

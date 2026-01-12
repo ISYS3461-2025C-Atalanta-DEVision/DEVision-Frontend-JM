@@ -1,4 +1,4 @@
-import { getJAUrl } from "../service_url/AppUrlConfig";
+import {getJAUrl} from "../service_url/AppUrlConfig";
 
 const API_BASE_URL = getJAUrl();
 const APPLICANT_API_URL = `${API_BASE_URL}/applicants`;
