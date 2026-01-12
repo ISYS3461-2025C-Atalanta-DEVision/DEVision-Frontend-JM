@@ -24,9 +24,13 @@ COPY . .
 # Hardcode production defaults since Render doesn't pass build args easily
 ARG VITE_API_URL=https://api-gateway-khhr.onrender.com
 ARG VITE_STRIPE_PUBLISHABLE_KEY=pk_test_51Sfc81EPPTtsttuBeP94ZJWPFbL2IDVSclymMZs1yQ5bbwbzO8UtVW3m5i0pfbZ5j5HM9COFGkL4Q2AvgD1gNrx8006UeBb2Sn
+ARG VITE_JA_X_HEADER=wrgY4eM0rE/66kMz0ubiVMfev36SxUlENNU2k9dytXc=
+ARG VITE_JA_URL=https://api-gateway-production-2c3a.up.railway.app
 
 ENV VITE_API_URL=$VITE_API_URL
 ENV VITE_STRIPE_PUBLISHABLE_KEY=$VITE_STRIPE_PUBLISHABLE_KEY
+ENV VITE_JA_X_HEADER=$VITE_JA_X_HEADER
+ENV VITE_JA_URL=$VITE_JA_URL
 
 # Build the application
 RUN npm run build

@@ -48,7 +48,6 @@ export default function Graphs({ data }) {
 
   console.log("TALENT", talents)
 
-  console.log("Count", countData)
   return (
     <motion.div
       key="create-button"
@@ -78,7 +77,7 @@ export default function Graphs({ data }) {
           </>
         )}
 
-        <div className="grid grid-cols-2 gap-4 auto-rows-fr">
+        <div className="grid h-full grid-cols-2 gap-4 auto-rows-fr">
           <GraphCard onClick={() => navigate("/search_applicants/talents")}>
             <div className="w-full flex flex-col justify-center items-start gap-2 p-10">
               <h1 className="text-8xl font-bold text-primary">
@@ -96,13 +95,13 @@ export default function Graphs({ data }) {
             <Radar data={RadarData} options={RadarOptions} />
           </GraphCard>
 
-          <GraphCard title="Employment Type">
+          {/* <GraphCard title="Employment Type">
             <Doughnut data={DouhnutData} options={DouhnutOptions} />
           </GraphCard>
 
           <GraphCard title="Education Distribution">
             <Pie data={PieData} options={PieOptions} />
-          </GraphCard>
+          </GraphCard> */}
         </div>
       </div>
     </motion.div>

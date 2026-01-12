@@ -1,4 +1,6 @@
-const API_BASE_URL = "https://api-gateway-production-2c3a.up.railway.app";
+import { getJAUrl } from "../service_url/AppUrlConfig";
+
+const API_BASE_URL = getJAUrl();
 const APPLICANT_API_URL = `${API_BASE_URL}/applicants`;
 const EDUCATION_API_URL = `${API_BASE_URL}/education`;
 const WORK_HISTORY_API_URL = `${API_BASE_URL}/work-history`;

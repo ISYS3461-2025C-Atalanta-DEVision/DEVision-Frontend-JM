@@ -1,4 +1,7 @@
-const SKILLS_API_URL = "https://api-gateway-production-2c3a.up.railway.app/skills";
+import { getJAUrl } from "../service_url/AppUrlConfig";
+
+const BASE_JA_URL = getJAUrl();
+const SKILLS_API_URL = `${BASE_JA_URL}/skills`;
 
 export const skillService = {
   getSkills: async (limit = 100) => {

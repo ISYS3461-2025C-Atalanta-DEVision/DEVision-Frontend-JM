@@ -4,8 +4,17 @@ export const getApiUrl = () => {
   }
   // Default to localhost in development, Render URL in production
   return import.meta.env.PROD
-    ? 'https://api-gateway-khhr.onrender.com'
-    : 'http://localhost:8080';
+    ? "https://api-gateway-khhr.onrender.com"
+    : "http://localhost:8080";
+};
+
+export const getJAUrl = () => {
+  if (import.meta.env.VITE_JA_URL) {
+    return import.meta.env.VITE_JA_URL;
+  }
+  return import.meta.env.PROD
+    ? "https://api-gateway-production-2c3a.up.railway.app"
+    : "";
 };
 
 // OAuth2 Google login URL

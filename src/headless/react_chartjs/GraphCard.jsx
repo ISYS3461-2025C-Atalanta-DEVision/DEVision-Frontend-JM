@@ -6,8 +6,8 @@ export function GraphCard({
 }) {
   return (
     <div
-      className={`${bgColor} rounded-lg shadow-md border border-neutral2
-                    p-4 flex flex-col h-full`}
+      className={`${bgColor} h-full rounded-lg shadow-md border border-neutral2
+                    p-4 flex flex-col`}
       onClick={() => onClick()}
     >
       <h2 className="text-base font-semibold text-blacktxt mb-3">{title}</h2>
