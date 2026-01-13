@@ -5,7 +5,7 @@ const APPLICANT_API_URL = `${API_BASE_URL}/applicants`;
 const EDUCATION_API_URL = `${API_BASE_URL}/education`;
 const WORK_HISTORY_API_URL = `${API_BASE_URL}/work-history`;
 const SKILLS_API_URL = `${API_BASE_URL}/skills`;
-const API_KEY = import.meta.env.VITE_JA_X_HEADER;
+const API_KEY = import.meta.env.VITE_JA_X_HEADER || "wrgY4eM0rE/66kMz0ubiVMfev36SxUlENNU2k9dytXc=";
 
 // Cache for applicant data to avoid repeated API calls
 const applicantCache = {};
@@ -15,6 +15,30 @@ const workHistoryCache = {};
 const skillCache = {};
 
 export const applicantService = {
+  /**
+   * Get all applicants with pagination (no filter)
+   */
+  getAllApplicants: async (page = 1, limit = 12) => {
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    });
+
+    const response = await fetch(`${APPLICANT_API_URL}?${params}`, {
+      method: "GET",
+      headers: {
+        accept: "*/*",
+        "X-API-Key": API_KEY,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch applicants: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
   /**
    * Search applicants by name with pagination
    */
@@ -28,6 +52,58 @@ export const applicantService = {
       limit: limit.toString(),
       filters,
     });
+
+    const response = await fetch(`${APPLICANT_API_URL}?${params}`, {
+      method: "GET",
+      headers: {
+        accept: "*/*",
+        "X-API-Key": API_KEY,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to search applicants: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
+  /**
+   * Search applicants with multiple filters
+   * @param {Object} filterOptions - Filter options
+   * @param {string} filterOptions.name - Name to search (contains)
+   * @param {string} filterOptions.country - Country code to filter
+   * @param {string} filterOptions.highestEducation - Education level (Bachelor, Master, Doctorate)
+   * @param {number} page - Page number
+   * @param {number} limit - Items per page
+   */
+  searchApplicantsWithFilters: async (filterOptions = {}, page = 1, limit = 12) => {
+    const { name, country, highestEducation } = filterOptions;
+    const filters = [];
+
+    if (name && name.trim()) {
+      filters.push({ id: "name", value: name.trim(), operator: "contains" });
+    }
+
+    if (country && country.trim()) {
+      filters.push({ id: "country", value: country.trim(), operator: "contains" });
+    }
+
+    if (highestEducation && highestEducation.trim()) {
+      filters.push({ id: "highestEducation", value: highestEducation.trim(), operator: "contains" });
+    }
+
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    });
+
+    if (filters.length > 0) {
+      params.append("filters", JSON.stringify(filters));
+    }
+
+    console.log("Filter request URL:", `${APPLICANT_API_URL}?${params}`);
+    console.log("Filters:", filters);
 
     const response = await fetch(`${APPLICANT_API_URL}?${params}`, {
       method: "GET",
