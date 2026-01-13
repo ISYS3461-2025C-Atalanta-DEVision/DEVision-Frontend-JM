@@ -10,10 +10,40 @@ const API_KEY = import.meta.env.VITE_JA_X_HEADER;
 // Cache for applicant data to avoid repeated API calls
 const applicantCache = {};
 const educationCache = {};
+const failedApplicantCache = new Set();
 const workHistoryCache = {};
 const skillCache = {};
 
 export const applicantService = {
+  /**
+   * Search applicants by name with pagination
+   */
+  searchApplicants: async (name, page = 1, limit = 10) => {
+    const filters = JSON.stringify([
+      { id: "name", value: name, operator: "contains" },
+    ]);
+
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+      filters,
+    });
+
+    const response = await fetch(`${APPLICANT_API_URL}?${params}`, {
+      method: "GET",
+      headers: {
+        accept: "*/*",
+        "X-API-Key": API_KEY,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to search applicants: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
   /**
    * Get applicant details by ID
    */

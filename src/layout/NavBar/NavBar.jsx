@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 import useProfileStore from "../../store/profile.store";
 import NotificationList from "../../headless/notification_list/NotificationList";
+import SearchBar from "../../headless/search_bar/SearchBar";
 
 export default function NavBar({ activepage }) {
   const { profile } = useProfileStore();
@@ -29,12 +30,13 @@ export default function NavBar({ activepage }) {
   return (
     <nav className="sticky top-0 z-50 bg-bgComponent shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex gap-2 justify-between items-center h-16">
           <div className="flex items-center">
             <h1 className="text-xl font-bold text-primary">DEVision</h1>
             <span className="ml-2 text-sm text-neutral6">Job Manager</span>
           </div>
 
+          <SearchBar placeholder="Search..." className="w-1/3" />
           <nav className="flex flex-1 items-center justify-center gap-12 text-xl font-medium text-neutral8">
             {/* Dashboard */}
             <a
@@ -61,7 +63,6 @@ export default function NavBar({ activepage }) {
             >
               Recruitment
             </a>
-
           </nav>
 
           <div className="flex items-center space-x-4">
