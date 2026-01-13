@@ -51,7 +51,7 @@ export default function NavBar({ activepage }) {
 
             {/* Jobs */}
             <a
-              className={`cursor-pointer transition-colors 
+              className={`cursor-pointer transition-colors
               ${
                 isActive("jobs")
                   ? "text-primary font-semibold"
@@ -60,6 +60,19 @@ export default function NavBar({ activepage }) {
               onClick={() => handleNavigate("/jobpost")}
             >
               Recruitment
+            </a>
+
+            {/* Applicants */}
+            <a
+              className={`cursor-pointer transition-colors
+              ${
+                isActive("applicants")
+                  ? "text-primary font-semibold"
+                  : "hover:text-primary"
+              }`}
+              onClick={() => handleNavigate("/applicants")}
+            >
+              Applicants
             </a>
           </nav>
 

@@ -12,9 +12,8 @@ export const getJAUrl = () => {
   if (import.meta.env.VITE_JA_URL) {
     return import.meta.env.VITE_JA_URL;
   }
-  return import.meta.env.PROD
-    ? "https://api-gateway-production-2c3a.up.railway.app"
-    : "";
+  // Always use Railway API for external applicant data
+  return "https://api-gateway-production-2c3a.up.railway.app";
 };
 
 // OAuth2 Google login URL

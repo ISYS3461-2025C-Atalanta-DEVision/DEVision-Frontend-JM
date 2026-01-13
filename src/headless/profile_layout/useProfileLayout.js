@@ -1,6 +1,6 @@
 import applicantService from "../../services/applicantService";
-import authService from "../../services/authService";
-import { useEffect, useState, useCallback } from "react";
+import countryService from "../../services/countryService";
+import { useEffect, useState } from "react";
 
 const useProfileLayout = (applicantId) => {
   const [profile, setProfile] = useState(null);
@@ -12,8 +12,8 @@ const useProfileLayout = (applicantId) => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const data = await authService.getCountries();
-        setCountries(data);
+        const data = await countryService.getCountries();
+        setCountries(data || []);
       } catch (err) {
         console.error("Failed to fetch countries:", err);
       }
