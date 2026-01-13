@@ -117,6 +117,15 @@ export const applicantService = {
 
   /**
    * Search applicants with multiple filters
+   * Uses the external API's filter capability directly
+   *
+   * Available filter fields on /applicants endpoint:
+   * - name: applicant name (contains search)
+   * - country: country code (exact match)
+   * - educationLevels: education level like "Bachelor", "Master", "PhD"
+   * - workHistoryTitles: job titles from work history
+   * - skillCategories: skill category IDs
+   *
    * @param {Object} filterOptions - Filter options
    * @param {string} filterOptions.name - Name to search (contains)
    * @param {string} filterOptions.country - Country code to filter
@@ -127,31 +136,21 @@ export const applicantService = {
   searchApplicantsWithFilters: async (filterOptions = {}, page = 1, limit = 12) => {
     const { name, country, educationLevel } = filterOptions;
 
-    // If education filter is set, first get applicant IDs with matching education
-    let educationApplicantIds = null;
-    if (educationLevel && educationLevel.trim()) {
-      educationApplicantIds = await applicantService.getEducationByLevel(educationLevel.trim());
-      console.log("Applicants with", educationLevel, "education:", educationApplicantIds);
-
-      // If no applicants found with this education level, return empty
-      if (educationApplicantIds.length === 0) {
-        return { data: [], total: 0 };
-      }
-    }
-
     const filters = [];
 
+    // Name search - use "contains" operator for partial match
     if (name && name.trim()) {
       filters.push({ id: "name", value: name.trim(), operator: "contains" });
     }
 
+    // Country filter - use "eq" operator for exact match on country code
     if (country && country.trim()) {
-      filters.push({ id: "country", value: country.trim(), operator: "contains" });
+      filters.push({ id: "country", value: country.trim(), operator: "eq" });
     }
 
-    // If we have education filter, add ID filter
-    if (educationApplicantIds && educationApplicantIds.length > 0) {
-      filters.push({ id: "id", value: educationApplicantIds.join(","), operator: "in" });
+    // Education level filter - use "contains" for partial match on education levels
+    if (educationLevel && educationLevel.trim()) {
+      filters.push({ id: "educationLevels", value: educationLevel.trim(), operator: "contains" });
     }
 
     const params = new URLSearchParams({
@@ -163,9 +162,6 @@ export const applicantService = {
       params.append("filters", JSON.stringify(filters));
     }
 
-    console.log("Filter request URL:", `${APPLICANT_API_URL}?${params}`);
-    console.log("Filters:", filters);
-
     const response = await fetch(`${APPLICANT_API_URL}?${params}`, {
       method: "GET",
       headers: {
@@ -175,6 +171,9 @@ export const applicantService = {
     });
 
     if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error("Rate limit exceeded. Please wait a moment and try again.");
+      }
       throw new Error(`Failed to search applicants: ${response.status}`);
     }
 

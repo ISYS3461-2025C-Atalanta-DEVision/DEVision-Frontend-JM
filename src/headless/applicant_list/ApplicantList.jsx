@@ -27,6 +27,7 @@ export default function ApplicantList() {
     setSelectedEducation,
     countries,
     countriesLoading,
+    rateLimitWait,
     handleSearch,
     handleClearFilters,
     getActiveFilterLabels,
@@ -65,10 +66,10 @@ export default function ApplicantList() {
           </div>
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || rateLimitWait > 0}
             className="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
           >
-            {loading ? "Searching..." : "Search"}
+            {loading ? "Searching..." : rateLimitWait > 0 ? `Wait ${rateLimitWait}s` : "Search"}
           </button>
         </div>
 
@@ -146,6 +147,16 @@ export default function ApplicantList() {
       {error && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
           {error}
+        </div>
+      )}
+
+      {/* Rate Limit Warning */}
+      {rateLimitWait > 0 && (
+        <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-700 flex items-center gap-3">
+          <i className="ri-time-line text-xl"></i>
+          <span>
+            Rate limit protection: Please wait {rateLimitWait} second{rateLimitWait !== 1 ? "s" : ""} before the next request...
+          </span>
         </div>
       )}
 
