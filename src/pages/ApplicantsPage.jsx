@@ -99,7 +99,7 @@ export default function ApplicantsPage() {
         {
           name: searchQuery,
           country: selectedCountry,
-          highestEducation: selectedEducation,
+          educationLevel: selectedEducation,
         },
         pageNum,
         12

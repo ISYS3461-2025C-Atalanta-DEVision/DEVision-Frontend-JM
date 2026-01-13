@@ -10,6 +10,7 @@ const API_KEY = import.meta.env.VITE_JA_X_HEADER || "wrgY4eM0rE/66kMz0ubiVMfev36
 // Cache for applicant data to avoid repeated API calls
 const applicantCache = {};
 const educationCache = {};
+const educationByLevelCache = {};
 const failedApplicantCache = new Set();
 const workHistoryCache = {};
 const skillCache = {};
@@ -69,16 +70,75 @@ export const applicantService = {
   },
 
   /**
+   * Get all education records filtered by level (Bachelor, Master, PhD)
+   * Returns applicant IDs that have education matching the level
+   */
+  getEducationByLevel: async (levelStudy) => {
+    if (!levelStudy) return [];
+
+    // Check cache
+    if (educationByLevelCache[levelStudy]) {
+      return educationByLevelCache[levelStudy];
+    }
+
+    const filters = JSON.stringify([
+      { id: "levelStudy", value: levelStudy, operator: "contains" },
+    ]);
+
+    const params = new URLSearchParams({
+      page: "1",
+      limit: "1000", // Get all matching records
+      filters,
+    });
+
+    const response = await fetch(`${EDUCATION_API_URL}?${params}`, {
+      method: "GET",
+      headers: {
+        accept: "*/*",
+        "X-API-Key": API_KEY,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch education: ${response.status}`);
+    }
+
+    const result = await response.json();
+    const data = result.data || result || [];
+
+    // Extract unique applicant IDs
+    const applicantIds = [...new Set(data.map((edu) => edu.applicantId))];
+
+    // Cache the result
+    educationByLevelCache[levelStudy] = applicantIds;
+
+    return applicantIds;
+  },
+
+  /**
    * Search applicants with multiple filters
    * @param {Object} filterOptions - Filter options
    * @param {string} filterOptions.name - Name to search (contains)
    * @param {string} filterOptions.country - Country code to filter
-   * @param {string} filterOptions.highestEducation - Education level (Bachelor, Master, Doctorate)
+   * @param {string} filterOptions.educationLevel - Education level (Bachelor, Master, PhD)
    * @param {number} page - Page number
    * @param {number} limit - Items per page
    */
   searchApplicantsWithFilters: async (filterOptions = {}, page = 1, limit = 12) => {
-    const { name, country, highestEducation } = filterOptions;
+    const { name, country, educationLevel } = filterOptions;
+
+    // If education filter is set, first get applicant IDs with matching education
+    let educationApplicantIds = null;
+    if (educationLevel && educationLevel.trim()) {
+      educationApplicantIds = await applicantService.getEducationByLevel(educationLevel.trim());
+      console.log("Applicants with", educationLevel, "education:", educationApplicantIds);
+
+      // If no applicants found with this education level, return empty
+      if (educationApplicantIds.length === 0) {
+        return { data: [], total: 0 };
+      }
+    }
+
     const filters = [];
 
     if (name && name.trim()) {
@@ -89,8 +149,9 @@ export const applicantService = {
       filters.push({ id: "country", value: country.trim(), operator: "contains" });
     }
 
-    if (highestEducation && highestEducation.trim()) {
-      filters.push({ id: "highestEducation", value: highestEducation.trim(), operator: "contains" });
+    // If we have education filter, add ID filter
+    if (educationApplicantIds && educationApplicantIds.length > 0) {
+      filters.push({ id: "id", value: educationApplicantIds.join(","), operator: "in" });
     }
 
     const params = new URLSearchParams({
