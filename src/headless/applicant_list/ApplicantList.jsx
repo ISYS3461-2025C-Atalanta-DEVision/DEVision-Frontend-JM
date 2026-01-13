@@ -9,6 +9,7 @@ const EDUCATION_LEVELS = [
   { value: "Master", label: "Master's Degree" },
   { value: "PhD", label: "PhD" },
 ];
+
 export default function ApplicantList() {
   const {
     applicants,
@@ -16,14 +17,20 @@ export default function ApplicantList() {
     initialLoading,
     error,
     searchQuery,
+    setSearchQuery,
     page,
     hasMore,
     isFilterMode,
     selectedCountry,
+    setSelectedCountry,
     selectedEducation,
+    setSelectedEducation,
     countries,
     countriesLoading,
     handleSearch,
+    handleClearFilters,
+    getActiveFilterLabels,
+    handleApplicantClick,
     loaderRef,
   } = useApplicantList(countryService, applicantService);
 

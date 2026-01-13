@@ -45,6 +45,7 @@ export default function JobPostCard({
   const [applications, setApplications] = useState({ pending: [], archived: [] });
   const [loadingApps, setLoadingApps] = useState(false);
   const [showApplications, setShowApplications] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState({});
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
 
@@ -94,12 +95,21 @@ export default function JobPostCard({
     }
   };
 
-  const handleArchive = async (applicantId) => {
+  const handleUpdateStatus = async (application, newStatus) => {
+    setUpdatingStatus((prev) => ({ ...prev, [application.id]: true }));
     try {
-      await applicationService.archiveApplication(item.jobId, applicantId);
+      await applicationService.updateApplicationStatus(
+        application.id,
+        newStatus,
+        application.applicantId,
+        item.jobId
+      );
+      // Refetch applications to update the list
       await fetchApplications();
     } catch (error) {
-      console.error("Failed to archive application:", error);
+      console.error("Failed to update application status:", error);
+    } finally {
+      setUpdatingStatus((prev) => ({ ...prev, [application.id]: false }));
     }
   };
 
@@ -347,15 +357,34 @@ export default function JobPostCard({
                         </div>
                       )}
                     </div>
-                    {activeTab === "pending" && (
-                      <button
-                        type="button"
-                        onClick={() => handleArchive(app.applicantId)}
-                        className="px-3 py-1.5 text-xs font-medium bg-[#002959] text-white rounded hover:bg-[#002959]/80 transition"
-                      >
-                        Archive
-                      </button>
-                    )}
+                    {/* Archive/Unarchive button */}
+                    <button
+                      type="button"
+                      disabled={updatingStatus[app.id]}
+                      onClick={() => handleUpdateStatus(
+                        app,
+                        app.status === "PENDING" ? "ARCHIVED" : "PENDING"
+                      )}
+                      className={`px-3 py-1.5 text-xs font-medium rounded transition flex items-center gap-1 ${
+                        app.status === "PENDING"
+                          ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          : "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+                      } ${updatingStatus[app.id] ? "opacity-50 cursor-not-allowed" : ""}`}
+                    >
+                      {updatingStatus[app.id] ? (
+                        <i className="ri-loader-4-line animate-spin"></i>
+                      ) : app.status === "PENDING" ? (
+                        <>
+                          <i className="ri-archive-line"></i>
+                          Archive
+                        </>
+                      ) : (
+                        <>
+                          <i className="ri-inbox-unarchive-line"></i>
+                          Unarchive
+                        </>
+                      )}
+                    </button>
                   </div>
                 ))}
               </div>

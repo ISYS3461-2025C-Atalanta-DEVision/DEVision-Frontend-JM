@@ -1,15 +1,14 @@
-export const APPLICATION_BASE_URL = "/jobpost-service/api/applications";
+import { getJAUrl } from "./AppUrlConfig";
 
-// Get all applications for a job post
-export const APPLICATION_BY_JOB_URL = (jobId) => `${APPLICATION_BASE_URL}/job/${jobId}`;
+// External Job Application API (Railway) - for fetching applications
+const JA_API_BASE = getJAUrl();
+const JA_API_KEY = import.meta.env.VITE_JA_X_HEADER || "wrgY4eM0rE/66kMz0ubiVMfev36SxUlENNU2k9dytXc=";
 
-// Get applications for a job post filtered by status
-export const APPLICATION_BY_JOB_STATUS_URL = (jobId, status) =>
-  `${APPLICATION_BASE_URL}/job/${jobId}?status=${status}`;
+export const APPLICATION_API_KEY = JA_API_KEY;
 
-// Get application counts for a job post
-export const APPLICATION_COUNTS_URL = (jobId) => `${APPLICATION_BASE_URL}/job/${jobId}/counts`;
+// Get all job applications
+export const APPLICATION_BASE_URL = `${JA_API_BASE}/jobApplication`;
 
-// Archive an application (uses job-posts endpoint)
-export const APPLICATION_ARCHIVE_URL = (jobId, applicantId) =>
-  `/jobpost-service/api/job-posts/${jobId}/applications/${applicantId}/archive`;
+// Get applications filtered by jobId
+export const APPLICATION_BY_JOB_URL = (jobId) =>
+  `${APPLICATION_BASE_URL}?filters=${encodeURIComponent(JSON.stringify([{ id: "jobId", value: jobId, operator: "equals" }]))}`;

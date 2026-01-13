@@ -1,7 +1,15 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+const EDUCATION_LEVELS = [
+  { value: "", label: "All Education Levels" },
+  { value: "Bachelor", label: "Bachelor's Degree" },
+  { value: "Master", label: "Master's Degree" },
+  { value: "PhD", label: "PhD" },
+];
+
 const useApplicantList = (countryService, applicantService) => {
+  const navigate = useNavigate();
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -207,14 +215,20 @@ const useApplicantList = (countryService, applicantService) => {
     initialLoading,
     error,
     searchQuery,
+    setSearchQuery,
     page,
     hasMore,
     isFilterMode,
     selectedCountry,
+    setSelectedCountry,
     selectedEducation,
+    setSelectedEducation,
     countries,
     countriesLoading,
     handleSearch,
+    handleClearFilters,
+    getActiveFilterLabels,
+    handleApplicantClick,
     loaderRef,
   };
 };

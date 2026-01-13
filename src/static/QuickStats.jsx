@@ -6,13 +6,6 @@ export const QUICK_STATS_CARD_CONFIG = {
     linkText: "View all jobs",
     to: "/dashboard/jobspost",
   },
-  applicationsCount: {
-    title: "Applications",
-    description: "Review applicant submissions",
-    icon: <i className="ri-file-user-line text-[40px] text-green-500"></i>,
-    linkText: "View applications",
-    to: "/dashboard/applications",
-  },
   eventPostCount: {
     title: "Event Posts",
     description: "Manage your event listings",
