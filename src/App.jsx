@@ -20,6 +20,8 @@ import SearchApplicants from "./pages/SearchApplicants";
 import ApplicantProfilePage from "./pages/ApplicantProfilePage";
 import NavBar from "./layout/NavBar/NavBar";
 import TalentApplicantView from "./pages/TalentApplicantView";
+import LandingPage from "./pages/LandingPage";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -101,11 +103,11 @@ function App() {
           }
         />
 
-        {/* Redirect root to dashboard or login */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        {/* Landing Page */}
+        <Route path="/" element={<LandingPage />} />
 
-        {/* 404 - Redirect to dashboard */}
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        {/* 404 - Not Found */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
