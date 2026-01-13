@@ -7,7 +7,6 @@ export const profileService = {
     const quickStats = [
       { key: "jobPostsCount" },
       { key: "eventPostCount" },
-      { key: "applicationsCount" },
       { key: "searchCount" },
     ];
     // throw new Error("Failed to load quick stats");
