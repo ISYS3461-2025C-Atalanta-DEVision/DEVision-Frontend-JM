@@ -24,7 +24,10 @@ const useTalentList = (list) => {
       const payload = list.map((notification) => notification.fromId);
 
       const res = await applicantService.getApplicantsByIds(payload);
-      setTalents(res);
+      if (res !== null) {
+        // Filter out null values (deleted applicants)
+        setTalents(res.filter((talent) => talent !== null));
+      }
     } catch (error) {
       setMsg({ type: "err", msg: error });
     } finally {

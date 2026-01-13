@@ -1,4 +1,4 @@
-import {getJAUrl} from "../service_url/AppUrlConfig";
+import { getJAUrl } from "../service_url/AppUrlConfig";
 
 const API_BASE_URL = getJAUrl();
 const APPLICANT_API_URL = `${API_BASE_URL}/applicants`;
@@ -23,6 +23,10 @@ export const applicantService = {
       return applicantCache[applicantId];
     }
 
+    if (failedApplicantCache.has(applicantId)) {
+      return null;
+    }
+
     const response = await fetch(`${APPLICANT_API_URL}/${applicantId}`, {
       method: "GET",
       headers: {
@@ -32,6 +36,10 @@ export const applicantService = {
     });
 
     if (!response.ok) {
+      if (response.status === 404) {
+        failedApplicantCache.add(applicantId);
+        return null;
+      }
       throw new Error(`Failed to fetch applicant: ${response.status}`);
     }
 
