@@ -1,5 +1,6 @@
 import {
   APPLICATION_BY_JOB_URL,
+  APPLICATION_BASE_URL,
   APPLICATION_API_KEY,
 } from "../service_url/ApplicationUrlConfig";
 import { JOBPOST_BASE_URL } from "../service_url/JobPostUrlConfig";
@@ -88,22 +89,46 @@ export const applicationService = {
   },
 
   /**
-   * Update application status (publishes Kafka event via backend)
+   * Update application status via external API
    * @param {string} applicationId - The application ID
    * @param {string} status - New status (PENDING or ARCHIVED)
-   * @param {string} applicantId - The applicant ID
-   * @param {string} jobId - The job post ID
-   * @returns {Promise<void>}
+   * @param {string} applicantId - The applicant ID (used for Kafka event)
+   * @param {string} jobId - The job post ID (used for cache clearing and Kafka event)
+   * @returns {Promise<Object>} Updated application
    */
   updateApplicationStatus: async (applicationId, status, applicantId, jobId) => {
-    await api.post(
-      `${JOBPOST_BASE_URL}/applications/${applicationId}/status`,
-      null,
-      { params: { status, applicantId, jobId } }
-    );
+    // Call external API to update status
+    const response = await fetch(`${APPLICATION_BASE_URL}/${applicationId}`, {
+      method: "PUT",
+      headers: {
+        accept: "*/*",
+        "Content-Type": "application/json",
+        "X-API-Key": APPLICATION_API_KEY,
+      },
+      body: JSON.stringify({ status }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update application status: ${response.status}`);
+    }
+
+    const updatedApplication = await response.json();
+
+    // Also publish Kafka event via our backend for notifications
+    try {
+      await api.post(
+        `${JOBPOST_BASE_URL}/applications/${applicationId}/status`,
+        null,
+        { params: { status, applicantId, jobId } }
+      );
+    } catch (err) {
+      console.warn("Failed to publish Kafka event, but status was updated:", err);
+    }
 
     // Clear cache for this job to ensure fresh data on next fetch
     applicationService.clearCache(jobId);
+
+    return updatedApplication;
   },
 
   /**
